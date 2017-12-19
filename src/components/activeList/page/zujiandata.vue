@@ -14,8 +14,8 @@
           <div style="display: flex;position: relative">
             <label style="margin-right: 30px">图片:</label>
             <ul id="imgList">
-                <li v-for="(item,key) in commodityResult.img" @click="address(key)" v-if="commodityResult.img[0]" :class="{activete : item.isTrue}">
-                  <img :src="item.url | ToUrl" alt="" class="cu" />
+                <li v-for="(item,key) in commodityResult.contents" @click="address(key)" v-if="commodityResult.contents[0]" :class="{activete : item.isTrue}">
+                  <img :src="item.image | ToUrl" alt="" class="cu" />
                 </li>
             </ul>
             <el-upload
@@ -48,25 +48,15 @@
           <el-button v-if="!createOrUpdate" type="primary" plain size="mini" style="margin-left: 20px" @click="changeTag()">确认修改</el-button>
           <i class="el-icon-refresh cu" style="font-size: 18px;color:#409EFF;margin-left: 8px" @click="changeOr()"></i>
         </p>
-        <!--<el-tag
-          v-for="tag in tags"
-          :key="tag.name"
-          closable
-          @close="handleClose(tag)"
-          :type="tag.type"
-          class="cu"
-          :disable-transitions=true>
-          {{tag.name}}
-        </el-tag>-->
         <el-button
-          style="padding: 10px 0px;"
-          v-for="(tag,key) in tags"
-          type="primary" plain @click="updateTag(key)">
-            {{tag}}<i class="el-icon-close" style="float: right;font-size: 14px;" @click="CloseTag(key)"></i>
+          style="padding: 10px 0px;margin: 0 10px 0 0;"
+          v-for="(tag,key) in commodityResult.contents"
+          type="primary"
+          :key="key"
+          plain
+          @click="updateTag(key)">
+            {{tag.title}}<i class="el-icon-close" style="float: right;font-size: 14px;" @click="CloseTag(key)"></i>
         </el-button>
-        <!--<div class="createInput">
-          <p style="position: relative" v-for="(item,key) in tags"><input type="text" :value="item.name"><i class="el-icon-close cu" style="position: absolute;right: 0;top: 0;"></i></p>
-        </div>-->
       </div>
       <div class="addGoodList">
         <p><label>产品列表:</label> <el-button type="primary" plain size="mini" icon="el-icon-plus" style="float: right;" @click="popoverAlert('vAddGoods')">添加关联产品</el-button></p>
@@ -169,25 +159,28 @@ export default {
         name: '王小虎',
         address: '99'
       }],
-      num:''
 
     }
   },
   watch:{
     commodityResult:{
       handler(curVal,oldVal){
-        if(curVal.name != oldVal.name && curVal.name!='产品列表'){
-          let key=null
-          this.commodityResult.img.forEach(function(value,index){
-            if(value.isTrue){
-              key=index
-              return key
-            }
-          })
-          let item1=this.commodityResult.adress[key]
-          if(item1){
-            this.input=item1
-          }else{
+        if(curVal.name !== oldVal.name && curVal.name!=='产品列表'){
+          //console.log(curVal)
+          let that=this
+         if(curVal.contents[0]){
+            let numfalse=0
+           curVal.contents.forEach(function(val,index){
+             if(val.isTrue){
+               that.input=curVal.contents[index].url
+             }else{
+               numfalse++
+             }
+           })
+           if(numfalse === curVal.contents.length){
+             that.input=''
+           }
+         } else{
             this.input=''
           }
         }
@@ -197,7 +190,7 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'commodityResult'
+      'commodityResult','addCommodityResult'
     ])
   },
   methods: {
@@ -211,24 +204,25 @@ export default {
         this.tags.splice(this.tags.indexOf(item),1)
     },
     address(key){
-      for(let i=0;i<this.commodityResult.img.length;i++){
-        this.commodityResult.img[i].isTrue=false
+      for(let i=0;i<this.commodityResult.contents.length;i++){
+        this.commodityResult.contents[i].isTrue=false
       }
-      this.commodityResult.img[key].isTrue=true
-      if(this.commodityResult.adress[key]){
-        this.input=this.commodityResult.adress[key]
+      this.commodityResult.contents[key].isTrue=true
+      if(this.commodityResult.contents[key].url){
+        this.input=this.commodityResult.contents[key].url
       }else{
         this.input=''
       }
       this.num=key
     },
     upSuccessfirst(response, file, fileList){
-      if(this.commodityResult.img){
+      if(this.commodityResult.contents){
         let obj={
-          'url':response.result,
+          'image':response.result,
+          "url":' ',
           isTrue:false
         }
-        this.commodityResult.img.push(obj)
+        this.commodityResult.contents.push(obj)
       }
     },
     upErre(){
@@ -240,68 +234,61 @@ export default {
     },
     moveLeft(){
         let key=null
-        this.commodityResult.img.forEach(function(value,index){
+        this.commodityResult.contents.forEach(function(value,index){
           if(value.isTrue){
             key=index
             return key
           }
         })
-      let item=this.commodityResult.img[key]
-      let item1=this.commodityResult.adress[key]
+      let item=this.commodityResult.contents[key]
       if(key==0){
-        this.commodityResult.img.splice(key,1)
-        this.commodityResult.img.push(item)
-        this.commodityResult.adress.splice(key,1)
-        this.commodityResult.adress.push(item1)
+        this.commodityResult.contents.splice(key,1)
+        this.commodityResult.contents.push(item)
       }else{
-        this.commodityResult.img.splice(key,1)
-        this.commodityResult.img.splice(key-1,0,item)
-        this.commodityResult.adress.splice(key,1)
-        this.commodityResult.adress.splice(key-1,0,item1)
+        this.commodityResult.contents.splice(key,1)
+        this.commodityResult.contents.splice(key-1,0,item)
       }
     },
     moveRight(){
       let key=null
-      this.commodityResult.img.forEach(function(value,index){
+      this.commodityResult.contents.forEach(function(value,index){
         if(value.isTrue){
           key=index
           return key
         }
       })
-      let item=this.commodityResult.img[key]
-      let item1=this.commodityResult.adress[key]
-      if(key==this.commodityResult.img.length-1){
-        this.commodityResult.img.splice(key,1)
-        this.commodityResult.img.unshift(item)
-        this.commodityResult.adress.splice(key,1)
-        this.commodityResult.adress.unshift(item1)
+      let item=this.commodityResult.contents[key]
+      if(key==this.commodityResult.contents.length-1){
+        this.commodityResult.contents.splice(key,1)
+        this.commodityResult.contents.unshift(item)
       }else{
-        this.commodityResult.img.splice(key,1)
-        this.commodityResult.img.splice(key+1,0,item)
-        this.commodityResult.adress.splice(key,1)
-        this.commodityResult.adress.splice(key+1,0,item1)
+        this.commodityResult.contents.splice(key,1)
+        this.commodityResult.contents.splice(key+1,0,item)
       }
     },
     moveDelete(){
       let key=null
-      this.commodityResult.img.forEach(function(value,index){
+      this.commodityResult.contents.forEach(function(value,index){
         if(value.isTrue){
           key=index
           return key
         }
       })
       if(key !==null){
-        this.commodityResult.img.splice(key,1)
-        this.commodityResult.adress.splice(key,1)
+        this.commodityResult.contents.splice(key,1)
         this.input=''
       }
     },
     change(){
-      this.commodityResult.adress[this.num]=this.input
+      this.commodityResult.contents[this.num].url=this.input
     },
     createTag(){
       if(this.input1){
-        this.tags.push(this.input1)
+        let obj={
+          title:this.input1,
+          contentId:'3'
+        }
+        this.commodityResult.contents.push(obj)
       }
     },
     handleSizeChange(val) {
@@ -312,7 +299,7 @@ export default {
     },
     updateTag(key){
       this.createOrUpdate=false
-      this.input1= this.tags[key]
+      this.input1= this.commodityResult.contents[key].title
       this.num=key
     },
     CloseTag(index){
@@ -321,13 +308,12 @@ export default {
       } else {
         window.event.cancelBubble = true;
       }
-      this.tags.splice(index,1)
+      this.commodityResult.contents.splice(index,1)
     },
     changeTag(){
       console.log(this.num)
       if(this.num !== ''){
-      this.tags.splice(this.num,1,this.input1)
-      console.log(this.tags)
+      this.commodityResult.contents[this.num].title=this.input1
       }
     },
     changeOr(){
@@ -359,6 +345,7 @@ export default {
    width:72px;
    height: 72px;
     margin-right: 10px;
+   margin-bottom: 10px;
   }
  #zujianData div.el-upload--picture-card{
   position: relative;
@@ -417,10 +404,11 @@ export default {
  #goodChangeList .el-table th>div.cell,#goodChangeList .el-table .cell,#goodChangeList .el-table{
    font-size: 12px;
  }
- /*#zujianData .createInput{
+ #zujianData #imgList{
    display: flex;
+   flex-wrap: wrap;
  }
- #zujianData .createInput p{
+ /*#zujianData .createInput p{
    width:40px;
    line-height:20px;
    border: 1px solid #b3d8ff;

@@ -12,6 +12,7 @@
           <el-checkbox label="轮播图"></el-checkbox>
           <el-checkbox label="BANNER"></el-checkbox>
           <el-checkbox label="等分（最多5等分）"></el-checkbox>
+          <el-checkbox label="滑动的"></el-checkbox>
           <el-checkbox label="产品列表"></el-checkbox>
         </el-checkbox-group>
       </p>
@@ -74,13 +75,16 @@
     width:85%;
   }
   .el-checkbox+.el-checkbox:last-child{
-    margin: 10px 0 0 0;
+    margin-top: 10px;
   }
   .demo > p:last-child{
     text-align: center;
   }
   .el-button{
     width: 100px;
+  }
+  .el-checkbox+.el-checkbox:nth-child(4){
+    margin-left: 0;
   }
 </style>
 <script>
@@ -109,14 +113,29 @@
           if(item=='产品列表'){
             let obj={}
             obj.name=item
+            obj.modelSampleCode="catlist1"
+            obj.contents=[]
             arr.push(obj)
-          }else{
+          }
+          if(item=='轮播图'){
             let obj={}
             obj.name=item
-            obj.adress=[/*'www.baidu.com','www.tianmao.com','www.taobao.com'*/]
-            obj.img=[
-
-            ]
+            obj.modelSampleCode="advertisingFigure"
+            obj.contents=[]
+            arr.push(obj)
+          }
+          if(item=="等分（最多5等分）" || item=='BANNER'){
+            let obj={};
+            obj.name=item
+            obj.modelSampleCode="f5"
+            obj.contents=[]
+            arr.push(obj)
+          }
+          if(item=="滑动的"){
+            let obj={}
+            obj.name=item
+            obj.modelSampleCode="titleproducttouch"
+            obj.contents=[]
             arr.push(obj)
           }
         })

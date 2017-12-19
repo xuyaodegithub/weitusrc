@@ -23,7 +23,7 @@
     </div>
   </div>
   <p class="btnOver"><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions('vSeachActive')">返回</el-button>
-    <el-button type="primary" size="small" plain style="margin-top: 10px">提交</el-button></p>
+    <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upOk()">提交</el-button></p>
   </div>
 </template>
 
@@ -83,6 +83,9 @@ export default {
         window.event.cancelBubble = true;
       }
       this.addCommodityResult.splice(index,1)
+    },
+    upOk(){
+      console.log(this.addCommodityResult)
     }
 
   }
