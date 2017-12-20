@@ -65,50 +65,16 @@
         </el-form-item>
         <el-form-item label="图片资料：">
             <el-upload
+              v-for="(item,index) in ppResult"
               class="avatar-uploader"
               action="https://jsonplaceholder.typicode.com/posts/"
+              :key="index"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload">
               <img src="../../../../static/ee.png" class="avatar">
-              <p>营业执照</p>
+              <p>{{item}}</p>
             </el-upload>
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img src="../../../../static/ee.png" class="avatar">
-              <p>组织机构证</p>
-            </el-upload>
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img src="../../../../static/ee.png" class="avatar">
-              <p>税务登记照</p>
-            </el-upload>
-          <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img src="../../../../static/ee.png" class="avatar">
-            <p>开户许可证</p>
-          </el-upload>
-          <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img src="../../../../static/ee.png" class="avatar">
-            <p>一般纳税人资格证</p>
-          </el-upload>
         </el-form-item>
       </el-form>
     </div>
@@ -173,7 +139,8 @@
           resource: '',
           desc: ''
         },
-        imageUrl: ''
+        imageUrl: '',
+        ppResult:['营业执照','组织机构证','税务登记照','开户许可证','一般纳税人资格证']
       }
     },
     components:{
@@ -233,7 +200,7 @@
     border:0;
     margin:0;
     color: #333;
-    font-weight: 550;
+    font-weight: 600;
     text-indent:0;
   }
   #dataFp .ev-header{

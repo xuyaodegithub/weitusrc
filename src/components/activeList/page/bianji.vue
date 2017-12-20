@@ -4,7 +4,7 @@
     <div class="left">
       <p>
         <el-button type="primary" plain size="mini" icon="el-icon-plus" @click="popoverAlert('vAddSubass')">添加活动组件</el-button>
-        <el-button type="success" plain size="mini" @click="popoverAlert('Vdetail')">预览<i class="el-icon-d-arrow-right"></i></el-button>
+        <el-button type="success" plain size="mini" @click="watch()">预览<i class="el-icon-d-arrow-right"></i></el-button>
       </p>
       <div class="left-btn">
         <div v-for="(item,index) in addCommodityResult">
@@ -41,7 +41,7 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'addCommodityResult','commodityResult'
+      'addCommodityResult'
     ])
   },
   components:{
@@ -51,6 +51,24 @@ export default {
     ...mapActions([
       'activeActions','addCommodityActions','popoverAlert','commodityActions'
     ]),
+    watch(){
+      if(this.addCommodityResult[0]){
+      if(this.addCommodityResult[0].contents[0]){
+        this.popoverAlert('Vdetail')
+      }else{
+        this.$message({
+          message:"请先添加组件内容",
+          type:"warning"
+        })
+      }
+      }else{
+        this.$message({
+          message:"请先添加组件",
+          type:"warning"
+        })
+      }
+
+    },
     up(index){
       let item=this.addCommodityResult[index]
       if(index != 0){
@@ -60,8 +78,6 @@ export default {
         this.addCommodityResult.splice(index,1)
         this.addCommodityResult.push(item)
       }
-
-
     },
     down(index){
       let item=this.addCommodityResult[index]

@@ -59,7 +59,7 @@
         </el-button>
       </div>
       <div class="addGoodList">
-        <p><label>产品列表:</label> <el-button type="primary" plain size="mini" icon="el-icon-plus" style="float: right;" @click="popoverAlert('vAddGoods')">添加关联产品</el-button></p>
+        <p  style="font:14px/28px '微软雅黑'"><label>产品列表:</label> <el-button type="primary" plain size="mini" icon="el-icon-plus" style="float: right;" @click="popoverAlert('vAddGoods')">添加关联产品</el-button></p>
         <el-table
           :height="250"
           fixed
@@ -280,7 +280,9 @@ export default {
       }
     },
     change(){
-      this.commodityResult.contents[this.num].url=this.input
+      if(this.input){
+        this.commodityResult.contents[this.num].url=this.input
+      }
     },
     createTag(){
       if(this.input1){

@@ -5,7 +5,7 @@
     </p>
     <div class="logo-list">
       <label>活动名称</label><el-input v-model="input" placeholder="请输入活动名称" size="small"></el-input>
-      <el-button type="primary" style="width:100px" round size="mini" icon="el-icon-search" @click="seachActive()">搜索</el-button>
+      <el-button type="primary" style="width:100px" round size="mini" icon="el-icon-search" @click="seachActive(input)">搜索</el-button>
     </div>
     <div class="footer-list">
       <keep-alive>
@@ -41,8 +41,15 @@ export default {
     ...mapActions([
       'activeActions'
     ]),
-    seachActive(){
+    seachActive(item){
+      if(item){
 
+      }else{
+        this.$message({
+          message:"请输入活动名称",
+          type:"warning"
+        })
+      }
     },
     newPush(){
       this.activeActions('vNewActive')

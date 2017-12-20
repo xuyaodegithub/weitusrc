@@ -306,7 +306,7 @@
     border:0;
     margin:0;
     color: #333;
-    font-weight: 550;
+    font-weight: 600;
     text-indent:0;
   }
   .ev-content{
@@ -328,7 +328,7 @@
     color:#337ab7;
     margin:0 3px;
     cursor:pointer;
-    font-weight:550;
+    font-weight:600;
   }
   #data .content-seach{
     display: flex;
@@ -393,7 +393,7 @@
   .chalist{
     margin-top:14px;
   }
-  .chalist .el-select,{
+  .chalist .el-select{
    margin:0 5px;
   }
   .chalist p{

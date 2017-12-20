@@ -3,7 +3,7 @@
     <div class="popover-head">
       <span class="title">预览效果</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
-      <div style="background: #eeeeee; height: 500px;width: 315px;overflow: auto;">
+      <div style="background: #eeeeee; height: 500px;width: 315px;overflow: auto;" v-if="addCommodityResult[0].contents">
 
 
         <div v-for="item in addCommodityResult">

@@ -261,7 +261,7 @@
     },
     methods: {
       ...mapActions([
-        'popoverAlert','addCommodityActions'
+        'popoverAlert',
       ]),
       morePull(rows) {
         console.log(rows);
