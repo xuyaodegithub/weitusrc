@@ -110,218 +110,217 @@
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
 export default {
-  name: 'huodong',
-  data () {
-    return {
-      createOrUpdate:true,
-      input:'',
-      dialogImageUrl: '',
-      dialogVisible: false,
-      fileList:[],
-      num:'',
-      input1:'',
-      tags: [],
-      currentPage4:1,
-      tableData: [{
-        date: '2016-05-02222222222222222222',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '99'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '99'
-      }],
-
-    }
-  },
-  watch:{
-    commodityResult:{
-      handler(curVal,oldVal){
-        if(curVal.name !== oldVal.name && curVal.name!=='产品列表'){
-          //console.log(curVal)
-          let that=this
-         if(curVal.contents[0]){
-            let numfalse=0
-           curVal.contents.forEach(function(val,index){
-             if(val.isTrue){
-               that.input=curVal.contents[index].url
-             }else{
-               numfalse++
-             }
-           })
-           if(numfalse === curVal.contents.length){
-             that.input=''
-           }
-         } else{
-            this.input=''
+    name: 'huodong',
+    data () {
+      return {
+        createOrUpdate: true,
+        input: '',
+        dialogImageUrl: '',
+        dialogVisible: false,
+        fileList: [],
+        num: '',
+        input1: '',
+        tags: [],
+        currentPage4: 1,
+        tableData: [{
+          date: '2016-05-02222222222222222222',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '99'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '99'
+        }]
+      }
+    },
+    watch: {
+      commodityResult: {
+        handler (curVal, oldVal) {
+          if (curVal.name !== oldVal.name && curVal.name !== '产品列表') {
+            //console.log(curVal)
+            let that = this
+            if (curVal.contents[0]) {
+              let numfalse = 0
+              curVal.contents.forEach(function (val, index) {
+                if (val.isTrue) {
+                  that.input = curVal.contents[index].url
+                } else {
+                  numfalse++
+                }
+              })
+              if (numfalse === curVal.contents.length) {
+                that.input = ''
+              }
+            } else {
+              this.input = ''
+            }
           }
+        },
+        deep: true
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'commodityResult', 'addCommodityResult'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        'commodityActions', 'popoverAlert'
+      ]),
+      handlePictureCardPreview () {
+
+      },
+      handleClose (item) {
+        this.tags.splice(this.tags.indexOf(item), 1)
+      },
+      address (key) {
+        for (let i = 0; i < this.commodityResult.contents.length; i++) {
+          this.commodityResult.contents[i].isTrue = false
+        }
+        this.commodityResult.contents[key].isTrue = true
+        if (this.commodityResult.contents[key].url) {
+          this.input = this.commodityResult.contents[key].url
+        } else {
+          this.input = ''
+        }
+        this.num = key
+      },
+      upSuccessfirst (response, file, fileList) {
+        if (this.commodityResult.contents) {
+          let obj = {
+            'image': response.result,
+            'url': ' ',
+            isTrue: false
+          }
+          this.commodityResult.contents.push(obj)
         }
       },
-      deep:true
-    }
-  },
-  computed:{
-    ...mapGetters([
-      'commodityResult','addCommodityResult'
-    ])
-  },
-  methods: {
-    ...mapActions([
-      'commodityActions','popoverAlert'
-    ]),
-    handlePictureCardPreview(){
+      upErre () {
 
-    },
-    handleClose(item){
-        this.tags.splice(this.tags.indexOf(item),1)
-    },
-    address(key){
-      for(let i=0;i<this.commodityResult.contents.length;i++){
-        this.commodityResult.contents[i].isTrue=false
-      }
-      this.commodityResult.contents[key].isTrue=true
-      if(this.commodityResult.contents[key].url){
-        this.input=this.commodityResult.contents[key].url
-      }else{
-        this.input=''
-      }
-      this.num=key
-    },
-    upSuccessfirst(response, file, fileList){
-      if(this.commodityResult.contents){
-        let obj={
-          'image':response.result,
-          "url":' ',
-          isTrue:false
-        }
-        this.commodityResult.contents.push(obj)
-      }
-    },
-    upErre(){
-
-    },
-    addimg(){
-      let oDiv=document.getElementsByClassName('el-upload--picture-card')[0]
-      oDiv.click()
-    },
-    moveLeft(){
-        let key=null
+      },
+      addimg () {
+        let oDiv = document.getElementsByClassName('el-upload--picture-card')[0]
+        oDiv.click()
+      },
+      moveLeft () {
+        let key = null
         this.commodityResult.contents.forEach(function(value,index){
-          if(value.isTrue){
-            key=index
+          if (value.isTrue) {
+            key = index
             return key
           }
         })
-      let item=this.commodityResult.contents[key]
-      if(key==0){
-        this.commodityResult.contents.splice(key,1)
-        this.commodityResult.contents.push(item)
-      }else{
-        this.commodityResult.contents.splice(key,1)
-        this.commodityResult.contents.splice(key-1,0,item)
-      }
-    },
-    moveRight(){
-      let key=null
-      this.commodityResult.contents.forEach(function(value,index){
-        if(value.isTrue){
-          key=index
-          return key
+        let item = this.commodityResult.contents[key]
+        if (key === 0) {
+          this.commodityResult.contents.splice(key, 1)
+          this.commodityResult.contents.push(item)
+        } else {
+          this.commodityResult.contents.splice(key, 1)
+          this.commodityResult.contents.splice(key - 1, 0, item)
         }
-      })
-      let item=this.commodityResult.contents[key]
-      if(key==this.commodityResult.contents.length-1){
-        this.commodityResult.contents.splice(key,1)
-        this.commodityResult.contents.unshift(item)
-      }else{
-        this.commodityResult.contents.splice(key,1)
-        this.commodityResult.contents.splice(key+1,0,item)
-      }
-    },
-    moveDelete(){
-      let key=null
-      this.commodityResult.contents.forEach(function(value,index){
-        if(value.isTrue){
-          key=index
-          return key
+      },
+      moveRight () {
+        let key = null
+        this.commodityResult.contents.forEach(function (value, index) {
+          if (value.isTrue) {
+            key = index
+            return key
+          }
+        })
+        let item = this.commodityResult.contents[key]
+        if (key == this.commodityResult.contents.length-1) {
+          this.commodityResult.contents.splice(key, 1)
+          this.commodityResult.contents.unshift(item)
+        } else {
+          this.commodityResult.contents.splice(key, 1)
+          this.commodityResult.contents.splice(key + 1, 0, item)
         }
-      })
-      if(key !==null){
-        this.commodityResult.contents.splice(key,1)
-        this.input=''
-      }
-    },
-    change(){
-      if(this.input){
-        this.commodityResult.contents[this.num].url=this.input
-      }
-    },
-    createTag(){
-      if(this.input1){
-        let obj={
-          title:this.input1,
-          contentId:'3'
+      },
+      moveDelete () {
+        let key = null
+        this.commodityResult.contents.forEach(function (value, index) {
+          if (value.isTrue) {
+            key = index
+            return key
+          }
+        })
+        if (key !== null) {
+          this.commodityResult.contents.splice(key, 1)
+          this.input = ''
         }
-        this.commodityResult.contents.push(obj)
+      },
+      change () {
+        if (this.input) {
+          this.commodityResult.contents[this.num].url = this.input
+        }
+      },
+      createTag () {
+        if (this.input1) {
+          let obj = {
+            title: this.input1,
+            contentId: '3'
+          }
+          this.commodityResult.contents.push(obj)
+        }
+      },
+      handleSizeChange (val) {
+        console.log(`每页 ${val} 条`)
+      },
+      handleCurrentChange (val) {
+        console.log(`当前页: ${val}`)
+      },
+      updateTag (key) {
+        this.createOrUpdate = false
+        this.input1 = this.commodityResult.contents[key].title
+        this.num = key
+      },
+      CloseTag (index) {
+        if (event && event.stopPropagation) {
+          event.stopPropagation()
+        } else {
+          window.event.cancelBubble = true
+        }
+        this.commodityResult.contents.splice(index, 1)
+      },
+      changeTag () {
+        console.log(this.num)
+        if (this.num !== '') {
+          this.commodityResult.contents[this.num].title = this.input1
+        }
+      },
+      changeOr () {
+        this.createOrUpdate = true
       }
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
-    updateTag(key){
-      this.createOrUpdate=false
-      this.input1= this.commodityResult.contents[key].title
-      this.num=key
-    },
-    CloseTag(index){
-      if ( event && event.stopPropagation ) {
-        event.stopPropagation();
-      } else {
-        window.event.cancelBubble = true;
-      }
-      this.commodityResult.contents.splice(index,1)
-    },
-    changeTag(){
-      console.log(this.num)
-      if(this.num !== ''){
-      this.commodityResult.contents[this.num].title=this.input1
-      }
-    },
-    changeOr(){
-      this.createOrUpdate=true
     }
-  }
 }
 </script>
 
