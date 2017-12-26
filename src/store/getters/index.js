@@ -105,7 +105,26 @@
     addCommodityResult: state => {
      return state.result.addCommodityResult
     },
-//textCs
+//backColorResult背景设置
+    backColorResult: state => {
+     return state.result.backColorResult
+    },
+  //添加活动
+    insertActiveResult : state => {
+     return state.result.insertActiveResult
+    },
+  //获取活动列表
+    listActiveResult: state => {
+     return state.result.listActiveResult
+    },
+  //编辑活动列表
+   /* updateActiveResult: state => {
+     return state.result.updateActiveResult
+    },*/
+    //根据id获取活动信息
+    getByIdActiveResult: state => {
+      return state.result.getByIdActiveResult
+    },
 
 
     alertnum: state => {

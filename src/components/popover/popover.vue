@@ -18,6 +18,7 @@
   import vAddSubass from './addSubass.vue'
   import vAddGoods from './addGoods.vue'
   import Vdetail from './detail.vue'
+  import VaddBackground from './addBackground.vue'
 
 
   import { mapActions } from 'vuex'
@@ -29,7 +30,7 @@
       };
     },
     components:{
-     vBalance,vAddSubass,vAddGoods,Vdetail
+     vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground
 
     },
     methods: {

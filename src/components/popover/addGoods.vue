@@ -109,7 +109,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
   .demo{
     width: 800px;
     height: 440px;
@@ -148,6 +148,12 @@
     width: calc(100% - 25px);
     display: flex;
     flex-wrap: wrap;
+       label{
+             width:60px;
+             display: inline-block;
+             text-align: right;
+             margin-right:10px;
+       }
   }
   .popover-main p{
     margin-right: 15px;
@@ -157,12 +163,6 @@
   }
   .popover-main p{
     margin-bottom: 15px;
-  }
-  .popover-main label{
-    width:60px;
-    display: inline-block;
-    text-align: right;
-    margin-right:10px;
   }
   .popover-main .el-checkbox-group{
     display: inline-block;
@@ -181,7 +181,7 @@
     font-size: 12px;
   }
   .el-button--mini, .el-button--mini.is-round{
-    padding:5px;font-size: 12px;
+    padding:7px;font-size: 12px;
   }
   .block{
     text-align: right;

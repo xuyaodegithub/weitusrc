@@ -10,7 +10,7 @@ import { Message } from 'element-ui';
 import api from '../fetch/api'
 var num=0
 var textCs=''
-  if(num==0){
+  if(num===0){
   textCs='/apis'
   }else{
     textCs='http://api-admin.olquan.cn/'
@@ -26,6 +26,13 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       showClose: true,
       message:'操作成功',
       type: 'success'
+    });
+  },
+  mError(context,data){
+    Message({
+      showClose: true,
+      message:'请求失败',
+      type: 'error'
     });
   },
   mWarning(context,data){
@@ -72,9 +79,96 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     //let arr=context.state.result.addCommodityResult.push(obj)
     context.commit('GET_ADD_COMMODITY',obj)
   },
+  //活动页面背景设置
+  backColorActions (context,data) {
+    context.commit('GET_BACK_COLOR',data)
+  },
+  //获取活动列表
+  listActiveActions (context,data) {
+    context.commit('SET_LIST_ACTIVE',data)
+    context.dispatch('saveFormGet',['/admin/buildblocks/list','GET_LIST_ACTIVE','listActiveMM'])
+  },
+  //添加活动
+  insertActiveActions (context,data) {
+    context.commit('SET_INSERT_ACTIVE',data)
+    api.addguige(textCs+'/buildblocks/insert',qs.stringify(context.state.editor.insertActiveMM)).then(res => {
+      if(res.ok){
+        context.dispatch('mSuccess')
+        context.commit('GET_INSERT_ACTIVE',res)
+      }else{
+        context.dispatch('mWarning',res)
+      }
+    }).catch(
+      (error) => {
+        context.dispatch('mError')
+      }
+    )
+  },
+  //编辑活动
+  updateActiveActions (context,data) {
+  context.commit('SET_UPDATE_ACTIVE',data)
+  api.addguige(textCs+'/admin/buildblocks/update',qs.stringify(context.state.editor.updateActiveMM)).then(res => {
+    if(res.ok){
+      context.dispatch('mSuccess')
+    }else{
+      context.dispatch('mWarning',res)
+    }
+  }).catch(
+    (error) => {
+      context.dispatch('mError')
+    }
+  )
+},
+  //删除活动
+  deleteActiveActions (context,id){
+    context.commit('SET_DELETE_ACTIVE',id)
+    api.addguige(textCs+'/admin/buildblocks/getById',qs.stringify(context.state.editor.getByIdActiveMM)).then(res => {
+      if(res.ok){
+        context.dispatch('mSuccess')
+        context.commit('')
+      }else{
+        context.dispatch('mWarning',res)
+      }
+    }).catch(
+      (error) => {
+        context.dispatch('mError')
+      }
+    )
+  },
+  //根据id获取活动信息
+  getByIdActiveActions (context,id) {
+    context.commit('SET_GETBYID_ACTIVE',id)
+    context.dispatch('saveFormGet',['/admin/buildblocks/getById','GET_GETBYID_ACTIVE','getByIdActiveMM'])
+  },
+  //上传活动数据到OSS
+  uploadDataToOSSActions (context,data) {
+    context.commit('SET_UPLOAD_DATATOOSS')
+    api.addguige(textCs+'/admin/buildblocks/uploadDataToOSS',qs.stringify(context.state.editor.uploadDataToOSSMM)).then(res => {
+      if(res.ok){
+        context.dispatch('mSuccess')
+      }else{
+        context.dispatch('mWarning',res)
+      }
+    }).catch(
+      (error) => {
+        context.dispatch('mError')
+      }
+    )
+  },
   //清除数据
   clearAllActions(context){
     context.commit('CLEAR_ALL_DATA')
+    api.addguige(textCs+'/admin/buildblocks/delete',qs.stringify(context.state.editor.deleteActiveMM)).then(res => {
+      if(res.ok){
+        context.dispatch('mSuccess')
+      }else{
+        context.dispatch('mWarning',res)
+      }
+    }).catch(
+      (error) => {
+        context.dispatch('mError')
+      }
+    )
   },
   //axios封装
   saveFormPost (context,funUrl) {
@@ -334,11 +428,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
         }
       }).catch(
       (error) => {
-        Message({
-          showClose: true,
-          message:'请求失败',
-          type: 'warning'
-        });
+        context.dispatch('mError')
       }
     )
 
@@ -356,11 +446,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
         }
       }).catch(
       (error) => {
-        Message({
-          showClose: true,
-          message:'请求失败',
-          type: 'warning'
-        });
+        context.dispatch('mError')
       }
     )
   },
@@ -376,11 +462,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
           context.dispatch('mWarning',res)
         }
       }).catch((error) => {
-      Message({
-        showClose: true,
-        message:'请求失败',
-        type: 'warning'
-      });
+      context.dispatch('mError')
     })
   },
   //删除大规格模板下的一个小规格
@@ -396,11 +478,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
         }
       }).catch(
       (error) => {
-        Message({
-          showClose: true,
-          message:'请求失败',
-          type: 'warning'
-        });
+        context.dispatch('mError')
       }
     )
   },
@@ -420,11 +498,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
         }
       }).catch(
       (error) => {
-        Message({
-          showClose: true,
-          message:'请求失败',
-          type: 'warning'
-        });
+        context.dispatch('mError')
       }
     )
   },
@@ -441,11 +515,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
         }
       }).catch(
       (error) => {
-        Message({
-          showClose: true,
-          message:'请求失败',
-          type: 'warning'
-        });
+        context.dispatch('mError')
       }
     )
   },

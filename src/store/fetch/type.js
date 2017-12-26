@@ -85,7 +85,24 @@ export const GET_COMMODITY_RESULT = 'GET_COMMODITY_RESULT';
 //组件add和remove
 export const REMOVE_ADD_COMMODITY = 'REMOVE_ADD_COMMODITY';
 export const GET_ADD_COMMODITY = 'GET_ADD_COMMODITY';
-
+//背景设置
+export const GET_BACK_COLOR = 'GET_BACK_COLOR';
+//获取活动列表
+export const SET_LIST_ACTIVE = 'SET_LIST_ACTIVE';
+export const GET_LIST_ACTIVE = 'GET_LIST_ACTIVE';
+//添加活动
+export const SET_INSERT_ACTIVE = 'SET_INSERT_ACTIVE';
+export const GET_INSERT_ACTIVE = 'GET_INSERT_ACTIVE';
+//编辑活动
+export const SET_UPDATE_ACTIVE = 'SET_UPDATE_ACTIVE';
+export const GET_UPDATE_ACTIVE = 'GET_UPDATE_ACTIVE';
+//删除活动
+export const SET_DELETE_ACTIVE = 'SET_DELETE_ACTIVE';
+//根据id获取活动信息
+export const SET_GETBYID_ACTIVE = 'SET_GETBYID_ACTIVE';
+export const GET_GETBYID_ACTIVE = 'GET_GETBYID_ACTIVE';
+//上传活动数据到OSS
+export const SET_UPLOAD_DATATOOSS = 'SET_UPLOAD_DATATOOSS';
 
 
 

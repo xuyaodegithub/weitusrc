@@ -49,11 +49,12 @@
           <i class="el-icon-refresh cu" style="font-size: 18px;color:#409EFF;margin-left: 8px" @click="changeOr()"></i>
         </p>
         <el-button
-          style="padding: 10px 0px;margin: 0 10px 0 0;"
+          style="padding: 6px 0px;margin: 0 10px 0 0;"
           v-for="(tag,key) in commodityResult.contents"
           type="primary"
           :key="key"
           plain
+          size="mini"
           @click="updateTag(key)">
             {{tag.title}}<i class="el-icon-close" style="float: right;font-size: 14px;" @click="CloseTag(key)"></i>
         </el-button>
@@ -279,7 +280,7 @@ export default {
         }
       },
       change () {
-        if (this.input) {
+        if (this.input && this.num !== '') {
           this.commodityResult.contents[this.num].url = this.input
         }
       },

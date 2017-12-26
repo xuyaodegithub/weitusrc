@@ -4,6 +4,7 @@
     <div class="left">
       <p>
         <el-button type="primary" plain size="mini" icon="el-icon-plus" @click="popoverAlert('vAddSubass')">添加活动组件</el-button>
+        <el-button type="primary" plain size="mini" @click="popoverAlert('VaddBackground')">添加背景</el-button>
         <el-button type="success" plain size="mini" @click="watch()">预览<i class="el-icon-d-arrow-right"></i></el-button>
       </p>
       <div class="left-btn">
@@ -41,7 +42,7 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'addCommodityResult'
+      'addCommodityResult','backColorResult'
     ])
   },
   components:{
@@ -101,7 +102,12 @@ export default {
       this.addCommodityResult.splice(index,1)
     },
     upOk(){
-      console.log(this.addCommodityResult)
+      console.log(this.backColorResult)
+let obj={
+  subassembly: this.addCommodityResult,
+  background: this.backColorResult
+}
+      console.log(JSON.stringify(obj))
     }
 
   }

@@ -156,7 +156,47 @@ const  editor = {//定义入参
   getParamsByCategoryIdMM:{
     categoryId:'',
   },
-
+  //获取活动列表
+  listActiveMM : {
+    page:'',
+    rows:''
+  },
+  //添加活动
+  insertActiveMM : {
+    code:'',
+    endTime:'',
+    memo:'',
+    name:'',
+    shareImg:'',
+    shareTitle:'',
+    startTime:'',
+    type:'',
+    start:''
+  },
+  //编辑活动
+  updateActiveMM:{
+    code:'',
+    endTime:'',
+    memo:'',
+    name:'',
+    shareImg:'',
+    shareTitle:'',
+    startTime:'',
+    type:''
+  },
+  //跟活动ID 删除活动
+  deleteActiveMM: {
+    id:''
+  },
+//根据id获取活动信息
+  getByIdActiveMM:{
+    id:''
+  },
+  //上传活动数据到OSS
+  uploadDataToOSSMM:{
+    data:'',
+    id:''
+  },
 
       loginMM: {
       goodsID:""
@@ -599,6 +639,16 @@ const result = { //接收请求后的数据
   commodityResult:{},
   //组件添加
   addCommodityResult:[],
+  //背景设置
+  backColorResult:'',
+  //获取活动列表
+  listActiveResult:'',
+  //添加活动
+  insertActiveResult:'',
+ /* //编辑活动
+  updateActiveResult:'',*/
+ //根据id获取活动信息
+  getByIdActiveResult:{},
 
   loginResult:[],
   dingdanListResult:[]

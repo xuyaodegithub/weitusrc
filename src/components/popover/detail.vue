@@ -1,14 +1,14 @@
 	<template>
-	<div class="order" style="background: #eeeeee;margin-top: -300px">
+	<div class="order" style="margin-top: -300px">
     <div class="popover-head">
       <span class="title">预览效果</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
-      <div style="background: #eeeeee; height: 500px;width: 315px;overflow: auto;" v-if="addCommodityResult[0].contents">
+      <div style="height: 500px;width: 300px;overflow: auto; padding:8px;" v-if="addCommodityResult[0].contents" v-bind:style="styleobj">
 
 
         <div v-for="item in addCommodityResult">
           <!--轮播图-->
-          <img :src="item.contents[0].image | ToUrl" alt="" v-if="item.modelSampleCode=='advertisingFigure'" style="width: 100%;height: 150px;">
+          <img :src="item.contents[0].image | ToUrl" alt="" v-if="item.modelSampleCode=='advertisingFigure' && item.contents.length>0" style="width: 100%;height: 160px;">
           <!--能滑动的-->
             <ul class="touchImg" v-if="item.modelSampleCode=='titleproducttouch'" style="margin-bottom: 10px">
               <li v-for="itemSons in item.contents" style="height: 70px;width: 70px;border: 1px solid skyblue;"><img :src="itemSons.image | ToUrl" style="height: 100%;width: 100%;"/></li>
@@ -24,6 +24,7 @@
               <img v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 33.3%;" :src='itemSon.image | ToUrl'/>
               <img v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width:100%;height:100px;" :src='itemSon.image | ToUrl'/>
               <img v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width: 25%;"  :src='itemSon.image | ToUrl'/>
+              <img v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 20%;"  :src='itemSon.image | ToUrl'/>
             </div>
           </div>
         </div>
@@ -77,7 +78,6 @@
 				pageObj:{
 					page:1,
 				},
-
 				showTrue:false,
 				status:'',
 				swiperOption:{
@@ -121,21 +121,36 @@
 		},
 		created: function() {
 
-
 		},
 		updated(){
-			//console.log(this.urlList);
+			//console.log(this.backColorResult);
 		},
+    activated (){
+		  console.log(this.backColorResult)
+    },
 		mounted(){
-
-			window.addEventListener('scroll', this.handleScroll);
 
 		},
 
 		computed:{
       ...mapGetters([
-        'addCommodityResult'
-      ])
+        'addCommodityResult','backColorResult'
+      ]),
+      styleobj:function (){
+        let obj={}
+        if( this.backColorResult.modelSampleCode=='color'){
+         obj = {'background':this.backColorResult.contents}
+        }else if(this.backColorResult.modelSampleCode=="imgUrl"){
+          obj = {
+            'background-image':'url('+this.backColorResult.contents+')',
+            'background-repeat': 'no-repeat',
+          }
+        }else{
+          obj={}
+        }
+        console.log(obj)
+        return obj
+      }
 		},
 		methods:{
       ...mapActions([
@@ -151,6 +166,7 @@
   position: absolute;
   left:40%;
   top:50%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 .popover-head{
   width: 100%;
@@ -204,17 +220,6 @@
 	}
 	.list-top{
 		width: 100%;
-    margin-bottom: .10rem;
-		.isFixed{
-			position:fixed;
-		    background-color:#Fff;
-		    top:0;
-		    z-index:22;
-			height: 1.00rem;
-			padding:0 ;
-			margin: 0;
-
-		}
 		ul{
 			WIDTH:100%;
 		   	white-space:nowrap;

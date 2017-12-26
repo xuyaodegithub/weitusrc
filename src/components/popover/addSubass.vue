@@ -68,11 +68,11 @@
     margin-bottom: 15px;
   }
   .popover-main label{
-    margin-right:15px;
+    margin-right:10px;
   }
   .popover-main .el-checkbox-group{
     display: inline-block;
-    width:85%;
+    width:86%;
   }
   .el-checkbox+.el-checkbox:last-child{
     margin-top: 10px;
@@ -91,13 +91,13 @@
   import { mapActions } from 'vuex'
   import { mapGetters } from 'vuex'
   export default {
-    data() {
+    data () {
       return {
-        input:'',
-        checkList:[]
-      };
+        input: '',
+        checkList: []
+      }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'popoverAlive'
       ])
@@ -106,21 +106,21 @@
       ...mapActions([
         'popoverAlert','addCommodityActions'
       ]),
-      addSub(){
+      addSub () {
         //console.log(this.checkList)
-        let arr=[]
+        let arr = []
         this.checkList.forEach(function(item,index){
-          if(item=='产品列表'){
-            let obj={}
-            obj.name=item
-            obj.modelSampleCode="catlist1"
-            obj.contents=[]
+          if (item == '产品列表') {
+            let obj = {}
+            obj.name = item
+            obj.modelSampleCode = 'catlist1'
+            obj.contents = []
             arr.push(obj)
           }
           if(item=='轮播图'){
             let obj={}
             obj.name=item
-            obj.modelSampleCode="advertisingFigure"
+            obj.modelSampleCode = 'advertisingFigure'
             obj.contents=[]
             arr.push(obj)
           }

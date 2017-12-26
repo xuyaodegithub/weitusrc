@@ -72,6 +72,105 @@ const mutations = {//mutations内是改变state内的值得作用
       state.result.addCommodityResult=arr
     }
   },
+  //活动页面背景
+  [types.GET_BACK_COLOR] (state,data) {
+    state.result.backColorResult=data
+  },
+  //获取活动列表
+  [types.SET_LIST_ACTIVE] (state,data) {
+    if(data){
+      state.editor.listActiveMM.page=data.page
+      state.editor.listActiveMM.rows=data.rows
+    }else{
+      state.editor.listActiveMM.page=''
+      state.editor.listActiveMM.rows=''
+    }
+  },
+  [types.GET_LIST_ACTIVE] (state,res) {
+    state.result.listActiveResult=res.result
+  },
+  //添加活动
+  [types.SET_INSERT_ACTIVE] (state,data) {
+    if(data){
+      state.editor.insertActiveMM.code=data.code
+      state.editor.insertActiveMM.endTime=data.endTime
+      state.editor.insertActiveMM.memo=data.memo
+      state.editor.insertActiveMM.name=data.name
+      state.editor.insertActiveMM.shareImg=data.shareImg
+      state.editor.insertActiveMM.shareTitle=data.shareTitle
+      state.editor.insertActiveMM.startTime=data.startTime
+      state.editor.insertActiveMM.type=data.type
+      state.editor.insertActiveMM.start=data.start
+    }else{
+      state.editor.insertActiveMM.code=''
+      state.editor.insertActiveMM.endTime=''
+      state.editor.insertActiveMM.memo=''
+      state.editor.insertActiveMM.name=''
+      state.editor.insertActiveMM.shareImg=''
+      state.editor.insertActiveMM.shareTitle=''
+      state.editor.insertActiveMM.startTime=''
+      state.editor.insertActiveMM.type=''
+      state.editor.insertActiveMM.start=''
+    }
+  },
+  [types.GET_INSERT_ACTIVE] (state,res) {
+    state.result.insertActiveResult=res.data.result
+  },
+  //编辑活动
+  [types.SET_UPDATE_ACTIVE] (state,data){
+    if(data){
+      state.editor.insertActiveMM.code=data.code
+      state.editor.insertActiveMM.endTime=data.endTime
+      state.editor.insertActiveMM.memo=data.memo
+      state.editor.insertActiveMM.name=data.name
+      state.editor.insertActiveMM.shareImg=data.shareImg
+      state.editor.insertActiveMM.shareTitle=data.shareTitle
+      state.editor.insertActiveMM.startTime=data.startTime
+      state.editor.insertActiveMM.type=data.type
+    }else{
+      state.editor.insertActiveMM.code=''
+      state.editor.insertActiveMM.endTime=''
+      state.editor.insertActiveMM.memo=''
+      state.editor.insertActiveMM.name=''
+      state.editor.insertActiveMM.shareImg=''
+      state.editor.insertActiveMM.shareTitle=''
+      state.editor.insertActiveMM.startTime=''
+      state.editor.insertActiveMM.type=''
+    }
+  },
+ /* [types.GET_UPDATE_ACTIVE] (state,res){
+    state.result.updateActiveResult=res.result
+  },*/
+ //删除活动
+  [types.SET_DELETE_ACTIVE] (state,id) {
+    if(id){
+      state.editor.deleteActiveMM.id=id
+    }else{
+      state.editor.deleteActiveMM.id=''
+    }
+  },
+  //根据id获取活动信息
+  [types.SET_GETBYID_ACTIVE] (state,id) {
+    if(id){
+      state.editor.getByIdActiveMM.id=id
+    }else{
+      state.editor.getByIdActiveMM.id=''
+    }
+  },
+  [types.GET_GETBYID_ACTIVE] (state,res) {
+    state.result.getByIdActiveResult=res
+  },
+  //上传活动数据到OSS
+  [types.SET_UPLOAD_DATATOOSS] (state,data) {
+    if(data){
+      state.editor.uploadDataToOSSMM.id=data.id
+      state.editor.uploadDataToOSSMM.data=data.data
+    }else{
+      state.editor.uploadDataToOSSMM.id=''
+      state.editor.uploadDataToOSSMM.data=''
+    }
+  },
+
   //清除数据
   [types.CLEAR_ALL_DATA] (state){
     state.result.getByIdResult ={}
