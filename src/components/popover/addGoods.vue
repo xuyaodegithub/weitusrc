@@ -8,23 +8,21 @@
         <el-input v-model="input" placeholder="请输入内容" size="mini"></el-input>
       </p>
       <p><label>品牌:</label>
-        <el-input v-model="input" placeholder="请输入内容" size="mini"></el-input>
+        <el-input v-model="input1" placeholder="请输入内容" size="mini"></el-input>
       </p>
       <p><label>分类:</label>
-        <el-input v-model="input" placeholder="请输入内容" size="mini"></el-input>
+        <el-input v-model="input2" placeholder="请输入内容" size="mini"></el-input>
       </p>
-      <p><label>供应商:</label>
-        <el-input v-model="input" placeholder="请输入内容" size="mini"></el-input>
-      </p>
-      <p><el-button type="primary" plain size="mini" style="margin-left: 30px">搜索</el-button></p>
+      <p><el-button type="primary" plain size="mini" style="margin-left: 30px" @click="seachData()">搜索</el-button></p>
     </div>
     <!--<p>
     <el-button type="primary" plain size="mini" @click="addSub()">添加</el-button>
     </p>-->
     <el-table
+      v-loading="loading"
       :height="210"
       ref="multipleTable"
-      :data="tableData"
+      :data="getDataListResulr.rows"
       tooltip-effect="light"
       style="width: 100%"
       @selection-change="handleSelectionChange">
@@ -35,53 +33,36 @@
       </el-table-column>
       <el-table-column
         label="商品名称"
-        width="100"
         show-overflow-tooltip>
-        <template slot-scope="scope">{{ scope.row.date }}</template>
+        <template slot-scope="scope">{{ scope.row.productName }}</template>
       </el-table-column>
       <el-table-column
-        label="价格"
-        width="100">
+        label="价格">
         <template slot-scope="scope">
-          <span>{{ scope.row.price }}</span>
+          <span>{{ scope.row.salePrice }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="库存"
-        show-overflow-tooltip>
+        label="库存">
         <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="分类"
-        show-overflow-tooltip>
-        <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
+          <span>{{ scope.row.store }}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="供应商"
         show-overflow-tooltip>
         <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
+          <span>{{ scope.row.sellerName }}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="品牌"
         show-overflow-tooltip>
         <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
+          <span>{{ scope.row.brandCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="活动价">
-        <template slot-scope="scope">
-        <span>{{ scope.row.price }}</span>
-        <el-button size="mini" @click="changeSave(scope.$index, scope.row)" style="width:auto;">修改活动价</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
+     <!-- <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -89,10 +70,10 @@
             @click="handleEdit(scope.$index, scope.row)" style="width: auto;" v-if="scope.row.isTrue">添加</el-button>
          <span v-if="!scope.row.isTrue">已添加</span>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
     <div style="margin: 20px 0 0 10px;">
-      <el-button type="primary" plain size="mini" @click="toggleSelection(tableData)">批量选择</el-button>
+      <el-button type="primary" plain size="mini" @click="toggleSelection(getDataListResulr.rows)">批量选择</el-button>
       <el-button type="primary" plain size="mini" @click="morePull(multipleSelection)">批量添加</el-button>
     </div>
     <div class="block">
@@ -101,9 +82,9 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage4"
         :page-sizes="[10, 20, 30, 50]"
-        :page-size="10"
+        :page-size="value"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="30">
+        :total="getDataListResulr.total">
       </el-pagination>
     </div>
   </div>
@@ -156,7 +137,7 @@
        }
   }
   .popover-main p{
-    margin-right: 15px;
+    margin-right: 30px;
   }
   .popover-main .el-input{
     width:160px;
@@ -194,77 +175,55 @@
     data() {
       return {
         input:'',
+        input1:'',
+        input2:'',
         currentPage4:1,
+        value:10,
         multipleSelection:[],
-        checkList:[],
-        tableData: [{
-          date: '2016-05-021111111111111111111111111111111111111',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          isTrue:true,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:false,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:false,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:false,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:true,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:false,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:true,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:false,
-          price:'12'
-        }, {
-          date: '2016-05-0411111111111111111111111111111',
-          name: '王小虎11111111111',
-          address: '上海市普陀区金沙江路 1517 弄11',
-          isTrue:true,
-          price:'12'
-        }]
       };
     },
     computed:{
       ...mapGetters([
-        'popoverAlive'
+       'addDataNumResult','commodityResult','getDataListResulr','loading'
       ])
+    },
+    activated(){
+
     },
     methods: {
       ...mapActions([
-        'popoverAlert',
+        'popoverAlert','getDataListActions'
       ]),
       morePull(rows) {
-        console.log(rows);
+        let keynum=0
+       // console.log(rows)
+        if(rows.length>0){
+          for(let i=0;i<rows.length;i++){
+            if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(rows[i])) === -1){
+           // if(this.commodityResult.contents[this.addDataNumResult].dataList.indexOf(rows[i]) === -1){
+              this.commodityResult.contents[this.addDataNumResult].dataList.push(rows[i])
+            }else{
+              keynum+=1
+            }
+          }
+            if(keynum>0){
+              this.$message({
+                message:'重复商品已过滤',
+                type:'success'
+              })
+            }else{
+              this.$message({
+                message:'添加成功',
+                type:'success'
+              })
+            }
+            this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.addDataNumResult].dataList)
+        }else{
+          this.$message({
+            message: '请先选择商品',
+            type: 'warning'
+          });
+        }
       },
       toggleSelection(rows) {
         if (rows) {
@@ -279,16 +238,34 @@
         this.multipleSelection = val;
       },
       handleEdit(index, row){
+        /*let obj={
+          name:row.name,
+          price:row.price,
+          data:row.data,
+        }*/
+        //console.log(this.addDataNumResult)
+        if(this.addDataNumResult !== ''){
+          this.commodityResult.contents[this.addDataNumResult].dataList.push(row)
+        }
 
       },
-      changeSave(){
-
+      seachData(){
+        let data={
+          filter_S_productName:this.input,
+          page:this.currentPage4,
+          size:this.value
+        }
+        this.getDataListActions(data)
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
+        this.value=val
+        this.seachData()
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+        this.currentPage4=val
+        this.seachData()
       },
     }
   };

@@ -3,7 +3,7 @@
     <div class="seach-list">
       <el-table
         v-loading="loading"
-        :data="tableData"
+        :data="listActiveResult.result"
         style="width: 100%">
         <el-table-column
           label="活动名称"
@@ -16,21 +16,22 @@
           label="开始时间"
           width="180">
           <template slot-scope="scope">
-            <span style="margin-left: 10px;">{{ scope.row.temprice }}</span>
+            <span style="margin-left: 10px;">{{ scope.row.startTime }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="结束时间"
           width="180">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.ownprice }}</span>
+            <span style="margin-left: 10px">{{ scope.row.endTime }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="状态"
           width="180">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.pingjia }}</span>
+            <span style="margin-left: 10px" v-if="scope.row.start=='0'">未开启</span>
+            <span style="margin-left: 10px" v-if="scope.row.start=='1'">已开启</span>
             <!--<img src="http://www.quanjing.com/image/2017index/jj2.png" alt="">-->
           </template>
         </el-table-column>
@@ -61,9 +62,9 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage4"
         :page-sizes="[10, 20, 30, 50]"
-        :page-size="10"
+        :page-size="value"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="300">
+        :total="listActiveResult.count">
       </el-pagination>
     </div>
   </div>
@@ -79,63 +80,78 @@ export default {
     return {
       input:'',
       currentPage4:1,
-      tableData: [{
-        id: '234565',
-        name: '活动1',
-        resource:'无',
-        temprice:'99',
-        ownprice:'110',
-        pingjia:'已启用',
-        save:'777',
-        sales:'12',
-        ranking:'4',
-        salestatus:'销售中',
-        address: '【意大利袋鼠】【下单即送棉袜】4条装男士内裤男 莫代尔平角裤 中腰透气礼盒装',
-        status:'编辑中',
-        type:"新增"
-      }, {
-        id: '65432345',
-        name: '活动2',
-        resource:'有',
-        temprice:'99',
-        ownprice:'110',
-        pingjia:'未启用',
-        save:'777',
-        sales:'12',
-        ranking:'4',
-        salestatus:'销售中',
-        address: '【意大利袋鼠】【下单即送棉袜】4条装男士内裤男 莫代尔平角裤 中腰透气礼盒装',
-        status:'编辑中',
-        type:"新增"
-      }]
+      value:10,
     }
   },
   computed:{
     ...mapGetters([
-      'loading'
+      'loading','listActiveResult'
     ])
+  },
+  mounted(){
+    let data={
+      page:1,
+      rows:10
+    }
+    this.listActiveActions(data)
   },
   methods: {
     ...mapActions([
-      'activeActions'
+      'activeActions','deleteActiveActions','listActiveActions'
     ]),
     linkTo(index,row){
 
     },
     bianji(index,row){
-      this.activeActions('vBianji')
+      let data={
+        obj:row,
+        item:'vUpdataActive'
+      }
+      this.activeActions(data)
     },
     Updata(index,row){
-
+      let data={
+        obj:row,
+        item:'vBianji'
+      }
+      this.activeActions(data)
     },
     handleDelete(index,row){
-
+      this.$confirm('此操作将删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let data={
+          id:row.id,
+          item:{
+            page:this.currentPage4,
+            rows:this.value
+          }
+        }
+        this.deleteActiveActions(data)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.value=val
+     let data={
+       page:this.currentPage4,
+       rows:val
+     }
+      this.listActiveActions(data)
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.currentPage4=val
+      let data={
+        page:val,
+        rows:this.value
+      }
+      this.listActiveActions(data)
     },
   }
 }
@@ -150,5 +166,8 @@ export default {
     text-align: right;
     margin-top: 20px;
     margin-right:40px;
+  }
+  #smalltitle{
+    margin-top: 20px;
   }
 </style>

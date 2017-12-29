@@ -91,10 +91,10 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   //添加活动
   insertActiveActions (context,data) {
     context.commit('SET_INSERT_ACTIVE',data)
-    api.addguige(textCs+'/buildblocks/insert',qs.stringify(context.state.editor.insertActiveMM)).then(res => {
+    api.addguige(textCs+'/admin/buildblocks/insert',qs.stringify(context.state.editor.insertActiveMM)).then(res => {
       if(res.ok){
         context.dispatch('mSuccess')
-        context.commit('GET_INSERT_ACTIVE',res)
+        context.dispatch('listActiveActions',{page:1,rows:10})
       }else{
         context.dispatch('mWarning',res)
       }
@@ -110,6 +110,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   api.addguige(textCs+'/admin/buildblocks/update',qs.stringify(context.state.editor.updateActiveMM)).then(res => {
     if(res.ok){
       context.dispatch('mSuccess')
+      context.dispatch('listActiveActions',{page:1,rows:10})
     }else{
       context.dispatch('mWarning',res)
     }
@@ -120,12 +121,12 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   )
 },
   //删除活动
-  deleteActiveActions (context,id){
-    context.commit('SET_DELETE_ACTIVE',id)
-    api.addguige(textCs+'/admin/buildblocks/getById',qs.stringify(context.state.editor.getByIdActiveMM)).then(res => {
+  deleteActiveActions (context,data){
+    context.commit('SET_DELETE_ACTIVE',data.id)
+    api.addguige(textCs+'/admin/buildblocks/delete',qs.stringify(context.state.editor.deleteActiveMM)).then(res => {
       if(res.ok){
         context.dispatch('mSuccess')
-        context.commit('')
+        context.dispatch('listActiveActions',data.item)
       }else{
         context.dispatch('mWarning',res)
       }
@@ -137,12 +138,17 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   },
   //根据id获取活动信息
   getByIdActiveActions (context,id) {
+    let data={
+      obj:{},
+      item:'vByIdActive'
+    }
+    context.commit('activeChange',data)
     context.commit('SET_GETBYID_ACTIVE',id)
     context.dispatch('saveFormGet',['/admin/buildblocks/getById','GET_GETBYID_ACTIVE','getByIdActiveMM'])
   },
   //上传活动数据到OSS
   uploadDataToOSSActions (context,data) {
-    context.commit('SET_UPLOAD_DATATOOSS')
+    context.commit('SET_UPLOAD_DATATOOSS',data)
     api.addguige(textCs+'/admin/buildblocks/uploadDataToOSS',qs.stringify(context.state.editor.uploadDataToOSSMM)).then(res => {
       if(res.ok){
         context.dispatch('mSuccess')
@@ -155,20 +161,26 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       }
     )
   },
-  //清除数据
-  clearAllActions(context){
-    context.commit('CLEAR_ALL_DATA')
-    api.addguige(textCs+'/admin/buildblocks/delete',qs.stringify(context.state.editor.deleteActiveMM)).then(res => {
-      if(res.ok){
-        context.dispatch('mSuccess')
-      }else{
-        context.dispatch('mWarning',res)
-      }
+  //产品list
+  getDataListActions (context,data) {
+    context.commit('changeloading')
+    context.commit('SET_ACTIVE_DATA_LIST',data)
+    //context.dispatch('saveFormGet',['/admin/buildblocks/product/list','GET_ACTIVE_DATA_LIST','getDataListMM'])
+    axios.get(textCs+'/admin/buildblocks/product/list',{
+      params:context.state.editor.getDataListMM
+    }).then(res => {
+      context.commit('GET_ACTIVE_DATA_LIST',res)
+      context.commit('changeloading')
     }).catch(
-      (error) => {
+      function(err){
+        context.commit('changeloading')
         context.dispatch('mError')
       }
     )
+  },
+  //清除数据
+  clearAllActions(context){
+    context.commit('CLEAR_ALL_DATA')
   },
   //axios封装
   saveFormPost (context,funUrl) {

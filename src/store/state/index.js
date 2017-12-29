@@ -175,6 +175,7 @@ const  editor = {//定义入参
   },
   //编辑活动
   updateActiveMM:{
+    id:'',
     code:'',
     endTime:'',
     memo:'',
@@ -182,7 +183,8 @@ const  editor = {//定义入参
     shareImg:'',
     shareTitle:'',
     startTime:'',
-    type:''
+    type:'',
+    start:''
   },
   //跟活动ID 删除活动
   deleteActiveMM: {
@@ -197,6 +199,13 @@ const  editor = {//定义入参
     data:'',
     id:''
   },
+  //获取商品列表
+    getDataListMM:{
+      filter_S_productName:'',
+      page:'',
+      size:''
+    },
+
 
       loginMM: {
       goodsID:""
@@ -634,7 +643,10 @@ const result = { //接收请求后的数据
   //loading
   loading:false,
   //活动管理切换
-  activeChange:'vSeachActive',
+  activeChange:{
+    obj:{},
+    item:'vSeachActive'
+  },
   //活动组件编辑接受
   commodityResult:{},
   //组件添加
@@ -642,13 +654,18 @@ const result = { //接收请求后的数据
   //背景设置
   backColorResult:'',
   //获取活动列表
-  listActiveResult:'',
+  listActiveResult:[],
   //添加活动
   insertActiveResult:'',
  /* //编辑活动
   updateActiveResult:'',*/
  //根据id获取活动信息
   getByIdActiveResult:{},
+  addDataNum:'',
+  //产品列表
+  getDataListResulr:[],
+  //分类下产品列表接受
+  classDataListResult:[],
 
   loginResult:[],
   dingdanListResult:[]

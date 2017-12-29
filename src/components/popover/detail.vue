@@ -1,9 +1,9 @@
 	<template>
-	<div class="order" style="margin-top: -300px">
+	<div class="order" style="margin-top: -240px">
     <div class="popover-head">
       <span class="title">预览效果</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
-      <div style="height: 500px;width: 300px;overflow: auto; padding:8px;" v-if="addCommodityResult[0].contents" v-bind:style="styleobj">
+      <div style="height: 454px;width: 300px;overflow: auto; padding:8px;" v-if="addCommodityResult[0].contents" v-bind:style="styleobj">
 
 
         <div v-for="item in addCommodityResult">
@@ -30,7 +30,7 @@
         </div>
 
         <!--分类-->
-        <div class="list-top" v-show="addCommodityResult[addCommodityResult.length-1].contents.length!=0" style="margin-bottom: 30px">
+        <div class="list-top" v-show="addCommodityResult[addCommodityResult.length-1].contents.length!=0">
           <ul>
             <!--<li v-for="(itemsSon,index) in addCommodityResult[addCommodityResult.length-1].contents" style="width: auto;line-height: 40px;background: #409EFF;margin-right: 10px;border: 1px solid #333;">{{itemsSon.title}}</li>-->
               <el-button
@@ -40,30 +40,19 @@
                 :key="key"
                 size="mini"
                 style="margin: 0;padding: 6px;"
+                @click="changeKey(key)"
               >{{itemsSon.title}}</el-button>
           </ul>
         </div>
+        <!--分类产品-->
+        <div class="cent"  v-if="addCommodityResult[addCommodityResult.length-1].contents.length!=0">
+          <ul class="init">
+            <li v-for='item in addCommodityResult[addCommodityResult.length-1].contents[keyindex].dataList'>
+              <img :src="item.image" alt="">
+            </li>
+          </ul>
+        </div>
 			</div>
-			<!--分类产品-->
-		<!--	<div class="cent">
-				<ul class="init">
-					<li v-for='item in curObj'>
-						<img :src=item.image />
-						<p class="top">{{item.productName}}</p>
-
-						<p style="font-size: .28rem;color: #fc469a;">￥{{item.price}}</p>
-						<p class="botMoney">
-							<span class="left">￥{{item.marketPrice}}</span>
-							<span class="right" >{{item.score}}</span>
-						</p>
-
-
-					</li>
-
-					<li v-show="showTrue" class="special">没有更多了</li>
-				</ul>
-			</div>-->
-
 	</div>
 </template>
 
@@ -74,6 +63,7 @@
 		data : function() {
 			return{
 				listObj:[],
+        keyindex:0,
 				curObj:{},
 				pageObj:{
 					page:1,
@@ -155,7 +145,10 @@
 		methods:{
       ...mapActions([
         'popoverAlert'
-      ])
+      ]),
+      changeKey(key){
+        this.keyindex=key
+      }
 
 		}
 	}
@@ -245,9 +238,11 @@
 
 	}
 	.cent{
-
 		padding: .20rem .12rem;
-
+    .init{
+      display: flex;
+      flex-wrap: wrap;
+    }
 		ul{
 			width:100%;
 			display: flex;

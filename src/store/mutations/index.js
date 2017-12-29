@@ -56,7 +56,11 @@ const mutations = {//mutations内是改变state内的值得作用
   //活动切换
   activeChange (state,data){
     if(data){
-      state.result.activeChange=data
+      state.result.activeChange.obj=data.obj
+      state.result.activeChange.item=data.item
+    }else{
+      state.result.activeChange.obj={}
+      state.result.activeChange.item='vSeachActive'
     }
   },
   //活动组件编辑
@@ -87,7 +91,22 @@ const mutations = {//mutations内是改变state内的值得作用
     }
   },
   [types.GET_LIST_ACTIVE] (state,res) {
-    state.result.listActiveResult=res.result
+    state.result.listActiveResult=res.data
+  },
+  //活动分类商品list
+  [types.GET_CLASS_DATA_LIST] (state,res){
+    state.result.classDataListResult=res
+  },
+  //产品list
+  [types.SET_ACTIVE_DATA_LIST] (state,data) {
+    if(data){
+      state.editor.getDataListMM.page=data.page
+      state.editor.getDataListMM.filter_S_productName=data.filter_S_productName
+      state.editor.getDataListMM.size=data.size
+    }
+  },
+  [types.GET_ACTIVE_DATA_LIST] (state,res) {
+    state.result.getDataListResulr=res.data
   },
   //添加活动
   [types.SET_INSERT_ACTIVE] (state,data) {
@@ -119,23 +138,27 @@ const mutations = {//mutations内是改变state内的值得作用
   //编辑活动
   [types.SET_UPDATE_ACTIVE] (state,data){
     if(data){
-      state.editor.insertActiveMM.code=data.code
-      state.editor.insertActiveMM.endTime=data.endTime
-      state.editor.insertActiveMM.memo=data.memo
-      state.editor.insertActiveMM.name=data.name
-      state.editor.insertActiveMM.shareImg=data.shareImg
-      state.editor.insertActiveMM.shareTitle=data.shareTitle
-      state.editor.insertActiveMM.startTime=data.startTime
-      state.editor.insertActiveMM.type=data.type
+      state.editor.updateActiveMM.code=data.code
+      state.editor.updateActiveMM.endTime=data.endTime
+      state.editor.updateActiveMM.memo=data.memo
+      state.editor.updateActiveMM.name=data.name
+      state.editor.updateActiveMM.shareImg=data.shareImg
+      state.editor.updateActiveMM.shareTitle=data.shareTitle
+      state.editor.updateActiveMM.startTime=data.startTime
+      state.editor.updateActiveMM.type=data.type
+      state.editor.updateActiveMM.start=data.start
+      state.editor.updateActiveMM.id=data.id
     }else{
-      state.editor.insertActiveMM.code=''
-      state.editor.insertActiveMM.endTime=''
-      state.editor.insertActiveMM.memo=''
-      state.editor.insertActiveMM.name=''
-      state.editor.insertActiveMM.shareImg=''
-      state.editor.insertActiveMM.shareTitle=''
-      state.editor.insertActiveMM.startTime=''
-      state.editor.insertActiveMM.type=''
+      state.editor.updateActiveMM.code=''
+      state.editor.updateActiveMM.endTime=''
+      state.editor.updateActiveMM.memo=''
+      state.editor.updateActiveMM.name=''
+      state.editor.updateActiveMM.shareImg=''
+      state.editor.updateActiveMM.shareTitle=''
+      state.editor.updateActiveMM.startTime=''
+      state.editor.updateActiveMM.type=''
+      state.editor.updateActiveMM.start=''
+      state.editor.updateActiveMM.id=''
     }
   },
  /* [types.GET_UPDATE_ACTIVE] (state,res){
@@ -158,7 +181,7 @@ const mutations = {//mutations内是改变state内的值得作用
     }
   },
   [types.GET_GETBYID_ACTIVE] (state,res) {
-    state.result.getByIdActiveResult=res
+    state.result.getByIdActiveResult=res.data.result
   },
   //上传活动数据到OSS
   [types.SET_UPLOAD_DATATOOSS] (state,data) {
@@ -170,11 +193,15 @@ const mutations = {//mutations内是改变state内的值得作用
       state.editor.uploadDataToOSSMM.data=''
     }
   },
-
+//添加活动分类下商品index
+  [types.GET_ADD_DATA_NUM] (state,key) {
+    state.result.addDataNum = key
+  },
   //清除数据
   [types.CLEAR_ALL_DATA] (state){
     state.result.getByIdResult ={}
     state.result.ByIdGetTreeResult ={}
+    state.result.getByIdActiveResult={}
   },
   //品牌获取
   [types.SET_BY_ID] (state,id) {

@@ -117,7 +117,7 @@
     listActiveResult: state => {
      return state.result.listActiveResult
     },
-  //编辑活动列表
+    //编辑活动列表
    /* updateActiveResult: state => {
      return state.result.updateActiveResult
     },*/
@@ -125,7 +125,18 @@
     getByIdActiveResult: state => {
       return state.result.getByIdActiveResult
     },
-
+    //活动分类添加商品
+    addDataNumResult: state => {
+      return state.result.addDataNum
+    },
+  //产品list
+    getDataListResulr: state => {
+      return state.result.getDataListResulr
+    },
+//活动分类商品list
+    classDataListResult: state => {
+      return state.result.classDataListResult
+    },
 
     alertnum: state => {
       return state.editor.num

@@ -1,7 +1,7 @@
 <template>
   <div id="newActive">
-    <p><label>活动名称:</label><el-input v-model="input" placeholder="请输入活动名称" size="small"></el-input></p>
-    <p><label>活动编号:</label><el-input v-model="input0" placeholder="请输入活动编号" size="small"></el-input></p>
+    <p><label>活动名称:</label><el-input v-model="name" placeholder="请输入活动名称" size="small"></el-input></p>
+    <p><label>活动编号:</label><el-input v-model="code" placeholder="请输入活动编号" size="small"></el-input></p>
     <p><label>活动时间:</label><el-date-picker
       size="small"
       v-model="value4Result"
@@ -13,7 +13,7 @@
       align="right">
     </el-date-picker>
     </p>
-    <p><label>活动分享图片:</label><el-input v-model="input2" size="small" style="width: 400px;"></el-input>
+    <p><label>活动分享图片:</label><el-input v-model="shareImg" size="small" style="width: 400px;"></el-input>
       <el-upload
         class="upload-demo"
         ref="uploadfirst"
@@ -28,17 +28,21 @@
         <el-button style="margin-left: 10px;" size="mini" type="primary" @click="submitUploadfirst" plain>确认上传</el-button>
       </el-upload>
     </p>
-    <p><label>活动分享标题:</label><el-input v-model="input3" placeholder="请输入活动标题" size="small"></el-input></p>
-    <p><label style="vertical-align: top">活动分享描述:</label><el-input type="textarea" v-model="input1" placeholder="请输入活动描述" size="small" style="font-size: 12px;"></el-input></p>
+    <p><label>活动分享标题:</label><el-input v-model="shareTitle" placeholder="请输入活动标题" size="small"></el-input></p>
+    <p><label style="vertical-align: top">活动分享描述:</label><el-input type="textarea" v-model="memo" placeholder="请输入活动描述" size="small" style="font-size: 12px;"></el-input></p>
     <p  class="tep"><label>活动类型:</label>
-      <el-radio v-model="input4" label=1>微信</el-radio>
-      <el-radio v-model="input4" label=2>APP</el-radio>
-      <el-radio v-model="input4" label=3>H5</el-radio>
-      <el-radio v-model="input4" label=4>微信+APP+H5</el-radio>
+      <el-radio-group v-model="input4">
+        <el-radio :label=1>微信</el-radio>
+        <el-radio :label=2>APP</el-radio>
+        <el-radio :label=3>H5</el-radio>
+        <el-radio :label=4>微信+APP+H5</el-radio>
+      </el-radio-group>
     </p>
     <p class="tep"><label>状态:</label><!--<input type="text" :value="smallguigeResult.leading">-->
-      <el-radio v-model="updata2" label=1>开启</el-radio>
-      <el-radio v-model="updata2" label=0>不开启</el-radio>
+      <el-radio-group v-model="updata2">
+        <el-radio :label=1>已开启</el-radio>
+        <el-radio :label=0>未开启</el-radio>
+      </el-radio-group>
     </p>
     <p><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">确定</el-button></p>
@@ -53,27 +57,19 @@ export default {
   name: 'huodong',
   data () {
     return {
-      input:'',
-      input0:'',
+      name:'',
+      shareImg:'',
       value4Result:'',
-      input1:'',
-      input2:'',
-      input3:'',
+      code:'',
+      shareTitle:'',
+      memo:'',
       input4:'',
       updata2:'',
       fileList:[]
     }
   },
   activated(){
-    this.input='';
-    this.input1='';
-    this.updata2='';
-    this.fileList=[];
-    this.value4Result='';
-    this.input0='';
-    this.input2='';
-    this.input3='';
-    this.input4='';
+   this.updataShuju()
   },
   computed:{
     ...mapGetters([
@@ -82,7 +78,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'activeActions','insertActiveActions'
+      'activeActions','updateActiveActions'
     ]),
     submitUploadfirst () {
       this.$refs.uploadfirst.submit();
@@ -93,7 +89,7 @@ export default {
         message:'上传成功',
         type: 'success'
       })
-      this.input2=response.result
+      this.shareImg=response.result
     },
     upErre (response, file, fileList) {
       this.$message({
@@ -104,17 +100,19 @@ export default {
     },
     upload(){
       let data={
-        code:this.input0,
-        endTime:this.dateformat(this.value4Result[1]),
-        memo:this.input1,
-        name:this.input,
-        shareImg:this.input2,
-        shareTitle:this.input3,
-        startTime:this.dateformat(this.value4Result[0]),
+        id:this.activeChangeResult.obj.id,
+        code:this.code,
+        endTime:this.value4Result[1]==this.activeChangeResult.obj.endTime ? this.activeChangeResult.obj.endTime : this.dateformat(this.value4Result[1]),
+        memo:this.memo,
+        name:this.name,
+        shareImg:this.shareImg,
+        shareTitle:this.shareTitle,
+        startTime:this.value4Result[0]==this.activeChangeResult.obj.startTime ? this.activeChangeResult.obj.startTime : this.dateformat(this.value4Result[0]),
         type:this.input4,
         start:this.updata2
       }
-     this.insertActiveActions(data)
+      console.log(this.activeChangeResult)
+     this.updateActiveActions(data)
     },
     dateformat(data) {
       if(data){
@@ -128,6 +126,21 @@ export default {
       return year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec
     }
     },
+    updataShuju(){
+      if(this.activeChangeResult.item==='vUpdataActive'){
+        let curVal=this.activeChangeResult
+        this.name=curVal.obj.name
+        this.code=curVal.obj.code
+        this.shareImg=curVal.obj.shareImg
+        this.shareTitle=curVal.obj.shareTitle
+        this.memo=curVal.obj.memo
+        this.input4=curVal.obj.type
+        this.updata2=curVal.obj.start
+        this.value4Result=[]
+        this.value4Result.push(curVal.obj.startTime)
+        this.value4Result.push(curVal.obj.endTime)
+      }
+    }
   }
 }
 </script>
@@ -148,7 +161,7 @@ export default {
   margin-top: 15px;
   width:400px;
 }
-  #newActive label,#newActive .tep label:first-child{
+  #newActive label,#newActive .tep > label:first-child{
     width:100px;
     display: inline-block;
     text-align: right;

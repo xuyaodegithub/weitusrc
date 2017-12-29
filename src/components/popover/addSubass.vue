@@ -121,6 +121,7 @@
             let obj={}
             obj.name=item
             obj.modelSampleCode = 'advertisingFigure'
+            obj.marginData=''
             obj.contents=[]
             arr.push(obj)
           }
@@ -128,6 +129,7 @@
             let obj={};
             obj.name=item
             obj.modelSampleCode="f5"
+            obj.marginData=''
             obj.contents=[]
             arr.push(obj)
           }
@@ -135,6 +137,7 @@
             let obj={}
             obj.name=item
             obj.modelSampleCode="titleproducttouch"
+            obj.marginData=''
             obj.contents=[]
             arr.push(obj)
           }

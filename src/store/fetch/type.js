@@ -103,8 +103,13 @@ export const SET_GETBYID_ACTIVE = 'SET_GETBYID_ACTIVE';
 export const GET_GETBYID_ACTIVE = 'GET_GETBYID_ACTIVE';
 //上传活动数据到OSS
 export const SET_UPLOAD_DATATOOSS = 'SET_UPLOAD_DATATOOSS';
-
-
+//分类添加商品num
+export const GET_ADD_DATA_NUM = 'GET_ADD_DATA_NUM';
+//活动中获取商品列表
+export const SET_ACTIVE_DATA_LIST = 'SET_ACTIVE_DATA_LIST';
+export const GET_ACTIVE_DATA_LIST = 'GET_ACTIVE_DATA_LIST';
+//分类下商品列表
+export const GET_CLASS_DATA_LIST = 'GET_CLASS_DATA_LIST';
 
 
 

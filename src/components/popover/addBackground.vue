@@ -13,11 +13,11 @@
         <img :src="img | ToUrl" alt="" style="width: 200px;height: 100px;" v-if="img">
         </i>
         <el-upload
+          action="/apis/admin/buildblocks/img/uploadImage"
           class="upload-demo"
           ref="upload"
           name="img"
           :show-file-list=false
-          action="/apis/uploadImage"
           :on-success="upSuccess"
           :on-error="upErre"
           :file-list="fileList"

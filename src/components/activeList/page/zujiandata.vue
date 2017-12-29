@@ -14,12 +14,12 @@
           <div style="display: flex;position: relative">
             <label style="margin-right: 30px">图片:</label>
             <ul id="imgList">
-                <li v-for="(item,key) in commodityResult.contents" @click="address(key)" v-if="commodityResult.contents[0]" :class="{activete : item.isTrue}">
+                <li v-for="(item,key) in commodityResult.contents" @click="address(key)" v-if="commodityResult.contents.length>0" :class="{activete : item.isTrue}">
                   <img :src="item.image | ToUrl" alt="" class="cu" />
                 </li>
             </ul>
             <el-upload
-              action="/apis/uploadImage"
+              action="/apis/admin/buildblocks/img/uploadImage"
               name="img"
               :show-file-list=false
               list-type="picture-card"
@@ -32,7 +32,8 @@
             </el-dialog>
           </div>
           <div class="anchor-b">
-            <label style="margin-right: 30px">链接:</label><el-input v-model="input" placeholder="请输入内容" size="mini" @blur="change()"></el-input>
+            <label style="margin-right: 30px;width: 60px;text-align: right;display: inline-block;">链接:</label><el-input v-model="input" placeholder="请输入内容" size="mini" @blur="change()"></el-input><br/>
+            <label style="margin:15px 30px 0 0;width: 60px;text-align: right;display: inline-block;">图片边距:</label><el-input v-model="lineData" placeholder="请输入内容" size="mini" @blur="change2()"></el-input>
           </div>
       </div>
       <p> <el-button type="primary" plain size="mini" @click="addimg()">添加图片</el-button></p>
@@ -55,8 +56,9 @@
           :key="key"
           plain
           size="mini"
-          @click="updateTag(key)">
-            {{tag.title}}<i class="el-icon-close" style="float: right;font-size: 14px;" @click="CloseTag(key)"></i>
+          @click="updateTag(key)"
+        :class="{ addborder: commodityResult.contents[key].trOrFa}">
+            {{tag.title}}<i class="el-icon-close" style="float: right;font-size: 14px;" @dblclick="CloseTag(key)"></i>
         </el-button>
       </div>
       <div class="addGoodList">
@@ -64,29 +66,38 @@
         <el-table
           :height="250"
           fixed
-          :data="tableData"
+          :data="classDataListResult"
           tooltip-effect="light"
-          style="width: 100%">
+          style="width: 567px">
           <el-table-column
-            prop="date"
+            prop="productName"
             label="产品名称"
-            width="130"
+            width="115"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="活动价"
-            width="130">
+            prop="salePrice"
+            width="90"
+            label="销售价格">
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="store"
             label="库存"
-            width="130">
+            width="90">
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="sellerName"
             label="供应商"
-            width="130">
+            width="145"
+            show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column label="操作"  width="100">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                plain
+                @click="handleEdit(scope.$index, scope.row)" style="width: auto;" >移除</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -98,7 +109,7 @@
           :page-sizes="[10, 20, 30, 50]"
           :page-size="10"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="30">
+          :total="classDataListResult.length">
         </el-pagination>
       </div>
 
@@ -116,57 +127,21 @@ export default {
       return {
         createOrUpdate: true,
         input: '',
+        lineData:'',
         dialogImageUrl: '',
         dialogVisible: false,
         fileList: [],
         num: '',
         input1: '',
         tags: [],
-        currentPage4: 1,
-        tableData: [{
-          date: '2016-05-02222222222222222222',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '99'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '99'
-        }]
+        currentPage4: 1
       }
     },
     watch: {
       commodityResult: {
         handler (curVal, oldVal) {
+          this.lineData = curVal.marginData
           if (curVal.name !== oldVal.name && curVal.name !== '产品列表') {
-            //console.log(curVal)
             let that = this
             if (curVal.contents[0]) {
               let numfalse = 0
@@ -190,7 +165,7 @@ export default {
     },
     computed: {
       ...mapGetters([
-        'commodityResult', 'addCommodityResult'
+        'commodityResult','addDataNumResult','classDataListResult'
       ])
     },
     methods: {
@@ -216,13 +191,21 @@ export default {
         this.num = key
       },
       upSuccessfirst (response, file, fileList) {
-        if (this.commodityResult.contents) {
-          let obj = {
-            'image': response.result,
-            'url': ' ',
-            isTrue: false
+        let oImg= new Image()
+        oImg.src='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/'+response.result
+        let that=this
+        oImg.onload = function () {
+          console.log('宽:'+oImg.width+','+'高:'+oImg.height)
+          if (that.commodityResult.contents) {
+            let obj = {
+              image: response.result,
+              url: '',
+              width:oImg.width,
+              height:oImg.height,
+              isTrue: false
+            }
+            that.commodityResult.contents.push(obj)
           }
-          this.commodityResult.contents.push(obj)
         }
       },
       upErre () {
@@ -284,11 +267,18 @@ export default {
           this.commodityResult.contents[this.num].url = this.input
         }
       },
+      change2(){
+        if(this.lineData){
+        this.commodityResult.marginData=this.lineData
+        }
+      },
       createTag () {
         if (this.input1) {
           let obj = {
             title: this.input1,
-            contentId: '3'
+            contentId: '3',
+            trOrFa:false,
+            dataList:[]
           }
           this.commodityResult.contents.push(obj)
         }
@@ -303,6 +293,12 @@ export default {
         this.createOrUpdate = false
         this.input1 = this.commodityResult.contents[key].title
         this.num = key
+        for(let i=0;i<this.commodityResult.contents.length;i++){
+          this.commodityResult.contents[i].trOrFa=false
+        }
+        this.commodityResult.contents[key].trOrFa=true
+        this.$store.commit('GET_ADD_DATA_NUM',key)
+        this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[key].dataList)
       },
       CloseTag (index) {
         if (event && event.stopPropagation) {
@@ -314,9 +310,14 @@ export default {
       },
       changeTag () {
         console.log(this.num)
-        if (this.num !== '') {
+        if (this.num !== '' && this.commodityResult.contents[this.num]) {
           this.commodityResult.contents[this.num].title = this.input1
         }
+      },
+      handleEdit(index,row){
+        //let key=this.commodityResult.contents[this.num].dataList.indexOf(row)
+        this.commodityResult.contents[this.num].dataList.splice(index,1)
+        this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.num].dataList)
       },
       changeOr () {
         this.createOrUpdate = true
@@ -410,16 +411,7 @@ export default {
    display: flex;
    flex-wrap: wrap;
  }
- /*#zujianData .createInput p{
-   width:40px;
-   line-height:20px;
-   border: 1px solid #b3d8ff;
-   background: #b3d8ff;
-   font-size:12px;
-   opacity: 0.8;
-   margin-right: 6px;
+ #zujianData .addborder{
+   border-color:red;
  }
- #zujianData .createInput input{
-   width:100%;
- }*/
 </style>

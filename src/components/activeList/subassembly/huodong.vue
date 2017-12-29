@@ -4,12 +4,12 @@
       <el-button type="success" round size="mini" icon="el-icon-plus" @click="newPush()" style="margin-top: 10px">新增</el-button>
     </p>
     <div class="logo-list">
-      <label>活动名称</label><el-input v-model="input" placeholder="请输入活动名称" size="small"></el-input>
+      <label>活动ID</label><el-input v-model="input" placeholder="请输入活动ID" size="small"></el-input>
       <el-button type="primary" style="width:100px" round size="mini" icon="el-icon-search" @click="seachActive(input)">搜索</el-button>
     </div>
     <div class="footer-list">
       <keep-alive>
-        <component :is="activeChangeResult"></component>
+        <component :is="activeChangeResult.item"></component>
       </keep-alive>
     </div>
   </div>
@@ -22,6 +22,8 @@
   import vSeachActive from '../page/seachActive.vue'
   import vNewActive from '../page/newActive.vue'
   import vBianji from '../page/bianji.vue'
+  import vUpdataActive from '../page/updataActive.vue'
+  import vByIdActive from '../alert/byIdActive.vue'
 export default {
   name: 'huodong',
   data () {
@@ -31,19 +33,19 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'activeChangeResult'
+      'activeChangeResult','getByIdActiveResult'
     ])
   },
   components:{
-    vSeachActive,vNewActive,vBianji
+    vSeachActive,vNewActive,vBianji,vUpdataActive,vByIdActive
   },
   methods: {
     ...mapActions([
-      'activeActions'
+      'activeActions','getByIdActiveActions'
     ]),
     seachActive(item){
       if(item){
-
+      this.getByIdActiveActions(item)
       }else{
         this.$message({
           message:"请输入活动名称",
@@ -52,7 +54,11 @@ export default {
       }
     },
     newPush(){
-      this.activeActions('vNewActive')
+      let data={
+        obj:{},
+        item:'vNewActive'
+      }
+      this.activeActions(data)
     }
   }
 }

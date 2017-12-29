@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <p class="btnOver"><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions('vSeachActive')">返回</el-button>
+  <p class="btnOver"><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upOk()">提交</el-button></p>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'addCommodityResult','backColorResult'
+      'addCommodityResult','backColorResult','activeChangeResult'
     ])
   },
   components:{
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'activeActions','addCommodityActions','popoverAlert','commodityActions'
+      'activeActions','addCommodityActions','popoverAlert','commodityActions','uploadDataToOSSActions'
     ]),
     watch(){
       if(this.addCommodityResult[0]){
@@ -102,12 +102,18 @@ export default {
       this.addCommodityResult.splice(index,1)
     },
     upOk(){
-      console.log(this.backColorResult)
-let obj={
-  subassembly: this.addCommodityResult,
-  background: this.backColorResult
-}
-      console.log(JSON.stringify(obj))
+      //console.log(this.backColorResult)
+      let obj={
+        subassembly: this.addCommodityResult,
+        background: this.backColorResult
+      }
+      //console.log(JSON.stringify(obj))
+      let data={
+        id:this.activeChangeResult.obj.id,
+        data:JSON.stringify(obj)
+      }
+      console.log(data)
+      this.uploadDataToOSSActions(data)
     }
 
   }
