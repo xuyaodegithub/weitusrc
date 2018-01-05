@@ -121,7 +121,16 @@
         }
         console.log(obj)
         return obj
-      }
+      },
+      /*objPadd:function(){
+        let obj={}
+        if(this.addCommodityResult[this.addCommodityResult.length-1].modelSampleCode==='catlist1'){
+           obj={
+            'margin-bottom':this.addCommodityResult[this.addCommodityResult.length-1].marginData + 'px'
+          }
+        }
+        return obj
+      }*/
 		},
 		methods:{
       ...mapActions([
@@ -251,8 +260,7 @@
 				font-size:.28rem ;
 			}
 			li{
-				width: 49.5%;
-
+        width:49.5%;
 				background: #fff;
 				margin-bottom:.10rem;
 

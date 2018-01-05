@@ -50,6 +50,9 @@
           <el-button v-if="!createOrUpdate" type="primary" plain size="mini" style="margin-left: 20px" @click="changeTag()">确认修改</el-button>
           <i class="el-icon-refresh cu" style="font-size: 18px;color:#409EFF;margin-left: 8px" @click="changeOr()"></i>
         </p>
+        <p><label>商品边距:</label><el-input v-model="marginPruct" placeholder="请输入内容" size="mini" @blur="change3(marginPruct)"></el-input>
+          <!--<el-button type="primary" plain size="mini" style="margin-left: 20px" @click="Tosure(marginPruct)">确认</el-button>-->
+        </p>
         <el-button
           style="padding: 6px 0px;margin: 0 10px 0 0;"
           v-for="(tag,key) in commodityResult.contents"
@@ -136,7 +139,7 @@ export default {
         input1: '',
         tags: [],
         currentPage4: 1,
-        header:{'content-type':'application/json;charset=UTF-8'}
+        marginPruct:''
       }
     },
     watch: {
@@ -165,6 +168,7 @@ export default {
           if(curVal.name !== oldVal.name && curVal.name === '产品列表' && curVal.contents.length>0){
             this.num=0
             this.input1=curVal.contents[0].title
+            this.marginPruct=curVal.marginData ? curVal.marginData : ''
             this.$store.commit('GET_ADD_DATA_NUM',0)
             this.$store.commit('GET_CLASS_DATA_LIST',curVal.contents[0].dataList)
           }
@@ -188,7 +192,7 @@ export default {
         this.tags.splice(this.tags.indexOf(item), 1)
       },
       address (key) {
-        for (let i = 0; i < this.commodityResult.contents.length; hi++) {
+        for (let i = 0; i < this.commodityResult.contents.length;i++) {
           this.commodityResult.contents[i].isTrue = false
         }
         this.commodityResult.contents[key].isTrue = true
@@ -280,6 +284,13 @@ export default {
       change2(){
         if(this.lineData){
         this.commodityResult.marginData=this.lineData
+        }
+      },
+      change3(data){
+        if(data){
+          this.commodityResult.marginData=data
+        }else{
+          this.commodityResult.marginData=0
         }
       },
       createTag () {
@@ -409,7 +420,7 @@ export default {
     width:250px;
     margin-left: 10px;
   }
- #goodChangeList .flmcList p:first-child{
+ #goodChangeList .flmcList p{
    margin-bottom: 10px;
  }
  #goodChangeList .flmcList span{

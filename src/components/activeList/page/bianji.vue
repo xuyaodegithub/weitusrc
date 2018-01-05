@@ -102,7 +102,6 @@ export default {
       this.addCommodityResult.splice(index,1)
     },
     upOk(){
-      //console.log(this.backColorResult)
       let obj={
         subassembly: this.addCommodityResult,
         background: this.backColorResult

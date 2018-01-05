@@ -115,6 +115,7 @@
             let obj = {}
             obj.name = that.input ? that.input : item
             obj.modelSampleCode = 'catlist1'
+            obj.marginData=''
             obj.contents = []
             arr.push(obj)
           }

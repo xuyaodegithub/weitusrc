@@ -209,7 +209,7 @@
           value: '选项4',
           label: '三个月前'
         }],
-        value_month:'最近一个月',
+        value_month:'快速选择时间',
         num:"10",
         value:"全部",
         tableData: [{
