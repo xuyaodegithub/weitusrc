@@ -15,9 +15,6 @@
       </p>
       <p><el-button type="primary" plain size="mini" style="margin-left: 30px" @click="seachData()">搜索</el-button></p>
     </div>
-    <!--<p>
-    <el-button type="primary" plain size="mini" @click="addSub()">添加</el-button>
-    </p>-->
     <el-table
       v-loading="loading"
       :height="210"
@@ -62,15 +59,6 @@
           <span>{{ scope.row.brandCode }}</span>
         </template>
       </el-table-column>
-     <!-- <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            plain
-            @click="handleEdit(scope.$index, scope.row)" style="width: auto;" v-if="scope.row.isTrue">添加</el-button>
-         <span v-if="!scope.row.isTrue">已添加</span>
-        </template>
-      </el-table-column>-->
     </el-table>
     <div style="margin: 20px 0 0 10px;">
       <el-button type="primary" plain size="mini" @click="toggleSelection(getDataListResulr.rows)">批量选择</el-button>
@@ -196,7 +184,6 @@
       ]),
       morePull(rows) {
         let keynum=0
-       // console.log(rows)
         if(rows.length>0){
           for(let i=0;i<rows.length;i++){
             if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(rows[i])) === -1){
@@ -238,12 +225,6 @@
         this.multipleSelection = val;
       },
       handleEdit(index, row){
-        /*let obj={
-          name:row.name,
-          price:row.price,
-          data:row.data,
-        }*/
-        //console.log(this.addDataNumResult)
         if(this.addDataNumResult !== ''){
           this.commodityResult.contents[this.addDataNumResult].dataList.push(row)
         }
@@ -253,17 +234,17 @@
         let data={
           filter_S_productName:this.input,
           page:this.currentPage4,
-          size:this.value
+          rows:this.value
         }
         this.getDataListActions(data)
       },
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        //console.log(`每页 ${val} 条`);
         this.value=val
         this.seachData()
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+       // console.log(`当前页: ${val}`);
         this.currentPage4=val
         this.seachData()
       },

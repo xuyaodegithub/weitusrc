@@ -8,12 +8,15 @@ import * as types from '../fetch/type';
 import { Message } from 'element-ui';
 //import { Loading } from 'element-ui';
 import api from '../fetch/api'
-var num=0
+var num=1
 var textCs=''
+var textCsTow=''
   if(num===0){
-  textCs='/apis'
+    textCs='/apis'
+    textCsTow='/apis'
   }else{
     textCs='http://api-admin.olquan.cn/'
+    textCsTow='http://106.15.49.17:8888/'
   }
 const actions = {//actions,mutations内的方法只能有两个参数，一个是context一个是外部调用时传参，event事件对象参数除外
   //弹框修改属性
@@ -85,13 +88,24 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   },
   //获取活动列表
   listActiveActions (context,data) {
+    context.commit('changeloading')
     context.commit('SET_LIST_ACTIVE',data)
-    context.dispatch('saveFormGet',['/admin/buildblocks/list','GET_LIST_ACTIVE','listActiveMM'])
+    axios.get(textCsTow+'/admin/buildblocks/list',{
+      params:context.state.editor.listActiveMM
+    }).then(res => {
+      context.commit('GET_LIST_ACTIVE',res)
+      context.commit('changeloading')
+    }).catch(
+      function(err){
+        context.commit('changeloading')
+        context.dispatch('mError')
+      }
+    )
   },
   //添加活动
   insertActiveActions (context,data) {
     context.commit('SET_INSERT_ACTIVE',data)
-    api.addguige(textCs+'/admin/buildblocks/insert',qs.stringify(context.state.editor.insertActiveMM)).then(res => {
+    api.addguige(textCsTow+'/admin/buildblocks/insert',qs.stringify(context.state.editor.insertActiveMM)).then(res => {
       if(res.ok){
         context.dispatch('mSuccess')
         context.dispatch('listActiveActions',{page:1,rows:10})
@@ -107,7 +121,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   //编辑活动
   updateActiveActions (context,data) {
   context.commit('SET_UPDATE_ACTIVE',data)
-  api.addguige(textCs+'/admin/buildblocks/update',qs.stringify(context.state.editor.updateActiveMM)).then(res => {
+  api.addguige(textCsTow+'/admin/buildblocks/update',qs.stringify(context.state.editor.updateActiveMM)).then(res => {
     if(res.ok){
       context.dispatch('mSuccess')
       context.dispatch('listActiveActions',{page:1,rows:10})
@@ -123,7 +137,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   //删除活动
   deleteActiveActions (context,data){
     context.commit('SET_DELETE_ACTIVE',data.id)
-    api.addguige(textCs+'/admin/buildblocks/delete',qs.stringify(context.state.editor.deleteActiveMM)).then(res => {
+    api.addguige(textCsTow+'/admin/buildblocks/delete',qs.stringify(context.state.editor.deleteActiveMM)).then(res => {
       if(res.ok){
         context.dispatch('mSuccess')
         context.dispatch('listActiveActions',data.item)
@@ -144,14 +158,27 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     }
     context.commit('activeChange',data)
     context.commit('SET_GETBYID_ACTIVE',id)
-    context.dispatch('saveFormGet',['/admin/buildblocks/getById','GET_GETBYID_ACTIVE','getByIdActiveMM'])
+    axios.get(textCsTow+'/admin/buildblocks/getById',{
+      params:context.state.editor.getByIdActiveMM
+    }).then(res => {
+      context.commit('GET_GETBYID_ACTIVE',res)
+      if(!res.data.result){
+        context.dispatch('clearAllActions')
+      }
+    }).catch(
+      function(err){
+        context.dispatch('mError')
+      }
+    )
+
   },
   //上传活动数据到OSS
   uploadDataToOSSActions (context,data) {
     context.commit('SET_UPLOAD_DATATOOSS',data)
-    api.addguige(textCs+'/admin/buildblocks/uploadDataToOSS',qs.stringify(context.state.editor.uploadDataToOSSMM)).then(res => {
+    api.addguige(textCsTow+'/admin/buildblocks/uploadDataToOSS',qs.stringify(context.state.editor.uploadDataToOSSMM)).then(res => {
       if(res.ok){
         context.dispatch('mSuccess')
+        context.dispatch('listActiveActions',{page:1,rows:10})
       }else{
         context.dispatch('mWarning',res)
       }
@@ -161,12 +188,26 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       }
     )
   },
+  //oss数据返回
+  OssListActions (context,id) {
+    axios.get('http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/buildblocks_data/'+id,{
+      params:{}
+    }).then(res => {
+      context.commit('OssListResult',res)
+    }).catch(
+      function(err){
+       // context.commit('OssListResult',err.subassembly)
+        console.log(err)
+      }
+    )
+  },
+
   //产品list
   getDataListActions (context,data) {
     context.commit('changeloading')
     context.commit('SET_ACTIVE_DATA_LIST',data)
     //context.dispatch('saveFormGet',['/admin/buildblocks/product/list','GET_ACTIVE_DATA_LIST','getDataListMM'])
-    axios.get(textCs+'/admin/buildblocks/product/list',{
+    axios.get(textCsTow+'/admin/buildblocks/product/list',{
       params:context.state.editor.getDataListMM
     }).then(res => {
       context.commit('GET_ACTIVE_DATA_LIST',res)
@@ -575,7 +616,11 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     }
   },
   //城市选择请求
-  getcityListActions(context,id){
+  getcityListActions(context,id){//console.log(this.status)
+    /*for(let i=0;i<this.listObj.subassembly.length;i++){
+      if(this.listObj.subassembly[i].modelSampleCode=='catlist1'){
+        this.classify=this.listObj.subassembly[i].contents;
+      }*/
     axios.get('http://jisuarea.market.alicloudapi.com/area/query',{
       params: {
         parentid:id
@@ -624,45 +669,6 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     if(data=='最近三个月' || data=='三个月前'){
       let time=[new Date().setTime(new Date().getTime() - 3600 * 1000 * 24 * 90),start]
       context.commit('GET_VALUE_4',time)
-    }
-  },
-
-
-
-  alertshow(context){
-    //context.state.editor.num=status  //actions里面可以直接改变state里的数据，也可以调用mutations里的方法（下面就是）
-    //context.commit('change',status)//commit方法调用mutations里的方法进行改变state里的值//dispatch是调用actions内自身的方法
-    context.dispatch('saveFormGet',['/city/getProvinces','',{}])
-  },
-  qingqiuActions(context,id){
-    context.commit('SET_LOGIN_ALL_API',id)
-    axios({
-      method:"get",
-      dataType:"JSON",
-      url:"http://datainfo.duapp.com/shopdata/getGoods.php?callback=",
-      params:context.state.editor.loginMM
-    }).then((data)=>{
-      var datas=eval(data.data)[0]
-      console.log(datas)
-      context.commit('GET_LOGIN_ALL_API',datas)
-    })
-  },
-  dingdanListActions(context,obj){
-    if(obj.input == ''){
-      Message({
-        showClose: true,
-        message: "请输入商品ID",
-        type: 'warning'
-      });
-    }else{
-      context.commit('SET_DINGDAN_LIST_MM',obj)
-      axios({
-        method:"post",
-        url:"/apis/mobile/order/myOrder",
-        params:context.state.editor.dingdanListMM
-      }).then((res)=>{
-        context.commit('GET_DINGDAN_LIST_MM',res)
-      })
     }
   }
 

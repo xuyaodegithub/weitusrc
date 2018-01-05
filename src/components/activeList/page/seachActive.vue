@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'activeActions','deleteActiveActions','listActiveActions'
+      'activeActions','deleteActiveActions','listActiveActions','getByIdActiveActions','OssListActions','clearAllActions'
     ]),
     linkTo(index,row){
 
@@ -110,9 +110,16 @@ export default {
       this.activeActions(data)
     },
     Updata(index,row){
+      console.log(row)
       let data={
         obj:row,
         item:'vBianji'
+      }
+      if(row.ossDataId){
+        this.clearAllActions()
+        this.OssListActions(row.ossDataId)
+      }else{
+        this.clearAllActions()
       }
       this.activeActions(data)
     },
@@ -160,7 +167,8 @@ export default {
 <style scoped>
   .seach-list .el-button--mini,.seach-list .el-button--mini.is-round{
     margin:0;
-    padding:5px;font-size: 12px;
+    padding:5px;
+    font-size: 12px;
   }
   .block{
     text-align: right;

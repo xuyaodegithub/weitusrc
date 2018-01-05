@@ -203,18 +203,8 @@ const  editor = {//定义入参
     getDataListMM:{
       filter_S_productName:'',
       page:'',
-      size:''
+      rows:''
     },
-
-
-      loginMM: {
-      goodsID:""
-    },
-  dingdanListMM: {
-    type:'',
-    memberId:"",
-    status:""
-  }
 
 };
 
@@ -652,7 +642,7 @@ const result = { //接收请求后的数据
   //组件添加
   addCommodityResult:[],
   //背景设置
-  backColorResult:'',
+  backColorResult:{},
   //获取活动列表
   listActiveResult:[],
   //添加活动
@@ -661,14 +651,13 @@ const result = { //接收请求后的数据
   updateActiveResult:'',*/
  //根据id获取活动信息
   getByIdActiveResult:{},
-  addDataNum:'',
+  addDataNum:0,
   //产品列表
   getDataListResulr:[],
   //分类下产品列表接受
   classDataListResult:[],
 
   loginResult:[],
-  dingdanListResult:[]
 }
 
 const state = {

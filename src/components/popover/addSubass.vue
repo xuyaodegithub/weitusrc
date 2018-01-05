@@ -109,17 +109,18 @@
       addSub () {
         //console.log(this.checkList)
         let arr = []
+        let that=this
         this.checkList.forEach(function(item,index){
           if (item == '产品列表') {
             let obj = {}
-            obj.name = item
+            obj.name = that.input ? that.input : item
             obj.modelSampleCode = 'catlist1'
             obj.contents = []
             arr.push(obj)
           }
           if(item=='轮播图'){
             let obj={}
-            obj.name=item
+            obj.name = that.input ? that.input : item
             obj.modelSampleCode = 'advertisingFigure'
             obj.marginData=''
             obj.contents=[]
@@ -127,7 +128,7 @@
           }
           if(item=="等分（最多5等分）" || item=='BANNER'){
             let obj={};
-            obj.name=item
+            obj.name = that.input ? that.input : item
             obj.modelSampleCode="f5"
             obj.marginData=''
             obj.contents=[]
@@ -135,7 +136,7 @@
           }
           if(item=="滑动的"){
             let obj={}
-            obj.name=item
+            obj.name = that.input ? that.input : item
             obj.modelSampleCode="titleproducttouch"
             obj.marginData=''
             obj.contents=[]

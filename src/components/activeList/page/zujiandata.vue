@@ -19,8 +19,9 @@
                 </li>
             </ul>
             <el-upload
-              action="/apis/admin/buildblocks/img/uploadImage"
+              action="apis/admin/buildblocks/img/uploadImage"
               name="img"
+              :multiple=true
               :show-file-list=false
               list-type="picture-card"
               :on-success="upSuccessfirst"
@@ -57,12 +58,12 @@
           plain
           size="mini"
           @click="updateTag(key)"
-        :class="{ addborder: commodityResult.contents[key].trOrFa}">
+        :class="{ addborder: addDataNumResult==key}">
             {{tag.title}}<i class="el-icon-close" style="float: right;font-size: 14px;" @dblclick="CloseTag(key)"></i>
         </el-button>
       </div>
       <div class="addGoodList">
-        <p  style="font:14px/28px '微软雅黑'"><label>产品列表:</label> <el-button type="primary" plain size="mini" icon="el-icon-plus" style="float: right;" @click="popoverAlert('vAddGoods')">添加关联产品</el-button></p>
+        <p  style="font:14px/28px '微软雅黑'"><label>产品列表:</label> <el-button type="primary" plain size="mini" icon="el-icon-plus" style="float: right;" @click="addPucter()">添加关联产品</el-button></p>
         <el-table
           :height="250"
           fixed
@@ -131,10 +132,11 @@ export default {
         dialogImageUrl: '',
         dialogVisible: false,
         fileList: [],
-        num: '',
+        num: 0,
         input1: '',
         tags: [],
-        currentPage4: 1
+        currentPage4: 1,
+        header:{'content-type':'application/json;charset=UTF-8'}
       }
     },
     watch: {
@@ -143,7 +145,8 @@ export default {
           this.lineData = curVal.marginData
           if (curVal.name !== oldVal.name && curVal.name !== '产品列表') {
             let that = this
-            if (curVal.contents[0]) {
+            that.num=null
+            if (curVal.contents.length>0) {
               let numfalse = 0
               curVal.contents.forEach(function (val, index) {
                 if (val.isTrue) {
@@ -158,6 +161,12 @@ export default {
             } else {
               this.input = ''
             }
+          }
+          if(curVal.name !== oldVal.name && curVal.name === '产品列表' && curVal.contents.length>0){
+            this.num=0
+            this.input1=curVal.contents[0].title
+            this.$store.commit('GET_ADD_DATA_NUM',0)
+            this.$store.commit('GET_CLASS_DATA_LIST',curVal.contents[0].dataList)
           }
         },
         deep: true
@@ -179,7 +188,7 @@ export default {
         this.tags.splice(this.tags.indexOf(item), 1)
       },
       address (key) {
-        for (let i = 0; i < this.commodityResult.contents.length; i++) {
+        for (let i = 0; i < this.commodityResult.contents.length; hi++) {
           this.commodityResult.contents[i].isTrue = false
         }
         this.commodityResult.contents[key].isTrue = true
@@ -263,7 +272,8 @@ export default {
         }
       },
       change () {
-        if (this.input && this.num !== '') {
+        console.log(this.num)
+        if (this.input && this.num!==null) {
           this.commodityResult.contents[this.num].url = this.input
         }
       },
@@ -318,6 +328,16 @@ export default {
         //let key=this.commodityResult.contents[this.num].dataList.indexOf(row)
         this.commodityResult.contents[this.num].dataList.splice(index,1)
         this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.num].dataList)
+      },
+      addPucter(){
+        if(this.commodityResult.contents.length>0){
+          this.popoverAlert('vAddGoods')
+        }else{
+          this.$message({
+            message:'请先创建分类',
+            type:'warning'
+          })
+        }
       },
       changeOr () {
         this.createOrUpdate = true
@@ -404,7 +424,7 @@ export default {
    text-align: right;
    margin-top: 20px;
  }
- #goodChangeList .el-table th>div.cell,#goodChangeList .el-table .cell,#goodChangeList .el-table{
+ #goodChangeList .addGoodList > .el-table th>div.cell,#goodChangeList .addGoodList >  .el-table .cell,#goodChangeList .addGoodList >  .el-table{
    font-size: 12px;
  }
  #zujianData #imgList{

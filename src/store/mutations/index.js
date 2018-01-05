@@ -102,7 +102,7 @@ const mutations = {//mutations内是改变state内的值得作用
     if(data){
       state.editor.getDataListMM.page=data.page
       state.editor.getDataListMM.filter_S_productName=data.filter_S_productName
-      state.editor.getDataListMM.size=data.size
+      state.editor.getDataListMM.rows=data.rows
     }
   },
   [types.GET_ACTIVE_DATA_LIST] (state,res) {
@@ -182,6 +182,10 @@ const mutations = {//mutations内是改变state内的值得作用
   },
   [types.GET_GETBYID_ACTIVE] (state,res) {
     state.result.getByIdActiveResult=res.data.result
+    console.log(res.data.result.ossDataId)
+    if(res.data.result.ossDataId){
+      state.result.addCommodityResult=res.data.result.ossDataId
+    }
   },
   //上传活动数据到OSS
   [types.SET_UPLOAD_DATATOOSS] (state,data) {
@@ -193,6 +197,11 @@ const mutations = {//mutations内是改变state内的值得作用
       state.editor.uploadDataToOSSMM.data=''
     }
   },
+  //oss数据返回
+  OssListResult(state,res){
+      state.result.addCommodityResult=res.data.subassembly
+      state.result.backColorResult=res.data.background
+  },
 //添加活动分类下商品index
   [types.GET_ADD_DATA_NUM] (state,key) {
     state.result.addDataNum = key
@@ -202,6 +211,11 @@ const mutations = {//mutations内是改变state内的值得作用
     state.result.getByIdResult ={}
     state.result.ByIdGetTreeResult ={}
     state.result.getByIdActiveResult={}
+    state.result.addCommodityResult=[]
+    state.result.commodityResult={
+      nsme:'',
+      contents:[]
+    }
   },
   //品牌获取
   [types.SET_BY_ID] (state,id) {
@@ -526,28 +540,6 @@ const mutations = {//mutations内是改变state内的值得作用
   //时间选择接受
   [types.GET_VALUE_4] (state,res) {
     state.result.value4Result=res
-  },
-
-
-
-  [types.SET_LOGIN_ALL_API] (state,id) {
-    console.log(id);
-    state.editor.loginMM.goodsID = id
-  },
-  [types.GET_LOGIN_ALL_API](state,res){
-    state.result.loginResult = res
-  },
-  [types.SET_DINGDAN_LIST_MM] (state,obj) {
-    state.editor.dingdanListMM.type = obj.num
-    state.editor.dingdanListMM.memberId = obj.id
-    if(status){
-      state.editor.dingdanListMM.status = status
-    }else{
-      state.editor.dingdanListMM.status = ''
-    }
-  },
-  [types.GET_DINGDAN_LIST_MM]  (state,res) {
-    state.result.dingdanListResult = res.data.result
   }
 
 }

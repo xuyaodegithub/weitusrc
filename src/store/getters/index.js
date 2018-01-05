@@ -137,16 +137,14 @@
     classDataListResult: state => {
       return state.result.classDataListResult
     },
+//OssList返回
+  OssListResult: state => {
+      return state.result.OssListResult
+  },
 
-    alertnum: state => {
-      return state.editor.num
-    },
    loginResult: state => {
       return state.result.loginResult
    },
-   dingdanListResult: state =>{
-     return state.result.dingdanListResult
-   }
 
  }
 

@@ -16,7 +16,7 @@ Vue.use(ElementUI)
 //Vue.use(vueResource)
 //Vue.config.silent = true  //取消vue所有日志和警告
 Vue.config.productionTip = false
-
+//Vue.$http.options.emulateJSON=true
 /* eslint-disable no-new */
 const vm = new Vue({
   el: '#app',
@@ -29,7 +29,7 @@ const vm = new Vue({
 //图片地址处理
 Vue.filter('ToUrl', function (val) {
   return 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + val
-})
+});
 //保留小数点后面两位
  Vue.filter('Tofix',function(val){
    if (val == '' || val == null) {
@@ -52,7 +52,12 @@ Vue.filter('ToUrl', function (val) {
 
      return (((sign)?'':'-') + val + '.' + cents);
    }
- })
+ });
+//聚焦
+Vue.directive('focus',function(el){
+//el.focus()
+  //el.focus()
+})
 //拖拽
 Vue.directive('drag',function(event){
   var oDiv = event;

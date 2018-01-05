@@ -266,7 +266,7 @@
     margin-right: 8px;
     height: 16px;
   }
-  #datate .el-table th>div.cell,.el-table .cell,.el-table{
+  #datate .el-table th>div.cell,#datate .el-table .cell,#datate .el-table{
     font-size: 12px;
   }
   #datate .demo-table-expand {

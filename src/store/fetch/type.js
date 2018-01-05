@@ -1,7 +1,3 @@
-export const SET_LOGIN_ALL_API = 'SET_LOGIN_ALL_API';
-export const GET_LOGIN_ALL_API = 'GET_LOGIN_ALL_API';
-export const SET_DINGDAN_LIST_MM = 'SET_DINGDAN_LIST_MM';
-export const GET_DINGDAN_LIST_MM = 'GET_DINGDAN_LIST_MM';
 export const CLEAR_ALL_DATA = 'CLEAR_ALL_DATA';
 //id获得品牌
 export const SET_BY_ID = 'SET_BY_ID';

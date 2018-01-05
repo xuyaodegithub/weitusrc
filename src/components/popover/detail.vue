@@ -3,7 +3,7 @@
     <div class="popover-head">
       <span class="title">预览效果</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
-      <div style="height: 454px;width: 300px;overflow: auto; padding:8px;" v-if="addCommodityResult[0].contents" v-bind:style="styleobj">
+      <div style="height: 474px;width: 300px;overflow: auto; padding:8px;" v-if="addCommodityResult[0].contents" v-bind:style="styleobj">
 
 
         <div v-for="item in addCommodityResult">
@@ -62,25 +62,7 @@
 	export default {
 		data : function() {
 			return{
-				listObj:[],
         keyindex:0,
-				curObj:{},
-				pageObj:{
-					page:1,
-				},
-				showTrue:false,
-				status:'',
-				swiperOption:{
-//					notNextTick: true,
-					preventClicks:false,
-					initialSlide:0,
-					autoplay: 3000,
-					loop : true,
-					pagination : '.swiper-pagination',
-					autoplayDisableOnInteraction : false,
-				},
-				message:[],
-				searchBarFixed:false,
 				title:'',
 				imgLength:'',
 				lunboList:[],
@@ -134,9 +116,8 @@
           obj = {
             'background-image':'url('+this.backColorResult.contents+')',
             'background-repeat': 'no-repeat',
+            'background-size':'cover'
           }
-        }else{
-          obj={}
         }
         console.log(obj)
         return obj
