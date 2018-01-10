@@ -179,7 +179,7 @@
     border:0;
     margin:0;
     color: #333;
-    font-weight: 550;
+    font-weight: 600;
     text-indent:0;
   }
   /*.ev-header p{

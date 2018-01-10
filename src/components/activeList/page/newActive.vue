@@ -36,7 +36,7 @@
       <el-radio v-model="input4" label=3>H5</el-radio>
       <el-radio v-model="input4" label=4>微信+APP+H5</el-radio>
     </p>
-    <p class="tep"><label>状态:</label><!--<input type="text" :value="smallguigeResult.leading">-->
+    <p class="tep"><label>状态:</label>
       <el-radio v-model="updata2" label=1>开启</el-radio>
       <el-radio v-model="updata2" label=0>不开启</el-radio>
     </p>

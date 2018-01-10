@@ -9,7 +9,7 @@
       </p>
       <div class="left-btn">
         <div v-for="(item,index) in addCommodityResult">
-          <p @click="commodityActions(item)" class="cu">{{item.name}} <i class="el-icon-close" style="float:right;color: #000;font-size: 18px;" @click="remove(index)"></i></p>
+          <p @click="otherSub(item,index)" class="cu">{{item.name}} <i class="el-icon-close" style="float:right;color: #000;font-size: 18px;" @click="remove(index)"></i></p>
           <p><i class="iconfont icon-gupiaojiangicon cu" style="display: inline-block;margin:20px 0 10px 0;" @click="up(index)"></i><br>
             <i class="iconfont icon-gupiaojiangicon1 cu" @click="down(index)"></i>
           </p>
@@ -106,13 +106,16 @@ export default {
         subassembly: this.addCommodityResult,
         background: this.backColorResult
       }
-      //console.log(JSON.stringify(obj))
       let data={
         id:this.activeChangeResult.obj.id,
         data:JSON.stringify(obj)
       }
       console.log(data)
       this.uploadDataToOSSActions(data)
+    },
+    otherSub(item,key){
+      //alert(key)
+      this.commodityActions(item)
     }
 
   }

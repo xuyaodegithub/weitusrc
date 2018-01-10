@@ -1,47 +1,52 @@
 	<template>
-	<div class="order" style="margin-top: -240px">
+	<div class="order" style="margin-top: -270px;margin-left:-50px;">
     <div class="popover-head">
       <span class="title">预览效果</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
+      <p></p>
+      <p></p>
     </div>
-      <div style="height: 474px;width: 300px;overflow: auto; padding:8px;" v-if="addCommodityResult[0].contents" v-bind:style="styleobj">
+      <div style="height: 404px;width: 260px;overflow: auto;" v-if="addCommodityResult[0].contents" v-bind:style="styleobj">
 
 
         <div v-for="item in addCommodityResult">
           <!--轮播图-->
-          <img :src="item.contents[0].image | ToUrl" alt="" v-if="item.modelSampleCode=='advertisingFigure' && item.contents.length>0" style="width: 100%;height: 160px;">
+          <!--<img :src="item.contents[0].image | ToUrl" alt="" v-if="item.modelSampleCode=='advertisingFigure' && item.contents.length>0" style="width: 100%;height: 160px;">-->
+          <el-carousel indicator-position="none"  :interval="1000"  height="150px" v-if="item.modelSampleCode=='advertisingFigure' && item.contents.length>0">
+            <el-carousel-item v-for="(items,index) in item.contents" :key="index">
+              <img :src="items.image" alt=""  style="width: 100%;height: 160px;">
+            </el-carousel-item>
+          </el-carousel>
           <!--能滑动的-->
-            <ul class="touchImg" v-if="item.modelSampleCode=='titleproducttouch'" style="margin-bottom: 10px">
-              <li v-for="itemSons in item.contents" style="height: 70px;width: 70px;border: 1px solid skyblue;"><img :src="itemSons.image | ToUrl" style="height: 100%;width: 100%;"/></li>
-
+            <ul class="touchImg" v-if="item.modelSampleCode=='titleproducttouch'">
+              <li v-for="itemSons in item.contents" style="height: 70px;width: 70px;border: 1px solid skyblue;" @click="detail(itemSons.url)"><img :src="itemSons.image" style="height: 100%;width: 100%;"/></li>
             </ul>
 
 
           <!--等分图片-->
           <div class="img" v-if="item.modelSampleCode=='f5'">
             <!--<img  :src='goodImg'/>-->
-            <div>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==2" style="width: 50%;"  :src='itemSon.image | ToUrl'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 33.3%;" :src='itemSon.image | ToUrl'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width:100%;height:100px;" :src='itemSon.image | ToUrl'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width: 25%;"  :src='itemSon.image | ToUrl'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 20%;"  :src='itemSon.image | ToUrl'/>
-            </div>
+              <img v-for="itemSon in item.contents" v-if="item.contents.length==2" style="width: 50%;"  :src='itemSon.image'/>
+              <img v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 33.3%;" :src='itemSon.image'/>
+              <img v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width:100%;height:100px;" :src='itemSon.image'/>
+              <img v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width: 25%;"  :src='itemSon.image'/>
+              <img v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 20%;"  :src='itemSon.image'/>
           </div>
         </div>
 
         <!--分类-->
-        <div class="list-top" v-show="addCommodityResult[addCommodityResult.length-1].contents.length!=0">
+        <div class="list-top" v-show="addCommodityResult[addCommodityResult.length-1].contents.length>0 && addCommodityResult[addCommodityResult.length-1].modelSampleCode ==='catlist1'">
           <ul>
             <!--<li v-for="(itemsSon,index) in addCommodityResult[addCommodityResult.length-1].contents" style="width: auto;line-height: 40px;background: #409EFF;margin-right: 10px;border: 1px solid #333;">{{itemsSon.title}}</li>-->
-              <el-button
+              <li
+                class="cu"
                 v-for="(itemsSon,key) in addCommodityResult[addCommodityResult.length-1].contents"
                 type="primary"
                 plain
                 :key="key"
                 size="mini"
-                style="margin: 0;padding: 6px;"
+                style="margin: 0;padding: 6px;font-weight: 600;color: #ffffff;"
                 @click="changeKey(key)"
-              >{{itemsSon.title}}</el-button>
+              >{{itemsSon.title}}</li>
           </ul>
         </div>
         <!--分类产品-->
@@ -53,6 +58,9 @@
           </ul>
         </div>
 			</div>
+    <div class="footer_v">
+      <p></p>
+    </div>
 	</div>
 </template>
 
@@ -138,6 +146,13 @@
       ]),
       changeKey(key){
         this.keyindex=key
+      },
+      detail(url){
+//        console.log(url)
+       window.open(url)
+        let data=1515493081168-60000
+        //alert(data)
+        //alert(new Date(data).toLocaleString())
       }
 
 		}
@@ -146,18 +161,61 @@
 
 <style lang="scss" scoped>
 .order{
+  background: pink;
+  border-top-left-radius:30px;
+  border-top-right-radius:30px;
+  border-bottom-left-radius:30px;
+  border-bottom-right-radius:30px;
+  border:3px solid #EBEEF1;
   position: absolute;
   left:40%;
   top:50%;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  overflow: hidden;
+  padding:0 6px;
 }
 .popover-head{
   width: 100%;
-  height: 40px;
+  height: 70px;
   line-height: 40px;
-  background: #F0FAFF;
+  /*background: #F0FAFF;*/
   font-size: 14px;
   border-bottom: 1px solid #C5E2F0;
+}
+.footer_v{
+  width: 100%;
+  height: 55px;
+  border-bottom-left-radius:30px;
+  border-bottom-right-radius:30px;
+}
+
+.footer_v p{
+  width:30px;
+  height:30px;
+  border:2px solid rgba(245, 170, 7, 0.81);
+  border-radius: 50%;
+  margin:0 auto;
+  margin-top:15px;
+  background: #ffffff;
+}
+.popover-head p:nth-child(3){
+  width:12px;
+  height:12px;
+  border-radius: 50%;
+  background:rgba(219, 225, 222, 1) ;
+  margin:0 auto;
+  margin-top: -20px;
+}
+.popover-head p:nth-child(4){
+  width:80px;
+  height:8px;
+  background:rgba(219, 225, 222, 1);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin:0 auto;
+  margin-top: 8px;
+
 }
 .popover-head i{
   float: right;
@@ -198,13 +256,12 @@
 			max-width: 100%;
 			float: left;
 
-
-		}
+    }
 	}
 	.list-top{
 		width: 100%;
 		ul{
-			WIDTH:100%;
+			width:100%;
 		   	white-space:nowrap;
 		    overflow: auto;
 		    li{
@@ -218,11 +275,6 @@
 
 			      vertical-align: top;
 
-		    }
-		    .special{
-		      	border-bottom: 0.01rem solid #f49;
-		      	z-index: 999;
-		      	color: #f49;
 		    }
 		}
 
@@ -267,36 +319,7 @@
 				img{
 					display: block;
 					width: 100%;
-					height: 3.59rem;
 				}
-				.top{
-					font-weight: normal;
-					font-size: .24rem;
-					color: #333;
-					line-height: .30rem;
-					padding: .08rem;
-				}
-				.botMoney{
-					display: block;
-					overflow: hidden;
-					font-size: .20rem;
-					color: #b2b2b2;
-					font-style: normal;
-
-					padding-right: .24rem;
-					.left{
-						text-decoration:line-through;
-
-						float: left;
-
-
-					}
-					.right{
-						float: right;
-
-					}
-				}
-
 			}
 		}
 	}

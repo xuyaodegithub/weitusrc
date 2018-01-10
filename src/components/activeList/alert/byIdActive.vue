@@ -19,6 +19,7 @@
     </p>
     <p><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">编辑</el-button>
+    <el-button type="primary" size="small" plain style="margin-top: 10px" @click="changeActiveList()">编辑活动数据</el-button>
     <el-button type="danger" size="small" plain style="margin-top: 10px" @click="DeleteOne()">删除</el-button>
     </p>
   </div>
@@ -40,12 +41,12 @@ export default {
   },
   computed:{
     ...mapGetters([
-        'pickerOptions2','activeChangeResult','getByIdActiveResult'
+        'pickerOptions2','getByIdActiveResult'
     ])
   },
   methods: {
     ...mapActions([
-      'activeActions','deleteActiveActions'
+      'activeActions','deleteActiveActions','clearAllActions','OssListActions'
     ]),
     upload(){
       let data={
@@ -74,6 +75,19 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+    changeActiveList(){
+      console.log(this.getByIdActiveResult.ossDataId)
+      let data={
+        obj:this.getByIdActiveResult,
+        item:'vBianji'
+      }
+      if(this.getByIdActiveResult.ossDataId){
+        this.OssListActions(this.getByIdActiveResult.ossDataId)
+      }else{
+        this.clearAllActions()
+      }
+      this.activeActions(data)
     }
   }
 }

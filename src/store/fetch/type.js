@@ -106,6 +106,9 @@ export const SET_ACTIVE_DATA_LIST = 'SET_ACTIVE_DATA_LIST';
 export const GET_ACTIVE_DATA_LIST = 'GET_ACTIVE_DATA_LIST';
 //分类下商品列表
 export const GET_CLASS_DATA_LIST = 'GET_CLASS_DATA_LIST';
+//修改state属性需要全部走mutations
+export const GO_ALL_MUTATIONS = 'GO_ALL_MUTATIONS';
+
 
 
 

@@ -38,7 +38,7 @@
         <el-radio :label=4>微信+APP+H5</el-radio>
       </el-radio-group>
     </p>
-    <p class="tep"><label>状态:</label><!--<input type="text" :value="smallguigeResult.leading">-->
+    <p class="tep"><label>状态:</label>
       <el-radio-group v-model="updata2">
         <el-radio :label=1>已开启</el-radio>
         <el-radio :label=0>未开启</el-radio>
@@ -139,6 +139,7 @@ export default {
         this.value4Result=[]
         this.value4Result.push(curVal.obj.startTime)
         this.value4Result.push(curVal.obj.endTime)
+        this.fileList=[]
       }
     }
   }

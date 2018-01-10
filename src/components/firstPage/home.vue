@@ -41,7 +41,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
-import asidle from '../commodity/subassembly/asidle.vue'
+import asidle from './asidle.vue'
 import vPopover from '../popover/popover.vue'
 export default {
   name: 'HelloWorld',

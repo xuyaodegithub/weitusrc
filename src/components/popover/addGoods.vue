@@ -15,6 +15,39 @@
       </p>
       <p><el-button type="primary" plain size="mini" style="margin-left: 30px" @click="seachData()">搜索</el-button></p>
     </div>
+
+    <el-table
+      v-if="commodityResult.modelSampleCode !=='catlist1'"
+      @row-click="addGoodsImg"
+      v-loading="loading"
+      :height="210"
+      :data="getDataListResulr.rows"
+      tooltip-effect="light"
+      style="width: 100%">
+      <el-table-column
+        prop="productName"
+        label="商品名称"
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop="salePrice"
+        label="价格">
+      </el-table-column>
+      <el-table-column
+        prop="store"
+        label="库存">
+      </el-table-column>
+      <el-table-column
+        prop="sellerName"
+        label="供应商">
+      </el-table-column>
+      <el-table-column
+        prop="brandCode"
+        label="品牌">
+      </el-table-column>
+    </el-table>
+
+    <div v-else>
     <el-table
       v-loading="loading"
       :height="210"
@@ -63,6 +96,7 @@
     <div style="margin: 20px 0 0 10px;">
       <el-button type="primary" plain size="mini" @click="toggleSelection(getDataListResulr.rows)">批量选择</el-button>
       <el-button type="primary" plain size="mini" @click="morePull(multipleSelection)">批量添加</el-button>
+    </div>
     </div>
     <div class="block">
       <el-pagination
@@ -170,13 +204,17 @@
         multipleSelection:[],
       };
     },
+    created(){
+      this.getDataListActions({
+        filter_S_productName:'',
+        page:this.currentPage4,
+        rows:this.value
+      })
+    },
     computed:{
       ...mapGetters([
        'addDataNumResult','commodityResult','getDataListResulr','loading'
       ])
-    },
-    activated(){
-
     },
     methods: {
       ...mapActions([
@@ -248,6 +286,30 @@
         this.currentPage4=val
         this.seachData()
       },
+      addGoodsImg(row,event,column){
+        console.log(row)
+        let key=0
+        if (this.commodityResult.contents) {
+          this.commodityResult.contents.forEach(function(val,index){
+            if(val.id===row.id){
+              key+=1
+            }
+          })
+          if(key===0){
+            let obj=row
+            obj.url=''
+            obj.width=''
+            obj.height=''
+            obj.isTrue=false
+            this.commodityResult.contents.push(obj)
+          }else{
+            this.$message({
+              message:'商品已存在',
+              type:'warning'
+            })
+          }
+        }
+      }
     }
   };
 </script>

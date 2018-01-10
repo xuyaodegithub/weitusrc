@@ -97,6 +97,9 @@ const mutations = {//mutations内是改变state内的值得作用
   [types.GET_CLASS_DATA_LIST] (state,res){
     state.result.classDataListResult=res
   },
+  [types.GO_ALL_MUTATIONS] (state,obj) {
+    state.result.commodityResult.contents[obj.key].url=obj.url
+  },
   //产品list
   [types.SET_ACTIVE_DATA_LIST] (state,data) {
     if(data){
@@ -306,15 +309,10 @@ const mutations = {//mutations内是改变state内的值得作用
   [types.SET_PUSH_CLASS_TREE] (state,data) {
       state.editor.pushClassTreeMM.name=data.name
       state.editor.pushClassTreeMM.logo=data.logo
-     // state.editor.pushClassTreeMM.children=data.children
-      //state.editor.pushClassTreeMM.fullIdPath=data.fullIdPath
-     // state.editor.pushClassTreeMM.fullNamePath=data.fullNamePath
       state.editor.pushClassTreeMM.image=data.image
       state.editor.pushClassTreeMM.leaf=data.leaf
       state.editor.pushClassTreeMM.level=data.level
-      //state.editor.pushClassTreeMM.parentId=data.parentId
       state.editor.pushClassTreeMM.sort=data.sort
-      //state.editor.pushClassTreeMM.status=data.status
   },
   [types.GET_PUSH_CLASS_TREE] (state,res) {
     state.result.pushClassTreeResult=res.data.result

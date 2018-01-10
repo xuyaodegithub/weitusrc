@@ -79,7 +79,6 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   },
   //组件add
   addCommodityActions (context,obj) {
-    //let arr=context.state.result.addCommodityResult.push(obj)
     context.commit('GET_ADD_COMMODITY',obj)
   },
   //活动页面背景设置
@@ -161,16 +160,16 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     axios.get(textCsTow+'/admin/buildblocks/getById',{
       params:context.state.editor.getByIdActiveMM
     }).then(res => {
-      context.commit('GET_GETBYID_ACTIVE',res)
-      if(!res.data.result){
+      if(res.data.result===null){
         context.dispatch('clearAllActions')
+      }else{
+        context.commit('GET_GETBYID_ACTIVE',res)
       }
     }).catch(
-      function(err){
+      (error) => {
         context.dispatch('mError')
       }
     )
-
   },
   //上传活动数据到OSS
   uploadDataToOSSActions (context,data) {
@@ -195,8 +194,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     }).then(res => {
       context.commit('OssListResult',res)
     }).catch(
-      function(err){
-       // context.commit('OssListResult',err.subassembly)
+      (err) => {
         console.log(err)
       }
     )
@@ -206,7 +204,6 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   getDataListActions (context,data) {
     context.commit('changeloading')
     context.commit('SET_ACTIVE_DATA_LIST',data)
-    //context.dispatch('saveFormGet',['/admin/buildblocks/product/list','GET_ACTIVE_DATA_LIST','getDataListMM'])
     axios.get(textCsTow+'/admin/buildblocks/product/list',{
       params:context.state.editor.getDataListMM
     }).then(res => {
@@ -245,7 +242,6 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
           }else{
           }
         }
-
       })
       .catch(function(err){
         console.log(err)
@@ -616,11 +612,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     }
   },
   //城市选择请求
-  getcityListActions(context,id){//console.log(this.status)
-    /*for(let i=0;i<this.listObj.subassembly.length;i++){
-      if(this.listObj.subassembly[i].modelSampleCode=='catlist1'){
-        this.classify=this.listObj.subassembly[i].contents;
-      }*/
+  getcityListActions(context,id){
     axios.get('http://jisuarea.market.alicloudapi.com/area/query',{
       params: {
         parentid:id
@@ -670,7 +662,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       let time=[new Date().setTime(new Date().getTime() - 3600 * 1000 * 24 * 90),start]
       context.commit('GET_VALUE_4',time)
     }
-  }
+  },
 
 }
 

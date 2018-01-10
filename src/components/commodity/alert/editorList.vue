@@ -12,7 +12,7 @@
             class="upload-demo"
             ref="upload"
             name="img"
-            action="/apis/uploadImage"
+            action="http://api-admin.olquan.cn/uploadImage"
             :on-success="upSuccess"
             :on-error="upErre"
             :file-list="fileList"
@@ -58,7 +58,7 @@
           <el-upload
             class="upload-demo"
             ref="upload"
-            action="/apis/uploadImage"
+            action="http://api-admin.olquan.cn/uploadImage"
             name="img"
             list-type="picture"
             :on-success="upSuccess"

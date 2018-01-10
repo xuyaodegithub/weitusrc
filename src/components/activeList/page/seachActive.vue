@@ -32,11 +32,11 @@
           <template slot-scope="scope">
             <span style="margin-left: 10px" v-if="scope.row.start=='0'">未开启</span>
             <span style="margin-left: 10px" v-if="scope.row.start=='1'">已开启</span>
-            <!--<img src="http://www.quanjing.com/image/2017index/jj2.png" alt="">-->
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <input type="text" class="CopyText" v-model="scope.row.ossDataId" style="opacity: 0;position: absolute;z-index: -111;">
             <el-button
               size="mini"
               @click="linkTo(scope.$index, scope.row)" plain>链接</el-button>
@@ -81,6 +81,7 @@ export default {
       input:'',
       currentPage4:1,
       value:10,
+      msg:''
     }
   },
   computed:{
@@ -100,7 +101,17 @@ export default {
       'activeActions','deleteActiveActions','listActiveActions','getByIdActiveActions','OssListActions','clearAllActions'
     ]),
     linkTo(index,row){
-
+    //this.msg=row.ossDataId
+     /* let oInput=document.createElement('input')
+      oInput.setAttribute('type','text')
+      oInput.setAttribute('value',row.ossDataId)
+      oInput.setAttribute('id','copyText')
+      oInput.onload=function(){*/
+      let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
+      console.log(Url.value)
+      Url.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      alert("已复制好，可贴粘。");
     },
     bianji(index,row){
       let data={
@@ -124,7 +135,7 @@ export default {
       this.activeActions(data)
     },
     handleDelete(index,row){
-      this.$confirm('此操作将删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该活动, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
