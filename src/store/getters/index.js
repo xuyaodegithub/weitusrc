@@ -141,10 +141,17 @@
   OssListResult: state => {
       return state.result.OssListResult
   },
+    //获取拼团商品列表
+    productlistResult: state => {
+      return state.result.productlistResult
+  },
 
    loginResult: state => {
       return state.result.loginResult
    },
+    iframeSrc: state => {
+      return state.result.iframeSrc
+    }
 
  }
 

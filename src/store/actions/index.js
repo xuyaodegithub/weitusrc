@@ -216,6 +216,47 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       }
     )
   },
+  //获取拼团商品列表
+  productlistActions (context,data) {
+    context.commit('SET_PRODUCT_LIST',data)
+    context.dispatch('GoodsListGet',['/admin/together/product/list','GET_ACTIVE_DATA_LIST','productlistMM'])
+  },
+  //获取更多试用商品列表
+  freeUseListActions (context,data) {
+    context.commit('SET_FREEUSE_LIST',data)
+    context.dispatch('GoodsListGet',['/admin/freeUse/product/list','GET_ACTIVE_DATA_LIST','freeUseListMM'])
+  },
+  //获取积分试用产品列表
+  scoreBuyListActions (context,data) {
+    context.commit('SET_SCOREBUY_LIST',data)
+    context.dispatch('GoodsListGet',['/admin/scoreBuy/product/list','GET_ACTIVE_DATA_LIST','scoreBuyListMM'])
+  },
+  //商品获取封装
+  GoodsListGet (context,funUrl) {
+    context.commit('changeloading')
+    axios({
+      method: 'get',
+      url:textCsTow+funUrl[0],
+      dataType: 'JSON',
+      params: context.state.editor[funUrl[2]]
+    })
+      .then(function(res){
+        context.commit('changeloading')
+        if(res.data){
+              context.commit(types[funUrl[1]],res)
+        }else{
+          Message({
+            showClose: true,
+            message:res.data.message,
+            type: 'warning'
+          });
+        }
+      })
+      .catch(function(err){
+        context.commit('changeloading')
+        console.log(err)
+      })
+  },
   //清除数据
   clearAllActions(context){
     context.commit('CLEAR_ALL_DATA')
@@ -335,7 +376,6 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
             context.dispatch('getAllPpActions')
             context.dispatch('getAllTreeActions')
         }
-        // context.commit(types[funUrl[1]],res)
       })
       .catch(function(err){
         console.log(err)

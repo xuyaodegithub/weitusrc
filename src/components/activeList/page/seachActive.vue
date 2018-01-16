@@ -107,11 +107,15 @@ export default {
       oInput.setAttribute('value',row.ossDataId)
       oInput.setAttribute('id','copyText')
       oInput.onload=function(){*/
-      let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
+     /* let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
       console.log(Url.value)
       Url.select(); // 选择对象
       document.execCommand("Copy"); // 执行浏览器复制命令
-      alert("已复制好，可贴粘。");
+      alert("已复制好，可贴粘。");*/
+     let obj={
+       title:row.ossDataId
+     }
+     this.$store.commit('changeIframe',obj)
     },
     bianji(index,row){
       let data={

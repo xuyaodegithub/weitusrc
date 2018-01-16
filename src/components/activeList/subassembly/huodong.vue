@@ -12,6 +12,10 @@
         <component :is="activeChangeResult.item"></component>
       </keep-alive>
     </div>
+   <!-- <div v-if="iframeSrc.status" style="height: 400px;margin-top: 15px">
+      <i class="el-icon-close cu" style="float: right;font-size: 18px;" @click="CloseIframe()"></i>
+    <iframe id="oldWindow" :src="iframeSrc.title"></iframe>
+    </div>-->
   </div>
 
 </template>
@@ -33,8 +37,12 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'activeChangeResult','getByIdActiveResult'
+      'activeChangeResult','getByIdActiveResult','iframeSrc'
     ])
+  },
+  mounted(){
+    /*let ll=this.$route.params.id
+    alert(ll)*/
   },
   components:{
     vSeachActive,vNewActive,vBianji,vUpdataActive,vByIdActive
@@ -59,7 +67,13 @@ export default {
         item:'vNewActive'
       }
       this.activeActions(data)
-    }
+    },
+   /* CloseIframe(){
+      let obj={
+        title:''
+      }
+      this.$store.commit('changeIframe',obj)
+    }*/
   }
 }
 </script>
@@ -90,5 +104,10 @@ export default {
     float: right;
     width:100px;
     margin-right:30px;
+  }
+  iframe{
+    height:100%;
+    width:100%;
+    /*border:none;*/
   }
 </style>

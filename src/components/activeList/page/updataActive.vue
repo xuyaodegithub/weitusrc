@@ -18,7 +18,7 @@
         class="upload-demo"
         ref="uploadfirst"
         name="img"
-        action="/apis/admin/buildblocks/img/uploadImage"
+        action="http://106.15.49.17:8888/admin/buildblocks/img/uploadImage"
         :on-success="upSuccessfirst"
         :on-error="upErre"
         :file-list="fileList"

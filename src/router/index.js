@@ -167,11 +167,11 @@ export default new Router({
             name:"NewsSet",
             component:NewsSet
           },
-        {
-          path: '10-1',
-          name:"Active",
-          component:Active
-        },
+          {
+            path: '10-1',
+            name:"Active",
+            component:Active
+          },
           {
             path: 'index',
             name:"Toindex",

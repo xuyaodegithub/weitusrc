@@ -14,9 +14,9 @@
           <div style="display: flex;position: relative">
             <label style="margin-right: 30px">图片:</label>
             <ul id="imgList">
-                <li v-for="(item,key) in commodityResult.contents" @click="address(key)" v-if="commodityResult.contents.length>0" :class="{activete : num===key}">
-                  <img :src="item.image" alt="" class="cu" />
-                  <i class="el-icon-success" style="position: absolute;right: 0;top:0;color:green;" v-if="item.url"></i>
+                <li v-for="(item,key) in commodityResult.contents" @click="address(key)" v-if="commodityResult.contents.length>0" :class="{activete : num===key}" class="cu" >
+                  <img :src="item.image" alt=""/>
+                  <!--<i class="el-icon-success" style="position: absolute;right: 0;top:0;color:#73FF40;" v-if="item.url !== ''"></i>-->
                 </li>
               <li><el-button style="margin-top:25px;" size="mini" @click="addGoodsList()">添加商品</el-button></li>
             </ul>
@@ -38,24 +38,8 @@
             <p>
             <label style="width: 160px;">类型:</label>
             <el-radio-group v-model="radio2" @change="choseGoods(radio2)">
-            <el-radio :label="0">其他</el-radio>
-            <el-radio :label="1">试用中心</el-radio>
-            <el-radio :label="2">产品详情</el-radio>
-            <el-radio :label="3">品牌特卖</el-radio>
-            <el-radio :label="4">限时购</el-radio>
-            <el-radio :label="5">自营超市</el-radio>
-            <el-radio :label="6">家居馆</el-radio>
-            <el-radio :label="7">全球购</el-radio>
-            <el-radio :label="8">美妆</el-radio>
-            <el-radio :label="9">今日上新</el-radio>
-            <el-radio :label="10">拼团</el-radio>
-            <el-radio :label="11">活动</el-radio>
-            <el-radio :label="12">开通粉领</el-radio>
-            <el-radio :label="13">小金库充值</el-radio>
-            <el-radio :label="14">粉领专享</el-radio>
-            <el-radio :label="15">保险</el-radio>
-            <el-radio :label="16">拼团限时购</el-radio>
-          </el-radio-group></p>
+            <el-radio :label="item.which" v-for="(item,index) in labelList" :key="index">{{item.title}}</el-radio>
+            </el-radio-group></p>
             <label style="margin-right: 20px;width: 60px;text-align: right;display: inline-block;">链接:</label><el-input v-model="input" placeholder="请输入内容" size="mini"></el-input>
             <el-button style="width: 60px;margin: 0;padding: 4px;" type="success" size="mini" @click="change()">生成链接</el-button>
             <label style="margin:15px 20px 0 0;width: 60px;text-align: right;display: inline-block;">图片边距:</label><el-input v-model="lineData" placeholder="请输入内容" size="mini" @blur="change2()"></el-input>
@@ -85,7 +69,7 @@
           size="mini"
           @click="updateTag(key)"
         :class="{ addborder: addDataNumResult==key}">
-            {{tag.title}}<i class="el-icon-close" style="float: right;font-size: 14px;" @dblclick="CloseTag(key)"></i>
+            {{tag.title}}<i class="el-icon-close" style="float: right;font-size: 14px;" @dblclick.pervent="CloseTag(key)"></i>
         </el-button>
       </div>
       <div class="addGoodList">
@@ -139,7 +123,6 @@
           :total="classDataListResult.length">
         </el-pagination>
       </div>
-
     </div>
 
   </div>
@@ -163,8 +146,37 @@ export default {
         tags: [],
         currentPage4: 1,
         marginPruct:'',
-        radio2: null,
-        isTrue:true
+        radio2: '',
+        isTrue:true,
+        labelList:[
+          {title:'拼团首页', which:2},
+          {title:'开通粉领', which:3},
+          {title:'保险', which:4},
+          {title:'粉领专享', which:5},
+          {title:'拼团秒杀列表', which:6},
+          {title:'拼团秒杀产品详情', which:7},
+          {title:'正常拼团产品详情', which:1},
+          {title:'超值拼列表', which:8},
+//          {title:'普通产品详情', which:9},
+          {title:'拼洋货列表', which:10},
+          {title:'拼大牌列表', which:11},
+          {title:'清仓拼列表', which:12},
+          //{title:'积分试用列表', which:13},
+          {title:'积分试用产品详情', which:14},
+          {title:'全球购列表', which:15},
+          {title:'家居日用首页', which:16},
+          {title:'品牌馆', which:17},
+          {title:'试用中心', which:19},
+          {title:'产品详情', which:20},
+          {title:'品牌特卖', which:21},
+          {title:'限时购', which:22},
+          {title:'自营超市', which:23},
+          {title:'美妆首页', which:26},
+          {title:'今日上新', which:27},
+          {title:'活动', which:29},
+          {title:'小金库充值', which:30},
+          {title:'其他', which:31},
+        ]
       }
     },
     watch: {
@@ -193,15 +205,8 @@ export default {
     },
     computed: {
       ...mapGetters([
-        'commodityResult','addDataNumResult','classDataListResult'
+        'commodityResult','addDataNumResult','classDataListResult','activeChangeResult'
       ]),
-     /* isShow:function(){
-        if(this.commodityResult.contents[this.num].url){
-          return true
-        }else{
-          return false
-        }
-      }*/
     },
     methods: {
       ...mapActions([
@@ -232,8 +237,8 @@ export default {
           that.commodityResult.contents[that.num].image='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
           that.commodityResult.contents[that.num].width=oImg.width
           that.commodityResult.contents[that.num].height=oImg.height
-          //that.$store.commit('GO_ALL_MUTATIONS',obj)
         }
+        console.log( that.commodityResult.contents[that.num])
       },
       upErre () {
 
@@ -291,13 +296,19 @@ export default {
       change () {
         console.log(this.num)
         if (this.commodityResult.contents.length>0) {
+          //if(this.radio2){}
           this.commodityResult.contents[this.num].url = this.input
+          this.$message({
+            message:'链接添加成功',
+            type:'success'
+          })
         }else{
           this.$message({
             message:'请先添加商品',
             type:'warning'
           })
         }
+        console.log(this.commodityResult.contents[0])
       },
       change2(){
         if(this.lineData){
@@ -372,45 +383,72 @@ export default {
       },
       //图片跳转链接
       choseGoods(key){
-        if(key===0){
-          this.input='#'
-        }else if(key===1){
-          this.input='/weixin/freeUse/freeUse?type=3'
+        if(key===1){
+          this.input='http://ol-h5-preview.olquan.cn/index/goodsDetali/id/'+this.commodityResult.contents[this.num].id+'?isLimit=0'
         }else if(key===2){
           console.log(this.commodityResult.contents[this.num])
-          this.input='/admin/product/searchList?type=2'+'&productId='+this.commodityResult.contents[this.num].id
+          this.input='http://ol-h5-preview.olquan.cn/index/index'
         }else if(key===3){
-          this.input='/ol/weixin/index/indexRecommendBrand'
+          this.input='http://ol-site.olquan.com/weixin/member/openStore'
         }else if(key===4){
-          this.input='/weixin/limitBuy/limitBuy'
+          this.input='http://www.ins-box.com/channelcps?channelCode=966262c61960ed971942347b443c7743&to=http://www.ins-box.com/pagecontent?pageContentId=100044'
         }else if(key===5){
-          this.input='/weixin/lifeHouse/lifeHouse'
+          this.input='http://ol-h5-preview.olquan.cn/mine/index'
         }else if(key===6){
-          this.input='/weixin/lifeHouse/lifeHouse?districtId=330185'
+          this.input='http://ol-h5-preview.olquan.cn/index/hotsale'
         }else if(key===7){
-          this.input='/weixin/globalShopping/vm'
+          this.input='http://ol-h5-preview.olquan.cn/index/goodsDetali/id/'+this.commodityResult.contents[this.num].id+'?isLimit=1'
         }else if(key===8){
-          this.input='/weixin/lifeHouse/lifeHouse?districtId=330104'
-        }else if(key===9){
-          this.input='/weixin/product/product?isNew=1'
-        }else if(key===10){
-          this.input='/index/index'
+          this.input='http://ol-h5-preview.olquan.cn/index/moreindex/id/1'
+        }/*else if(key===9){
+          this.input='http://ol-site.olquan.com/weixin/product/newProductDetail?productId='+this.commodityResult.contents[this.num].id
+        }*/else if(key===10){
+          this.input='http://ol-h5-preview.olquan.cn/index/moreindex/id/4'
         }else if(key===11){
-          this.input='/model/model/searchVM'
+          this.input='http://ol-h5-preview.olquan.cn/index/moreindex/id/2'
         }else if(key===12){
-          this.input='/weixin/member/openStore'
-        }else if(key===13){
-          this.input='/weixin/member/coffersRecharge'
-        }else if(key===14){
-          this.input='/mine/index'
+          this.input='http://ol-h5-preview.olquan.cn/index/moreindex/id/5'
+        }/*else if(key===13){
+          this.input='http://ol-h5-preview.olquan.cn/try/center?type=3'
+        }*/else if(key===14){
+          this.input='http://ol-h5-preview.olquan.cn/try/trygoods/id/'+this.commodityResult.contents[this.num].id
         }else if(key===15){
-          this.input='#'
+          this.input='http://ol-site.olquan.com/weixin/auth?view=/weixin/globalShopping/vm'
         }else if(key===16){
-          this.input='http://ol-h5-preview.olquan.cn/index/goodsDetali/id/#?isLimit=1'
+          this.input='http://ol-site.olquan.com/weixin/lifeHouse/lifeHouse?districtId=330185'
+        }else if(key===17){
+          this.input='http://ol-site.olquan.com/weixin/product/product?brandCode=47'
+        }else if(key===19){
+          this.input='http://ol-h5-preview.olquan.cn/try/center?type=3'
+        }else if(key===20){
+          this.input='http://ol-site.olquan.com/weixin/product/newProductDetail?productId='+this.commodityResult.contents[this.num].id
+        }else if(key===21){
+          this.input='http://ol-site.olquan.com/ol/weixin/index/indexRecommendBrand'
+        }else if(key===22){
+          this.input='http://ol-site.olquan.com/weixin/limitBuy/limitBuy'
+        }else if(key===23){
+          this.input='http://ol-site.olquan.com/weixin/lifeHouse/lifeHouse'
+        }else if(key===26){
+          this.input='http://ol-site.olquan.com/weixin/auth?view=http://ol-site.olquan.com/weixin/lifeHouse/lifeHouse?districtId=330104'
+        }else if(key===27){
+          this.input='http://ol-site.olquan.com/weixin/product/product?isNew=1'
+        }else if(key===29){
+          this.input='http://ol-h5-preview.olquan.cn/activity/newact?id='+this.activeChangeResult.obj.id+'&memberId=778040'
+        }else if(key===30){
+          this.input='http://ol-site.olquan.com/weixin/member/coffersRecharge'
+        }else if(key===31){
+          this.input='#'
         }
       },
       addGoodsList(){
-        this.popoverAlert('vAddGoods')
+        if(this.commodityResult.contents.length>0){
+          this.popoverAlert('vAddGoods')
+        }else{
+          this.$message({
+            message:'请先选择组件',
+            type:'warning'
+          })
+        }
       }
     }
 }
@@ -468,9 +506,9 @@ export default {
     width:100px;
   }
  #zujianData .banner .img ul li.activete{
-   border:1px solid red;
-   width:70px;
-   height:70px;
+   border:2px solid red;
+   width:68px;
+   height:68px;
   }
  #zujianData .img > p > i{
    float: right;

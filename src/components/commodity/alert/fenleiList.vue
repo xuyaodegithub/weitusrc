@@ -73,15 +73,15 @@
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)" plain>删除</el-button>
+            @click="handleDelete(scope.$index, scope.row)" plain style="margin-left: 0">删除</el-button>
           <el-button
             size="mini"
             type="success"
-            @click="newPush(scope.$index, scope.row)" plain>新增子分类</el-button>
+            @click="newPush(scope.$index, scope.row)" plain style="margin-left: 0">新增子分类</el-button>
           <el-button
             size="mini"
             type="primary"
-            @click="oneManage(scope.$index, scope.row)" plain v-if="scope.row.leaf">规格管理</el-button>
+            @click="oneManage(scope.$index, scope.row)" plain v-if="scope.row.leaf" style="margin-left: 0">规格管理</el-button>
         </template>
       </el-table-column>
     </el-table>

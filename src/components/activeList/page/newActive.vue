@@ -18,7 +18,7 @@
         class="upload-demo"
         ref="uploadfirst"
         name="img"
-        action="/apis/admin/buildblocks/img/uploadImage"
+        action="apis/admin/buildblocks/img/uploadImage"
         :on-success="upSuccessfirst"
         :on-error="upErre"
         :file-list="fileList"

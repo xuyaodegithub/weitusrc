@@ -13,14 +13,34 @@
       <p><label>分类:</label>
         <el-input v-model="input2" placeholder="请输入内容" size="mini"></el-input>
       </p>
-      <p><el-button type="primary" plain size="mini" style="margin-left: 30px" @click="seachData()">搜索</el-button></p>
+      <p style="line-height: 28px;">
+        <label  style="width: 70px;">推荐到首页:</label><el-radio-group v-model="upGoods" :disabled="radio2 !== '2'">
+        <el-radio :label=1 style="width: auto;">是</el-radio>
+        <el-radio :label=0 style="width: auto;">否</el-radio>
+      </el-radio-group></p>
+      <p style="line-height: 28px;">
+        <label>产品类型:</label><el-radio-group v-model="classGoods" :disabled="radio2 !== '3'">
+        <el-radio :label=0 style="width: auto;">待审核</el-radio>
+        <el-radio :label=1 style="width: auto;">已通过</el-radio>
+      </el-radio-group></p>
+      <P><label>商品类型:</label>
+        <el-select v-model="radio2" placeholder="请选择" size="mini" style="width: 160px;" @change="changeList(radio2)">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </P>
+      <p style="margin: 0"><el-button type="primary" plain size="mini" style="" @click="seachData()">搜索</el-button></p>
     </div>
 
     <el-table
       v-if="commodityResult.modelSampleCode !=='catlist1'"
       @row-click="addGoodsImg"
       v-loading="loading"
-      :height="210"
+      :height="230"
       :data="getDataListResulr.rows"
       tooltip-effect="light"
       style="width: 100%">
@@ -50,7 +70,7 @@
     <div v-else>
     <el-table
       v-loading="loading"
-      :height="210"
+      :height="200"
       ref="multipleTable"
       :data="getDataListResulr.rows"
       tooltip-effect="light"
@@ -146,7 +166,7 @@
     font-weight: bold;
   }
   .popover-main{
-    padding: 20px 12.5px;
+    padding: 15px 12.5px;
     padding-bottom: 0px;
     width: calc(100% - 25px);
     display: flex;
@@ -159,7 +179,7 @@
        }
   }
   .popover-main p{
-    margin-right: 30px;
+    margin-right: 10px;
   }
   .popover-main .el-input{
     width:160px;
@@ -188,7 +208,14 @@
   }
   .block{
     text-align: right;
+    margin-top: 10px;
   }
+  p .el-radio+.el-radio{
+    margin-left: 0;
+  }
+ /* p .el-radio-group{
+    width:160px;
+  }*/
 </style>
 <script>
   import { mapActions } from 'vuex'
@@ -197,11 +224,27 @@
     data() {
       return {
         input:'',
+        classGoods:1,
         input1:'',
         input2:'',
         currentPage4:1,
         value:10,
         multipleSelection:[],
+        radio2:'请选择商品类型',
+        options: [{
+          value: '1',
+          label: '普通商品'
+        }, {
+          value: '2',
+          label: '拼团商品'
+        }, {
+          value: '3',
+          label: '积分试用商品'
+        }, {
+          value: '4',
+          label: '更多试用商品'
+        }],
+        upGoods:1
       };
     },
     created(){
@@ -210,6 +253,7 @@
         page:this.currentPage4,
         rows:this.value
       })
+
     },
     computed:{
       ...mapGetters([
@@ -218,7 +262,7 @@
     },
     methods: {
       ...mapActions([
-        'popoverAlert','getDataListActions'
+        'popoverAlert','getDataListActions','productlistActions','freeUseListActions','scoreBuyListActions'
       ]),
       morePull(rows) {
         let keynum=0
@@ -271,10 +315,28 @@
       seachData(){
         let data={
           filter_S_productName:this.input,
+          filter_S_productName_contains:this.input,
           page:this.currentPage4,
-          rows:this.value
+          rows:this.value,
+          filter_I_isRecommend:this.upGoods,
+          sortField:'sort',
+          filter_I_status:this.classGoods
         }
-        this.getDataListActions(data)
+        if(this.radio2==='1'){
+          this.getDataListActions(data)
+        }else if(this.radio2==='2'){
+          this.productlistActions(data)
+        }else if(this.radio2==='3'){
+          this.scoreBuyListActions(data)
+        }else if(this.radio2==='4'){
+          this.freeUseListActions(data)
+        }else{
+          this.$message({
+            message:'请选择商品类型',
+            type:'warning'
+          })
+        }
+
       },
       handleSizeChange(val) {
         //console.log(`每页 ${val} 条`);
@@ -297,6 +359,9 @@
           })
           if(key===0){
             let obj=row
+            if(!obj.image){
+              obj.image=''
+            }
             obj.url=''
             obj.width=''
             obj.height=''
@@ -309,6 +374,9 @@
             })
           }
         }
+      },
+      changeList(key){
+
       }
     }
   };

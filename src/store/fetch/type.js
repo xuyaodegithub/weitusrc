@@ -106,8 +106,16 @@ export const SET_ACTIVE_DATA_LIST = 'SET_ACTIVE_DATA_LIST';
 export const GET_ACTIVE_DATA_LIST = 'GET_ACTIVE_DATA_LIST';
 //分类下商品列表
 export const GET_CLASS_DATA_LIST = 'GET_CLASS_DATA_LIST';
+//获取拼团商品列表
+export const SET_PRODUCT_LIST = 'SET_PRODUCT_LIST';
+export const GET_PRODUCT_LIST = 'GET_PRODUCT_LIST';
+//获取更多试用商品列表
+export const SET_FREEUSE_LIST = 'SET_FREEUSE_LIST';
+export const GET_FREEUSE_LIST = 'GET_FREEUSE_LIST';
+//获取积分试用产品列表
+export const SET_SCOREBUY_LIST = 'SET_SCOREBUY_LIST';
+export const GET_SCOREBUY_LIST = 'GET_SCOREBUY_LIST';
 //修改state属性需要全部走mutations
-export const GO_ALL_MUTATIONS = 'GO_ALL_MUTATIONS';
 
 
 

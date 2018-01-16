@@ -23,13 +23,26 @@
 
 
           <!--等分图片-->
-          <div class="img" v-if="item.modelSampleCode=='f5'">
-            <!--<img  :src='goodImg'/>-->
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==2" style="width: 50%;"  :src='itemSon.image'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 33.3%;" :src='itemSon.image'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width:100%;height:100px;" :src='itemSon.image'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width: 25%;"  :src='itemSon.image'/>
-              <img v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 20%;"  :src='itemSon.image'/>
+          <div class="img" v-if="item.modelSampleCode=='f5'" :style="backStyle">
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==2" style="width:49.5%">
+              <img  :src='itemSon.image'/>
+            </div>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 32.7%;">
+              <img  :src='itemSon.image'/>
+            </div>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width: 100%;">
+              <img  :src='itemSon.image'/>
+            </div>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width:24.25%;">
+              <img  :src='itemSon.image'/>
+            </div>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 19.2%;">
+              <img  :src='itemSon.image'/>
+            </div>
+              <!--<img v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 33.3%;" :src='itemSon.image'/>-->
+              <!--<img v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width:100%;height:100px;" :src='itemSon.image'/>-->
+              <!--<img v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width: 25%;"  :src='itemSon.image'/>-->
+              <!--<img v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 20%;"  :src='itemSon.image'/>-->
           </div>
         </div>
 
@@ -44,13 +57,14 @@
                 plain
                 :key="key"
                 size="mini"
-                style="margin: 0;padding: 6px;font-weight: 600;color: #ffffff;"
+                style="margin: 0;padding: 6px;font-weight: 600;color: #999999;"
+                :class="{background : keyNum===key}"
                 @click="changeKey(key)"
               >{{itemsSon.title}}</li>
           </ul>
         </div>
         <!--分类产品-->
-        <div class="cent"  v-if="addCommodityResult[addCommodityResult.length-1].contents.length!=0">
+        <div class="cent"  v-if="addCommodityResult[addCommodityResult.length-1].contents.length>0 && addCommodityResult[addCommodityResult.length-1].modelSampleCode==='catlist1'">
           <ul class="init">
             <li v-for='item in addCommodityResult[addCommodityResult.length-1].contents[keyindex].dataList'>
               <img :src="item.image" alt="">
@@ -71,6 +85,7 @@
 		data : function() {
 			return{
         keyindex:0,
+        keyNum:0,
 				title:'',
 				imgLength:'',
 				lunboList:[],
@@ -118,7 +133,7 @@
       ]),
       styleobj:function (){
         let obj={}
-        if( this.backColorResult.modelSampleCode=='color'){
+        if(this.backColorResult.modelSampleCode=='color'){
          obj = {'background':this.backColorResult.contents}
         }else if(this.backColorResult.modelSampleCode=="imgUrl"){
           obj = {
@@ -130,6 +145,16 @@
         console.log(obj)
         return obj
       },
+      backStyle:function(){
+        let obj={}
+       this.addCommodityResult.forEach(function(val,index){
+         if(val.modelSampleCode==='f5' && val.length===2){
+           obj={
+
+           }
+         }
+       })
+      }
       /*objPadd:function(){
         let obj={}
         if(this.addCommodityResult[this.addCommodityResult.length-1].modelSampleCode==='catlist1'){
@@ -146,9 +171,9 @@
       ]),
       changeKey(key){
         this.keyindex=key
+        this.keyNum=key
       },
       detail(url){
-//        console.log(url)
        window.open(url)
         let data=1515493081168-60000
         //alert(data)
@@ -178,7 +203,6 @@
   width: 100%;
   height: 70px;
   line-height: 40px;
-  /*background: #F0FAFF;*/
   font-size: 14px;
   border-bottom: 1px solid #C5E2F0;
 }
@@ -249,12 +273,16 @@
 
 	.img{
 		width: 100%;
+    display: flex;
+    justify-content: space-between;
 		overflow: hidden;
+    margin-bottom: 2px;
 		img{
 
 			display: block;
-			max-width: 100%;
-			float: left;
+			width: 100%;
+			//float: left;
+
 
     }
 	}
@@ -264,23 +292,18 @@
 			width:100%;
 		   	white-space:nowrap;
 		    overflow: auto;
+      .background{
+        background:skyblue;
+      }
 		    li{
-		    	  font-size: 0.30rem;
-			      text-align: center;
 			      display: inline-block;
-			      line-height: .88rem;
-			      width: 1.60rem;
 			      padding:0 ;
 		  		  margin: 0;
-
-			      vertical-align: top;
-
 		    }
 		}
 
 	}
 	.cent{
-		padding: .20rem .12rem;
     .init{
       display: flex;
       flex-wrap: wrap;

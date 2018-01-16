@@ -205,6 +205,29 @@ const  editor = {//定义入参
       page:'',
       rows:''
     },
+  //获取拼团商品列表
+  productlistMM: {
+    filter_I_isRecommend:'',
+    filter_S_productName_contains:'',
+    page:'',
+    rows:'',
+    sortField:''
+  },
+  //获取更多试用商品列表
+  freeUseListMM: {
+    filter_S_productName_contains:'',
+    page:'',
+    rows:'',
+    sortField:''
+  },
+  //获取积分试用产品列表
+  scoreBuyListMM: {
+    filter_I_status:'',
+    filter_S_productName_contains:'',
+    page:'',
+    rows:'',
+    sortField:''
+  }
 
 };
 
@@ -656,8 +679,18 @@ const result = { //接收请求后的数据
   getDataListResulr:[],
   //分类下产品列表接受
   classDataListResult:[],
+  //获取拼团商品列表
+  productlistResult:[],
+  //获取更多试用商品列表
+  freeUseListResult:[],
+  //获取积分试用产品列表
+  scoreBuyListResult:[],
 
   loginResult:[],
+  iframeSrc:{
+    title:'',
+    status:false
+  }
 }
 
 const state = {

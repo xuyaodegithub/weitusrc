@@ -97,9 +97,6 @@ const mutations = {//mutations内是改变state内的值得作用
   [types.GET_CLASS_DATA_LIST] (state,res){
     state.result.classDataListResult=res
   },
-  [types.GO_ALL_MUTATIONS] (state,obj) {
-    state.result.commodityResult.contents[obj.key].url=obj.url
-  },
   //产品list
   [types.SET_ACTIVE_DATA_LIST] (state,data) {
     if(data){
@@ -538,6 +535,42 @@ const mutations = {//mutations内是改变state内的值得作用
   //时间选择接受
   [types.GET_VALUE_4] (state,res) {
     state.result.value4Result=res
+  },
+  //获取拼团商品列表
+  [types.SET_PRODUCT_LIST] (state,data) {
+    state.editor.productlistMM.filter_I_isRecommend=data.filter_I_isRecommend
+    state.editor.productlistMM.filter_S_productName_contains=data.filter_S_productName_contains
+    state.editor.productlistMM.page=data.page
+    state.editor.productlistMM.rows=data.rows
+    state.editor.productlistMM.sortField=data.sortField
+  },
+  [types.GET_PRODUCT_LIST] (state,res) {
+    state.result.productlistResult=res.data
+  },
+  //获取更多试用商品列表
+  [types.SET_FREEUSE_LIST] (state,data) {
+    state.editor.freeUseListMM.filter_S_productName_contains=data.filter_S_productName_contains
+    state.editor.freeUseListMM.page=data.page
+    state.editor.freeUseListMM.rows=data.rows
+    state.editor.freeUseListMM.sortField=data.sortField
+  },
+  [types.GET_FREEUSE_LIST] (state,res) {
+    state.result.freeUseListResult=res.data
+  },
+  //获取积分试用产品列表
+  [types.SET_SCOREBUY_LIST] (state,data) {
+    state.editor.scoreBuyListMM.filter_I_status=data.filter_I_status
+    state.editor.scoreBuyListMM.filter_S_productName_contains=data.filter_S_productName_contains
+    state.editor.scoreBuyListMM.page=data.page
+    state.editor.scoreBuyListMM.rows=data.rows
+    state.editor.scoreBuyListMM.sortField=data.sortField
+  },
+  [types.GET_SCOREBUY_LIST] (state,res) {
+    state.result.scoreBuyListResult=res.data
+  },
+  changeIframe(state,data){
+    state.result.iframeSrc.title='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/buildblocks_data/'+data.title
+    state.result.iframeSrc.status=!state.result.iframeSrc.status
   }
 
 }

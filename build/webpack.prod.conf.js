@@ -59,6 +59,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         : config.build.index,
       template: 'index.html',
       inject: true,
+      //hash:true,//即会使打包生成的index.html中的js和css路径带有？+随机字符串
       minify: {
         removeComments: true,
         collapseWhitespace: true,
