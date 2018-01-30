@@ -18,7 +18,7 @@
         class="upload-demo"
         ref="uploadfirst"
         name="img"
-        action="apis/admin/buildblocks/img/uploadImage"
+        action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
         :on-success="upSuccessfirst"
         :on-error="upErre"
         :file-list="fileList"
@@ -40,7 +40,7 @@
       <el-radio v-model="updata2" label=1>开启</el-radio>
       <el-radio v-model="updata2" label=0>不开启</el-radio>
     </p>
-    <p><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
+    <p>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">确定</el-button></p>
   </div>
 
@@ -61,7 +61,8 @@ export default {
       input3:'',
       input4:'',
       updata2:'',
-      fileList:[]
+      fileList:[],
+      headers:{'Origin':'application/x-www-form-urlencoded'}
     }
   },
   activated(){
@@ -82,7 +83,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'activeActions','insertActiveActions'
+      'activeActions','insertActiveActions','popoverAlert'
     ]),
     submitUploadfirst () {
       this.$refs.uploadfirst.submit();

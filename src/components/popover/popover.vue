@@ -6,7 +6,7 @@
 
 <style scoped>
   .popover{
-      z-index: 30;
+      z-index: 1000;
       position: relative;
       width:auto;
       height: auto;
@@ -15,10 +15,13 @@
 <script>
   import vBalance from './balance.vue'
 //活动管理
-  import vAddSubass from './addSubass.vue'
-  import vAddGoods from './addGoods.vue'
-  import Vdetail from './detail.vue'
-  import VaddBackground from './addBackground.vue'
+  import vAddSubass from '../activeList/alert/addSubass.vue'
+  import vAddGoods from '../activeList/alert/addGoods.vue'
+  import Vdetail from '../activeList/alert/detail.vue'
+  import VaddBackground from '../activeList/alert/addBackground.vue'
+  import VactiveDress from '../activeList/alert/activeDress.vue'
+  import VclassSell from '../activeList/alert/classSell.vue'
+  import VactiveLianJian from '../activeList/alert/activeLianjie.vue'
 
 
   import { mapActions } from 'vuex'
@@ -30,7 +33,7 @@
       };
     },
     components:{
-     vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground
+     vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground,VactiveDress,VclassSell,VactiveLianJian
 
     },
     methods: {

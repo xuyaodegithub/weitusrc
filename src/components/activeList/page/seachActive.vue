@@ -36,7 +36,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <input type="text" class="CopyText" v-model="scope.row.ossDataId" style="opacity: 0;position: absolute;z-index: -111;">
+            <input type="text" class="CopyText" v-model="msgSS" style="opacity: 0;position: absolute;z-index: -111;">
             <el-button
               size="mini"
               @click="linkTo(scope.$index, scope.row)" plain>链接</el-button>
@@ -81,7 +81,7 @@ export default {
       input:'',
       currentPage4:1,
       value:10,
-      msg:''
+      msgSS:''
     }
   },
   computed:{
@@ -98,24 +98,27 @@ export default {
   },
   methods: {
     ...mapActions([
-      'activeActions','deleteActiveActions','listActiveActions','getByIdActiveActions','OssListActions','clearAllActions'
+      'activeActions','deleteActiveActions','listActiveActions','getByIdActiveActions','OssListActions','clearAllActions','popoverAlert'
     ]),
     linkTo(index,row){
     //this.msg=row.ossDataId
-     /* let oInput=document.createElement('input')
-      oInput.setAttribute('type','text')
-      oInput.setAttribute('value',row.ossDataId)
-      oInput.setAttribute('id','copyText')
-      oInput.onload=function(){*/
+     // let oInput=document.createElement('input')
+      //oInput.setAttribute('type','text')
+     // oInput.setAttribute('value',row.ossDataId)
+     // oInput.setAttribute('id','copyText')
+     // oInput.onload=function() {
+     // alert( '活动地址：http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
+      this.$store.commit('activeIdchange',row.id)
+      this.popoverAlert('VactiveDress')
      /* let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
-      console.log(Url.value)
-      Url.select(); // 选择对象
-      document.execCommand("Copy"); // 执行浏览器复制命令
-      alert("已复制好，可贴粘。");*/
-     let obj={
-       title:row.ossDataId
-     }
-     this.$store.commit('changeIframe',obj)
+        Url.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+       // alert("已复制好，可贴粘。");
+      this.$message({
+        message:'已复制好，可贴粘',
+        type:'success'
+      })*/
+      //}
     },
     bianji(index,row){
       let data={

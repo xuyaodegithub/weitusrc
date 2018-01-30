@@ -16,6 +16,7 @@ Vue.use(ElementUI)
 //Vue.use(vueResource)
 //Vue.config.silent = true  //取消vue所有日志和警告
 Vue.config.productionTip = false
+//Vue.http.options.emulateJSON = true
 //Vue.$http.options.emulateJSON=true
 /* eslint-disable no-new */
 const vm = new Vue({
@@ -28,7 +29,11 @@ const vm = new Vue({
 })
 //图片地址处理
 Vue.filter('ToUrl', function (val) {
-  return 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + val
+  if(val){
+    return val
+  }else{
+    return 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/23c31d63de867f568af9d1b8a3d193573b456a41'
+  }
 });
 //保留小数点后面两位
  Vue.filter('Tofix',function(val){

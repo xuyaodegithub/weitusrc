@@ -71,6 +71,7 @@ const mutations = {//mutations内是改变state内的值得作用
   },
   //组件add
   [types.GET_ADD_COMMODITY] (state,res) {
+    console.log(state.result.addCommodityResult)
     if(res){
       let arr=state.result.addCommodityResult.concat(res)
       state.result.addCommodityResult=arr
@@ -161,10 +162,10 @@ const mutations = {//mutations内是改变state内的值得作用
       state.editor.updateActiveMM.id=''
     }
   },
- /* [types.GET_UPDATE_ACTIVE] (state,res){
-    state.result.updateActiveResult=res.result
-  },*/
- //删除活动
+  /* [types.GET_UPDATE_ACTIVE] (state,res){
+     state.result.updateActiveResult=res.result
+   },*/
+  //删除活动
   [types.SET_DELETE_ACTIVE] (state,id) {
     if(id){
       state.editor.deleteActiveMM.id=id
@@ -199,12 +200,40 @@ const mutations = {//mutations内是改变state内的值得作用
   },
   //oss数据返回
   OssListResult(state,res){
-      state.result.addCommodityResult=res.data.subassembly
-      state.result.backColorResult=res.data.background
+    state.result.addCommodityResult=res.data.subassembly
+    state.result.backColorResult=res.data.background
   },
 //添加活动分类下商品index
   [types.GET_ADD_DATA_NUM] (state,key) {
     state.result.addDataNum = key
+  },
+  //changeradios
+  changeRadios(state,key){
+    if(key){
+      state.result.radiosResult=key
+    }
+  },
+  //changeradios
+  OtherImgUrl(state,key){
+    state.result.ImgUrlResult=key
+  },
+  //pintuanResult
+  pinTuanOr(state,key){
+    if(key){
+      state.result.pintuanResult=key
+    }
+  },
+  //移动组件
+  changmove(state,data){
+    state.result.addCommodityResult=data
+  },
+  //活动id
+  activeIdchange(state,id){
+    if(id){
+      state.result.activeId=id
+    }else{
+      state.result.activeId=''
+    }
   },
   //清除数据
   [types.CLEAR_ALL_DATA] (state){
@@ -213,7 +242,7 @@ const mutations = {//mutations内是改变state内的值得作用
     state.result.getByIdActiveResult={}
     state.result.addCommodityResult=[]
     state.result.commodityResult={
-      nsme:'',
+      name:'',
       contents:[]
     }
   },
@@ -236,11 +265,11 @@ const mutations = {//mutations内是改变state内的值得作用
   },
   //新增品牌
   [types.SET_NEW_PUSH] (state,data) {
-      state.editor.newPushMM.name=data.name
-      state.editor.newPushMM.logo=data.logo
-      state.editor.newPushMM.enName=data.enName
-      state.editor.newPushMM.desc=data.desc
-      state.editor.newPushMM.country=data.country
+    state.editor.newPushMM.name=data.name
+    state.editor.newPushMM.logo=data.logo
+    state.editor.newPushMM.enName=data.enName
+    state.editor.newPushMM.desc=data.desc
+    state.editor.newPushMM.country=data.country
   },
   [types.GET_NEW_PUSH] (state,res) {
     state.result.newPushResult = res.data.result
@@ -304,12 +333,12 @@ const mutations = {//mutations内是改变state内的值得作用
   },
   //新增分类
   [types.SET_PUSH_CLASS_TREE] (state,data) {
-      state.editor.pushClassTreeMM.name=data.name
-      state.editor.pushClassTreeMM.logo=data.logo
-      state.editor.pushClassTreeMM.image=data.image
-      state.editor.pushClassTreeMM.leaf=data.leaf
-      state.editor.pushClassTreeMM.level=data.level
-      state.editor.pushClassTreeMM.sort=data.sort
+    state.editor.pushClassTreeMM.name=data.name
+    state.editor.pushClassTreeMM.logo=data.logo
+    state.editor.pushClassTreeMM.image=data.image
+    state.editor.pushClassTreeMM.leaf=data.leaf
+    state.editor.pushClassTreeMM.level=data.level
+    state.editor.pushClassTreeMM.sort=data.sort
   },
   [types.GET_PUSH_CLASS_TREE] (state,res) {
     state.result.pushClassTreeResult=res.data.result
@@ -337,8 +366,8 @@ const mutations = {//mutations内是改变state内的值得作用
   //检测分类存在
   [types.SET_CHECK_CLASS_TREE] (state,data){
     if(data){
-        state.editor.checkClassTreeMM.name=data.name
-        state.editor.checkClassTreeMM.id=data.id
+      state.editor.checkClassTreeMM.name=data.name
+      state.editor.checkClassTreeMM.id=data.id
     }else{
       state.editor.checkClassTreeMM.name=''
       state.editor.checkClassTreeMM.id=''
@@ -391,7 +420,7 @@ const mutations = {//mutations内是改变state内的值得作用
     if(data){
       state.editor.updateProductMM.logo=data.logo
       state.editor.updateProductMM.name=data.name
-     state.editor.updateProductMM.id=data.id
+      state.editor.updateProductMM.id=data.id
       state.editor.updateProductMM.specId=data.specId
     }else{
       state.editor.updateProductMM.logo=''
@@ -524,7 +553,7 @@ const mutations = {//mutations内是改变state内的值得作用
   [types.GET_PARAMS_BY_CATEGORYID] (state,res){
     state.result.getParamsByCategoryIdResult=res.data.result
   },
-    //城市列表
+  //城市列表
   [types.GET_SMALL_CITYLIST](state,res){
     state.result.smallCityList=res.data.result
   },
@@ -571,6 +600,10 @@ const mutations = {//mutations内是改变state内的值得作用
   changeIframe(state,data){
     state.result.iframeSrc.title='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/buildblocks_data/'+data.title
     state.result.iframeSrc.status=!state.result.iframeSrc.status
+  },
+  ////
+  ImgnumKey(state,key){
+    state.result.ImgnumKey=key
   }
 
 }

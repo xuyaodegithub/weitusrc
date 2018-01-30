@@ -8,15 +8,17 @@ import * as types from '../fetch/type';
 import { Message } from 'element-ui';
 //import { Loading } from 'element-ui';
 import api from '../fetch/api'
-var num=1
+var num=0
 var textCs=''
 var textCsTow=''
   if(num===0){
     textCs='/apis'
     textCsTow='/apis'
   }else{
-    textCs='http://api-admin.olquan.cn/'
-    textCsTow='http://106.15.49.17:8888/'
+    textCs='http://api-admin.olquan.cn'
+    //textCsTow='http://106.15.49.17:8888/'
+    //textCsTow='http://ol-admin.olquan.com'
+    textCsTow='http://ol-h5-admin.olquan.cn'
   }
 const actions = {//actions,mutations内的方法只能有两个参数，一个是context一个是外部调用时传参，event事件对象参数除外
   //弹框修改属性
@@ -108,6 +110,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       if(res.ok){
         context.dispatch('mSuccess')
         context.dispatch('listActiveActions',{page:1,rows:10})
+        context.dispatch('activeActions',{obj:{},item:'vSeachActive'})
       }else{
         context.dispatch('mWarning',res)
       }
@@ -124,6 +127,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     if(res.ok){
       context.dispatch('mSuccess')
       context.dispatch('listActiveActions',{page:1,rows:10})
+      context.dispatch('activeActions',{obj:{},item:'vSeachActive'})
     }else{
       context.dispatch('mWarning',res)
     }
@@ -174,10 +178,15 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   //上传活动数据到OSS
   uploadDataToOSSActions (context,data) {
     context.commit('SET_UPLOAD_DATATOOSS',data)
-    api.addguige(textCsTow+'/admin/buildblocks/uploadDataToOSS',qs.stringify(context.state.editor.uploadDataToOSSMM)).then(res => {
-      if(res.ok){
+   axios.post(textCsTow+'/admin/buildblocks/uploadDataToOSS',qs.stringify(context.state.editor.uploadDataToOSSMM),{
+      headers:{
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(res => {
+      if(res.data.ok){
         context.dispatch('mSuccess')
         context.dispatch('listActiveActions',{page:1,rows:10})
+        context.dispatch('activeActions',{obj:{},item:'vSeachActive'})
       }else{
         context.dispatch('mWarning',res)
       }
@@ -190,7 +199,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   //oss数据返回
   OssListActions (context,id) {
     axios.get('http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/buildblocks_data/'+id,{
-      params:{}
+      params:{},
     }).then(res => {
       context.commit('OssListResult',res)
     }).catch(
@@ -219,17 +228,17 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   //获取拼团商品列表
   productlistActions (context,data) {
     context.commit('SET_PRODUCT_LIST',data)
-    context.dispatch('GoodsListGet',['/admin/together/product/list','GET_ACTIVE_DATA_LIST','productlistMM'])
+    context.dispatch('GoodsListGet',['/admin/together/product/list','GET_PRODUCT_LIST','productlistMM'])
   },
   //获取更多试用商品列表
   freeUseListActions (context,data) {
     context.commit('SET_FREEUSE_LIST',data)
-    context.dispatch('GoodsListGet',['/admin/freeUse/product/list','GET_ACTIVE_DATA_LIST','freeUseListMM'])
+    context.dispatch('GoodsListGet',['/admin/freeUse/product/list','GET_FREEUSE_LIST','freeUseListMM'])
   },
   //获取积分试用产品列表
   scoreBuyListActions (context,data) {
     context.commit('SET_SCOREBUY_LIST',data)
-    context.dispatch('GoodsListGet',['/admin/scoreBuy/product/list','GET_ACTIVE_DATA_LIST','scoreBuyListMM'])
+    context.dispatch('GoodsListGet',['/admin/scoreBuy/product/list','GET_SCOREBUY_LIST','scoreBuyListMM'])
   },
   //商品获取封装
   GoodsListGet (context,funUrl) {

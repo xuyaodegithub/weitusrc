@@ -1,7 +1,8 @@
 <template>
   <div id="smalltitle">
-    <p id="toindex"><router-link to="index">首页</router-link> &gt; 活动管理
+    <p id="toindex">
       <el-button type="success" round size="mini" icon="el-icon-plus" @click="newPush()" style="margin-top: 10px">新增</el-button>
+      <el-button type="success" size="mini" round style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
     </p>
     <div class="logo-list">
       <label>活动ID</label><el-input v-model="input" placeholder="请输入活动ID" size="small"></el-input>
@@ -12,10 +13,6 @@
         <component :is="activeChangeResult.item"></component>
       </keep-alive>
     </div>
-   <!-- <div v-if="iframeSrc.status" style="height: 400px;margin-top: 15px">
-      <i class="el-icon-close cu" style="float: right;font-size: 18px;" @click="CloseIframe()"></i>
-    <iframe id="oldWindow" :src="iframeSrc.title"></iframe>
-    </div>-->
   </div>
 
 </template>
@@ -37,19 +34,15 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'activeChangeResult','getByIdActiveResult','iframeSrc'
+      'activeChangeResult','getByIdActiveResult','popoverAlive','addCommodityResult','backColorResult'
     ])
-  },
-  mounted(){
-    /*let ll=this.$route.params.id
-    alert(ll)*/
   },
   components:{
     vSeachActive,vNewActive,vBianji,vUpdataActive,vByIdActive
   },
   methods: {
     ...mapActions([
-      'activeActions','getByIdActiveActions'
+      'activeActions','getByIdActiveActions','uploadDataToOSSActions'
     ]),
     seachActive(item){
       if(item){
@@ -68,12 +61,18 @@ export default {
       }
       this.activeActions(data)
     },
-   /* CloseIframe(){
+    upOk(){
       let obj={
-        title:''
+        subassembly: this.addCommodityResult,
+        background: this.backColorResult
       }
-      this.$store.commit('changeIframe',obj)
-    }*/
+      let data={
+        id:this.activeChangeResult.obj.id,
+        data:JSON.stringify(obj)
+      }
+      console.log(data)
+      this.uploadDataToOSSActions(data)
+    },
   }
 }
 </script>
@@ -105,9 +104,10 @@ export default {
     width:100px;
     margin-right:30px;
   }
-  iframe{
-    height:100%;
-    width:100%;
-    /*border:none;*/
+  .alertshow{
+    position: absolute;
+    left:46%;
+    top:60%;
+    z-index:1000;
   }
 </style>

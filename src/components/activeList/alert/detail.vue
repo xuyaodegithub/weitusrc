@@ -13,31 +13,31 @@
           <!--<img :src="item.contents[0].image | ToUrl" alt="" v-if="item.modelSampleCode=='advertisingFigure' && item.contents.length>0" style="width: 100%;height: 160px;">-->
           <el-carousel indicator-position="none"  :interval="1000"  height="150px" v-if="item.modelSampleCode=='advertisingFigure' && item.contents.length>0">
             <el-carousel-item v-for="(items,index) in item.contents" :key="index">
-              <img :src="items.image" alt=""  style="width: 100%;height: 160px;">
+              <img :src="items.image | ToUrl" alt=""  style="width: 100%;height: 160px;">
             </el-carousel-item>
           </el-carousel>
           <!--能滑动的-->
             <ul class="touchImg" v-if="item.modelSampleCode=='titleproducttouch'">
-              <li v-for="itemSons in item.contents" style="height: 70px;width: 70px;border: 1px solid skyblue;" @click="detail(itemSons.url)"><img :src="itemSons.image" style="height: 100%;width: 100%;"/></li>
+              <li v-for="itemSons in item.contents" style="height: 70px;width: 70px;border: 1px solid skyblue;"><img :src="itemSons.image | ToUrl" style="height: 100%;width: 100%;"/></li>
             </ul>
 
 
           <!--等分图片-->
           <div class="img" v-if="item.modelSampleCode=='f5'" :style="backStyle">
-            <div  v-for="itemSon in item.contents" v-if="item.contents.length==2" style="width:49.5%">
-              <img  :src='itemSon.image'/>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==2" style="width:50%">
+              <img  :src='itemSon.image | ToUrl'/>
             </div>
-            <div  v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 32.7%;">
-              <img  :src='itemSon.image'/>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 33.3%;">
+              <img  :src='itemSon.image | ToUrl'/>
             </div>
             <div  v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width: 100%;">
-              <img  :src='itemSon.image'/>
+              <img  :src='itemSon.image | ToUrl'/>
             </div>
-            <div  v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width:24.25%;">
-              <img  :src='itemSon.image'/>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==4" style="width:25%;">
+              <img  :src='itemSon.image | ToUrl'/>
             </div>
-            <div  v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 19.2%;">
-              <img  :src='itemSon.image'/>
+            <div  v-for="itemSon in item.contents" v-if="item.contents.length==5" style="width: 20%;">
+              <img  :src='itemSon.image | ToUrl'/>
             </div>
               <!--<img v-for="itemSon in item.contents" v-if="item.contents.length==3" style="width: 33.3%;" :src='itemSon.image'/>-->
               <!--<img v-for="itemSon in item.contents" v-if="item.contents.length==1" style="width:100%;height:100px;" :src='itemSon.image'/>-->
@@ -276,7 +276,6 @@
     display: flex;
     justify-content: space-between;
 		overflow: hidden;
-    margin-bottom: 2px;
 		img{
 
 			display: block;
@@ -337,7 +336,7 @@
 			li{
         width:49.5%;
 				background: #fff;
-				margin-bottom:.10rem;
+				margin-bottom:2.6px;
 
 				img{
 					display: block;

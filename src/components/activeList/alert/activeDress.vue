@@ -1,32 +1,20 @@
 <template>
   <div class="demo incomingHistory">
     <div class="popover-head">
-      <span class="title">添加组件</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
+      <span class="title">活动链接</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
     <div class="popover-main">
-      <p><label>组件名称:</label>
-        <el-input v-model="input" placeholder="请输入组件名称" size="mini"></el-input>
-      </p>
-      <p><label style="vertical-align: top;">组件类型:</label>
-        <el-checkbox-group v-model="checkList">
-          <el-checkbox label="轮播图"></el-checkbox>
-          <el-checkbox label="BANNER"></el-checkbox>
-          <el-checkbox label="等分（最多5等分）"></el-checkbox>
-          <el-checkbox label="滑动的"></el-checkbox>
-          <el-checkbox label="产品列表"></el-checkbox>
-        </el-checkbox-group>
+      <p>
+        http://ol-site.olquan.com/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id={{this.$store.state.result.activeId}}
       </p>
     </div>
-    <p>
-    <el-button type="primary" plain size="mini" @click="addSub()">添加</el-button>
-    </p>
   </div>
 </template>
 
 <style scoped>
   .demo{
     width: 500px;
-    height: 220px;
+    height: 120px;
     background: #F0FAFF;
     margin-left: -300px;
     margin-top: -220px;
@@ -99,12 +87,12 @@
     },
     computed: {
       ...mapGetters([
-        'popoverAlive'
+        'popoverAlive','addCommodityResult'
       ])
     },
     methods: {
       ...mapActions([
-        'popoverAlert','addCommodityActions'
+        'popoverAlert','addCommodityActions','popoverAlert'
       ]),
       addSub () {
         //console.log(this.checkList)
@@ -144,7 +132,13 @@
             arr.push(obj)
           }
         })
+       /* let  arr2=this.addCommodityResult
+        for(let i=0;i<arr.length;i++){
+          arr2.push(arr[i])
+        }*/
+
         this.addCommodityActions(arr)
+        this.popoverAlert()
       }
     }
   };

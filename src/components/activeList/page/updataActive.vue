@@ -18,7 +18,7 @@
         class="upload-demo"
         ref="uploadfirst"
         name="img"
-        action="http://106.15.49.17:8888/admin/buildblocks/img/uploadImage"
+        action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
         :on-success="upSuccessfirst"
         :on-error="upErre"
         :file-list="fileList"
@@ -44,7 +44,7 @@
         <el-radio :label=0>未开启</el-radio>
       </el-radio-group>
     </p>
-    <p><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
+    <p>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">确定</el-button></p>
   </div>
 

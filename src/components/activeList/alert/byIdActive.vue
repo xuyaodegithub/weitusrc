@@ -17,7 +17,7 @@
     </p>
     <p class="tep"><label>状态:</label><span>{{getByIdActiveResult.start==0 ? '未开启' : '已开启'}}</span>
     </p>
-    <p><el-button type="success" size="small" plain style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
+    <p>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">编辑</el-button>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="changeActiveList()">编辑活动数据</el-button>
     <el-button type="danger" size="small" plain style="margin-top: 10px" @click="DeleteOne()">删除</el-button>

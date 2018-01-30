@@ -49,13 +49,13 @@ const  editor = {//定义入参
     //children:'',
     // fullIdPath:'',
     // fullNamePath:'',
-     image:'',
-     leaf:'',
-     level:'',
-     logo:'',
-     name:'',
+    image:'',
+    leaf:'',
+    level:'',
+    logo:'',
+    name:'',
     // parentId:'',
-     sort:'',
+    sort:'',
     // status:''
   },
   //修改分类
@@ -123,7 +123,7 @@ const  editor = {//定义入参
   },
   //在分类下的一个大规格下添加一个小规格
   addProductSpecDetailMM:{
-   // productCategorySpecDetailVO: '',
+    // productCategorySpecDetailVO: '',
     logo: '',
     name: '',
     specId: ''
@@ -200,11 +200,11 @@ const  editor = {//定义入参
     id:''
   },
   //获取商品列表
-    getDataListMM:{
-      filter_S_productName:'',
-      page:'',
-      rows:''
-    },
+  getDataListMM:{
+    filter_S_productName:'',
+    page:'',
+    rows:''
+  },
   //获取拼团商品列表
   productlistMM: {
     filter_I_isRecommend:'',
@@ -235,13 +235,13 @@ const result = { //接收请求后的数据
   //省份列表
   cityList:[
     {
-    "id": "1",
-    "name": "北京",
-    "parentid": "0",
-    "parentname": "",
-    "areacode": "010",
-    "zipcode": "100000",
-    "depth": "1"
+      "id": "1",
+      "name": "北京",
+      "parentid": "0",
+      "parentname": "",
+      "areacode": "010",
+      "zipcode": "100000",
+      "depth": "1"
     },
     {
       "id": "2",
@@ -622,30 +622,30 @@ const result = { //接收请求后的数据
           picker.$emit('pick', [start, end]);
         }
       }, {
-      text: '最近一周',
-      onClick(picker) {
-        const end = new Date();
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-        picker.$emit('pick', [start, end]);
-      }
-    }, {
-      text: '最近一个月',
-      onClick(picker) {
-        const end = new Date();
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-        picker.$emit('pick', [start, end]);
-      }
-    }, {
-      text: '最近三个月',
-      onClick(picker) {
-        const end = new Date();
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-        picker.$emit('pick', [start, end]);
-      }
-    }]
+        text: '最近一周',
+        onClick(picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近一个月',
+        onClick(picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近三个月',
+        onClick(picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+          picker.$emit('pick', [start, end]);
+        }
+      }]
   },
   //接受时间
   value4Result:'',
@@ -670,9 +670,9 @@ const result = { //接收请求后的数据
   listActiveResult:[],
   //添加活动
   insertActiveResult:'',
- /* //编辑活动
-  updateActiveResult:'',*/
- //根据id获取活动信息
+  /* //编辑活动
+   updateActiveResult:'',*/
+  //根据id获取活动信息
   getByIdActiveResult:{},
   addDataNum:0,
   //产品列表
@@ -685,6 +685,15 @@ const result = { //接收请求后的数据
   freeUseListResult:[],
   //获取积分试用产品列表
   scoreBuyListResult:[],
+  //radios
+  radiosResult:'普通商品',
+  //miaoPTOrPT
+  pintuanResult:'',
+  //活动id
+  activeId:'',
+  //ImgnumKey
+  ImgnumKey:0,
+  ImgUrlResult:'',
 
   loginResult:[],
   iframeSrc:{

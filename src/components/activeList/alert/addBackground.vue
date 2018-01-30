@@ -10,10 +10,10 @@
       </p>
       <p v-if="radio==1" style="text-align: center">
         <i style="display: inline-block;width: 200px;height: 100px;margin-bottom: 15px;">
-        <img :src="img | ToUrl" alt="" style="width: 200px;height: 100px;" v-if="img">
+        <img :src="'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/'+img" alt="" style="width: 200px;height: 100px;" v-if="img">
         </i>
         <el-upload
-          action="/apis/admin/buildblocks/img/uploadImage"
+          action="/apis/admin/buildblocks/uploadImage"
           class="upload-demo"
           ref="upload"
           name="img"
@@ -132,11 +132,12 @@
         obj.contents= this.radio=='1' ? 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/'+this.img : this.color
         console.log(JSON.stringify(obj))
         this.backColorActions(obj)
+        this.popoverAlert()
       },
       upSuccess (response) {
         this.$message({
           message:'上传成功',
-          type:'warning'
+          type:'success'
         })
         this.img=response.result
       },
