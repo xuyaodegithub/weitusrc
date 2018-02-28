@@ -26,6 +26,9 @@ import controlInvoices from '@/components/AccountFund/subassembly/controlInvoice
 import withholdingDetain from '@/components/AccountFund/subassembly/withholdingDetain.vue'
 //活动模块
 import Active from '@/components/activeList/subassembly/huodong.vue'
+import CouponActive from '@/components/Coupon/subassembly/CouponActiveIndex.vue'
+import Coupon from '@/components/Coupon/subassembly/CouponIndex.vue'
+import StoreCoupon from '@/components/Coupon/subassembly/upStoreYHQ.vue'
 
 
 import Yemian from '@/components/firstPage/yemian.vue'
@@ -171,6 +174,21 @@ export default new Router({
             path: '10-1',
             name:"Active",
             component:Active
+          },
+          {
+            path: '10-2',
+            name:"CouponActive",
+            component:CouponActive
+          },
+          {
+            path: '10-3',
+            name:"Coupon",
+            component:Coupon
+          },
+          {
+            path: '10-4',
+            name:"StoreCoupon",
+            component:StoreCoupon
           },
           {
             path: 'index',

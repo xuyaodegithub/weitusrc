@@ -87,6 +87,9 @@
         <template slot="title"><i class="el-icon-picture-outline"></i>活动管理</template>
         <el-menu-item-group>
           <el-menu-item index="10-1">活动页面设计</el-menu-item>
+          <el-menu-item index="10-2">优惠券活动</el-menu-item>
+          <el-menu-item index="10-3">优惠券管理</el-menu-item>
+          <el-menu-item index="10-4">优惠券管理(供应商)</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

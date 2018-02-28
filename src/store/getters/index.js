@@ -171,6 +171,33 @@ const getters = {//返回state内的数据进行模板使用
     },
 
 
+
+
+  //优惠券Active
+    YHQwhichResult: state => {
+      return state.result.YHQwhichResult
+    },
+  //优惠券
+    YHQonlyResult: state => {
+          return state.result.YHQonlyResult
+        },
+//供应商优惠券
+    StoreYHQResult: state => {
+      return state.result.StoreYHQResult
+    },
+  //优惠券列表
+    CouponListResult: state =>{
+      return state.result.CouponListResult
+    },
+    //优惠券关联商品集合
+    CouponWithGoodsResult: state =>{
+      return state.result.CouponWithGoodsResult
+    },
+//优惠券活动列表
+    CouponActiveListResult: state =>{
+      return state.result.CouponActiveListResult
+    },
+
     loginResult: state => {
       return state.result.loginResult
     },

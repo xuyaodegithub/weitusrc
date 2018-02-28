@@ -11,14 +11,17 @@ import api from '../fetch/api'
 var num=0
 var textCs=''
 var textCsTow=''
+var textCsYHQ=''
   if(num===0){
     textCs='/apis'
     textCsTow='/apis'
+    textCsYHQ='http://test-admin.olquan.cn'
   }else{
     textCs='http://api-admin.olquan.cn'
     //textCsTow='http://106.15.49.17:8888/'
     //textCsTow='http://ol-admin.olquan.com'
     textCsTow='http://ol-h5-admin.olquan.cn'
+    textCsYHQ='http://test-admin.olquan.cn'
   }
 const actions = {//actions,mutations内的方法只能有两个参数，一个是context一个是外部调用时传参，event事件对象参数除外
   //弹框修改属性
@@ -712,6 +715,112 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       context.commit('GET_VALUE_4',time)
     }
   },
+
+
+
+//优惠券get封装
+  YHQListGet (context,funUrl) {
+    context.commit('changeloading')
+    axios({
+      method: 'get',
+      url:textCsYHQ+funUrl[0],
+      dataType: 'JSON',
+      params: context.state.editor[funUrl[2]]
+    })
+      .then(function(res){
+        context.commit('changeloading')
+        if(res.data){
+          context.commit(types[funUrl[1]],res)
+        }else{
+          Message({
+            showClose: true,
+            message:res.data.message,
+            type: 'warning'
+          });
+        }
+      })
+      .catch(function(err){
+        context.commit('changeloading')
+        console.log(err)
+      })
+  },
+  //优惠券post封装
+  YHQListPost (context,funUrl) {
+    // axios.defaults.baseURL = context.state.editor.axiosUrl;
+    axios({
+      method: 'post',
+      url:textCsYHQ+funUrl[0],
+      dataType: 'JSON',
+      data: qs.stringify(context.state.editor[funUrl[2]])
+    })
+      .then(function(res){
+        Message({
+          showClose: true,
+          message: res.data=='success' ? '操作成功' : '操作失败',
+          type: res.data=='success' ? 'success' : 'warning'
+        });
+        if(res.data=='success'){
+          context.dispatch('CouponListActions',{page:1,rows:10})
+          if(funUrl[1] != ''){
+            context.commit(types[funUrl[1]],res)
+          }else{
+          }
+        }
+      })
+      .catch(function(err){
+        console.log(err)
+      })
+  },
+  //优惠券Active
+  YHQwhichActions(context,str){
+    context.commit('SET_YHQ_WHICH',str)
+  },
+ //优惠券
+  YHQonlyActions(context,str){
+    context.commit('SET_YHQ_ONLY',str)
+  },
+  //优惠券列表
+  CouponListActions (context,data) {
+    context.commit('SET_COUPON_LIST_RESULT',data)
+    context.dispatch('YHQListGet',['/admin/coupon/list','GET_COUPON_LIST_RESULT','CouponLsitMM'])
+  },
+  //创建优惠券/修改
+  createCouponActions (context,data) {
+    if(data.itemson==='create'){
+      context.commit('SET_CREATE_COUPON',data)
+      context.dispatch('YHQListPost',['/admin/coupon/save','','createCouponMM'])
+    }else{
+      context.commit('SET_UPDATA_COUPON',data)
+      context.dispatch('YHQListPost',['/admin/coupon/save','','upDataCouponMM'])
+    }
+  },
+  //删除优惠券
+  deleteCouponActions (context,id) {
+    context.commit('SET_DELETE_COUPONMM',id)
+    context.dispatch('YHQListPost',['/admin/coupon/delete','','deleteCouponMM'])
+  },
+//审核优惠券
+  doAuditCouponActions (context,id) {
+    context.commit('SET_DOAUDIT_COUPON',id)
+    context.dispatch('YHQListPost',['/admin/coupon/doAudit','','doAuditCouponMM'])
+  },
+  //创建优惠券活动
+  saveCouponActiveActions(context,data){
+    context.commit('SET_SAVE_COUPON_ACTIVE',data)
+    context.dispatch('YHQListPost',['/admin/coupon/activity/save','','saveCouponActiveMM'])
+  },
+  //获取优惠券活动列表
+  CouponActiveListActions(context,data){
+    context.commit('SET_COUPON_LIST_RESULT',data)
+    context.dispatch('YHQListGet',['/admin/coupon/activity/list','GET_COUPON_ACTIVE_LIST','CouponLsitMM'])
+  },
+//删除优惠券活动
+  deleteCouponActiveActions(context,data){
+    context.commit('SET_DELETE_COUPON_ACTIVE',data)
+    context.dispatch('YHQListPost',['/admin/coupon/activity/delete','','deleteCouponActiveMM'])
+  }
+
+
 
 }
 

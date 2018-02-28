@@ -119,5 +119,31 @@ export const GET_SCOREBUY_LIST = 'GET_SCOREBUY_LIST';
 
 
 
+//优惠券Active
+export const SET_YHQ_WHICH = 'SET_YHQ_WHICH';
+//优惠券
+export const SET_YHQ_ONLY = 'SET_YHQ_ONLY';
+//供应商优惠券
+export const SET_STORE_YHQ = 'SET_STORE_YHQ';
+//优惠券列表
+export const SET_COUPON_LIST_RESULT = 'SET_COUPON_LIST_RESULT';
+export const GET_COUPON_LIST_RESULT = 'GET_COUPON_LIST_RESULT';
+//创建优惠券
+export const SET_CREATE_COUPON = 'SET_CREATE_COUPON';
+//修改优惠券
+export const SET_UPDATA_COUPON = 'SET_UPDATA_COUPON';
+//删除优惠券
+export const SET_DELETE_COUPONMM = 'SET_DELETE_COUPONMM';
+//审核优惠券
+export const SET_DOAUDIT_COUPON = 'SET_DOAUDIT_COUPON';
+//创建优惠券活动
+export const SET_SAVE_COUPON_ACTIVE = 'SET_SAVE_COUPON_ACTIVE';
+//优惠券活动list
+export const GET_COUPON_ACTIVE_LIST = 'GET_COUPON_ACTIVE_LIST';
+//删除优惠券活动
+export const SET_DELETE_COUPON_ACTIVE = 'SET_DELETE_COUPON_ACTIVE';
+
+
+
 
 

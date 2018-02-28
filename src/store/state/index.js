@@ -227,7 +227,43 @@ const  editor = {//定义入参
     page:'',
     rows:'',
     sortField:''
-  }
+  },
+
+
+  //优惠券列表//优惠券活动列表
+  CouponLsitMM : {
+    page:'',
+    rows:''
+  },
+  //创建优惠券
+  createCouponMM:{
+    endTime:'', expireRemind:'',limitLevel:'', limitReceived:'', num:'', price:'', startTime:'',title:'',type:'',productIds:'',isAudit:''
+  },
+   //修改优惠券
+  upDataCouponMM:{
+    id:'', num:'',title:''//,endTime:'', expireRemind:'',limitLevel:'', limitReceived:'', price:'', startTime:'',type:'',productIds:''//,isAudit:''
+  },
+  //删除优惠券
+  deleteCouponMM:{
+    id:''
+  },
+  //审核优惠券
+  doAuditCouponMM:{
+    ids:''
+  },
+  //创建优惠券活动
+  saveCouponActiveMM: {
+    activityImg:'', name:'', shareDescription:'',shareImg:'',shareTitle:'',isEnable:''
+  },
+//删除优惠券活动
+  deleteCouponActiveMM: {
+   id:''
+  },
+  //优惠券活动关联优惠券
+  ActivelinkCouponMM:{
+    activityId:'',
+    couponIds:''
+  },
 
 };
 
@@ -694,6 +730,26 @@ const result = { //接收请求后的数据
   //ImgnumKey
   ImgnumKey:0,
   ImgUrlResult:'',
+
+
+
+
+  //优惠券活动
+  YHQwhichResult:'VseachCouponActive',
+//优惠券
+  YHQonlyResult:{title:'VseachCoupon',item:''},
+//供应商优惠券
+  StoreYHQResult:'VseachStoreCoupon',
+  //获取优惠券列表
+  CouponListResult:{
+    okGo:[],
+    noGo:[]
+  },
+  //优惠券活动列表
+  CouponActiveListResult:[],
+  //优惠券关联商品集合
+  CouponWithGoodsResult:'',
+
 
   loginResult:[],
   iframeSrc:{

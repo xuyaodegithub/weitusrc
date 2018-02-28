@@ -22,6 +22,10 @@
   import VactiveDress from '../activeList/alert/activeDress.vue'
   import VclassSell from '../activeList/alert/classSell.vue'
   import VactiveLianJian from '../activeList/alert/activeLianjie.vue'
+//优惠券
+  import VchoseGoods from '../Coupon/alert/ChoseGoods.vue'
+  import VwithYHQ from '../Coupon/alert/withYHQ.vue'
+
 
 
   import { mapActions } from 'vuex'
@@ -33,7 +37,7 @@
       };
     },
     components:{
-     vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground,VactiveDress,VclassSell,VactiveLianJian
+     vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground,VactiveDress,VclassSell,VactiveLianJian,VchoseGoods,VwithYHQ
 
     },
     methods: {

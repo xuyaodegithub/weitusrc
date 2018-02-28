@@ -604,7 +604,105 @@ const mutations = {//mutations内是改变state内的值得作用
   ////
   ImgnumKey(state,key){
     state.result.ImgnumKey=key
-  }
+  },
+
+
+
+
+
+
+
+  //优惠券Active
+  [types.SET_YHQ_WHICH](state,str){
+    state.result.YHQwhichResult=str
+  },
+[types.SET_YHQ_ONLY](state,str){
+    state.result.YHQonlyResult.title=str.title
+    state.result.YHQonlyResult.item=str.item
+  },
+//供应商优惠券
+[types.SET_STORE_YHQ](state,str){
+  state.result.StoreYHQResult=str
+},
+//优惠券列表
+  [types.SET_COUPON_LIST_RESULT](state,data){
+    state.editor.CouponLsitMM.page=data.page
+    state.editor.CouponLsitMM.rows=data.rows
+  },
+[types.GET_COUPON_LIST_RESULT](state,res){
+    state.result.CouponListResult={
+      noGo:[],
+      okGo:[]
+    }
+    if(res.data.rows.length>0){
+      for(let i=0;i<res.data.rows.length;i++){
+        if(res.data.rows[i].isAudit===0){
+          state.result.CouponListResult.noGo.push(res.data.rows[i])
+        }else{
+          state.result.CouponListResult.okGo.push(res.data.rows[i])
+        }
+      }
+    }
+  },
+//创建优惠券
+  [types.SET_CREATE_COUPON](state,data){
+    state.editor.createCouponMM.title=data.title
+    state.editor.createCouponMM.type=data.type
+    state.editor.createCouponMM.startTime=data.startTime
+    state.editor.createCouponMM.endTime=data.endTime
+    state.editor.createCouponMM.expireRemind=data.expireRemind
+    state.editor.createCouponMM.limitLevel=data.limitLevel
+    state.editor.createCouponMM.limitReceived=data.limitReceived
+    state.editor.createCouponMM.num=data.num
+    state.editor.createCouponMM.price=data.price
+    state.editor.createCouponMM.productIds=data.productIds
+    state.editor.createCouponMM.isAudit=data.isAudit
+  },
+//修改优惠券
+  [types.SET_UPDATA_COUPON](state,data){
+    state.editor.upDataCouponMM.title=data.title
+   // state.editor.upDataCouponMM.type=data.type
+   // state.editor.upDataCouponMM.startTime=data.startTime
+   // state.editor.upDataCouponMM.endTime=data.endTime
+   // state.editor.upDataCouponMM.expireRemind=data.expireRemind
+   // state.editor.upDataCouponMM.limitLevel=data.limitLevel
+    //state.editor.upDataCouponMM.limitReceived=data.limitReceived
+    state.editor.upDataCouponMM.num=data.num
+    //state.editor.upDataCouponMM.price=data.price
+    //state.editor.upDataCouponMM.productIds=data.productIds
+    state.editor.upDataCouponMM.id=data.id
+    //state.editor.upDataCouponMM.isAudit=data.isAudit
+
+  },
+  //删除优惠券
+  [types.SET_DELETE_COUPONMM] (state,id) {
+    state.editor.deleteCouponMM.id=id
+  },
+  //审核优惠券
+  [types.SET_DOAUDIT_COUPON] (state,ids) {
+    state.editor.doAuditCouponMM.ids=ids
+  },
+  //创建优惠券活动
+  [types.SET_SAVE_COUPON_ACTIVE] (state,data) {
+    state.editor.saveCouponActiveMM.shareTitle=data.shareTitle
+    state.editor.saveCouponActiveMM.shareImg=data.shareImg
+    state.editor.saveCouponActiveMM.name=data.name
+    state.editor.saveCouponActiveMM.activityImg=data.activityImg
+    state.editor.saveCouponActiveMM.isEnable=data.isEnable
+    state.editor.saveCouponActiveMM.shareDescription=data.shareDescription
+  },
+  //优惠券活动列表
+  [types.GET_COUPON_ACTIVE_LIST](state,res){
+    state.result.CouponActiveListResult=res.data.rows
+  },
+  //删除优惠券活动
+  [types.SET_DELETE_COUPON_ACTIVE](state,id){
+    state.editor.ddeleteCouponActiveMM.id=id
+  },
+  //优惠券关联商品集合
+  Coupon_With_Goods (state,res) {
+    state.result.CouponWithGoodsResult=res
+  },
 
 }
 

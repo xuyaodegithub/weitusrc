@@ -692,18 +692,7 @@ export default {
             }
           }
         })
-      },
-      /*changData(id){
-        this.$http.post('http://ol-site.olquan.com:80/mobile/product/productDetail',{
-          data:{
-            productId:id,
-            memberId:778040,
-            uutype:1
-          }
-        }).then( res => {
-          console.log(data)
-        })
-      }*/
+      }
     }
 }
 </script>

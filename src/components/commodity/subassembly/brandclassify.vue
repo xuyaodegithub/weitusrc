@@ -105,10 +105,10 @@ export default {
     border:0;
     margin:0;
     color: #333;
-    font-weight: 550;
+    font-weight: 600;
     text-indent:0;
   }
-  #toindex > p .el-button--mini, .el-button--mini.is-round{
+  #toindex .el-button--mini.is-round{
     float: right;
     width:100px;
     margin-right:30px;

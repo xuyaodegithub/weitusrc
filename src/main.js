@@ -35,6 +35,22 @@ Vue.filter('ToUrl', function (val) {
     return 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/23c31d63de867f568af9d1b8a3d193573b456a41'
   }
 });
+//时间过滤器
+Vue.filter('changeTime',function(val){
+  if(val){
+    let data=new Date(val)
+  let year=data.getFullYear()
+  let month=data.getMonth()+1
+  let day= data.getDate()
+  let hour= data.getHours()
+  let min=data.getMinutes()
+  let sec=data.getSeconds()
+  //console.log(year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec)
+  return year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec
+}else{
+    return ''
+  }
+});
 //保留小数点后面两位
  Vue.filter('Tofix',function(val){
    if (val == '' || val == null) {

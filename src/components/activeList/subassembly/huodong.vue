@@ -1,6 +1,7 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
+      <router-link to="index">首页</router-link> &gt; 活动页面设计
       <el-button type="success" round size="mini" icon="el-icon-plus" @click="newPush()" style="margin-top: 10px">新增</el-button>
       <el-button type="success" size="mini" round style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
     </p>
@@ -60,18 +61,6 @@ export default {
         item:'vNewActive'
       }
       this.activeActions(data)
-    },
-    upOk(){
-      let obj={
-        subassembly: this.addCommodityResult,
-        background: this.backColorResult
-      }
-      let data={
-        id:this.activeChangeResult.obj.id,
-        data:JSON.stringify(obj)
-      }
-      console.log(data)
-      this.uploadDataToOSSActions(data)
     },
   }
 }
