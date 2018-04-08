@@ -1,5 +1,6 @@
 <template>
-	<el-aside width='210px' style="background-color: rgb(244, 245, 249)">
+  <!--<div style="height: 500px;overflow: hidden">-->
+	<el-aside width='210px' style="background-color: rgb(244, 245, 249);height: 600px;overflow: auto;overflow-x: hidden;padding-bottom: 15px;">
     <el-menu :default-openeds="[]"  background-color="#f4f5f9"  @open="handleOpen"
       @close="handleClose" router >
       <el-submenu index="1">
@@ -90,6 +91,7 @@
           <el-menu-item index="10-2">优惠券活动</el-menu-item>
           <el-menu-item index="10-3">优惠券管理</el-menu-item>
           <el-menu-item index="10-4">优惠券管理(供应商)</el-menu-item>
+          <el-menu-item index="10-5">优惠券统计</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

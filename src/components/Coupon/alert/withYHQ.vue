@@ -1,29 +1,44 @@
 <template>
   <div class="demo incomingHistory">
     <div class="popover-head">
-      <span class="title">关联优惠券</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
+      <span class="title" v-if="popoverAlive.SSSnum==='first'" >预览已关联优惠券</span>
+      <span class="title" v-if="popoverAlive.SSSnum==='second'">关联优惠券</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
     <div class="popover-main">
       <p><label>优惠券名称:</label>
         <el-input v-model="input" placeholder="请输入内容" size="mini"></el-input>
       </p>
       <p style="line-height: 28px;"><label>使用等级:</label>
-        <el-radio-group v-model="updataTwo" size="small">
-          <el-radio :label="0">白领</el-radio>
-          <el-radio :label="1">金领</el-radio>
-          <el-radio :label="2">粉领</el-radio>
-        </el-radio-group>
+        <!--<el-radio-group v-model="updataTwo" size="small">
+          <el-radio :label="0">全部</el-radio>
+          <el-radio :label="1">白领</el-radio>
+          <el-radio :label="2">金领</el-radio>
+          <el-radio :label="3">粉领</el-radio>
+        </el-radio-group>-->
+        <el-checkbox-group v-model="updataTwo" size="small" @change="changeLebal(updataTwo)">
+          <el-checkbox :label="0">全部</el-checkbox>
+          <el-checkbox :label="1">白领</el-checkbox>
+          <el-checkbox :label="2">金领</el-checkbox>
+          <el-checkbox :label="3">粉领</el-checkbox>
+        </el-checkbox-group>
       </p>
       <p style="margin: 0"><el-button type="primary" plain size="mini" style="" @click="seachData()">搜索</el-button></p>
     </div>
-      <el-button type="primary" plain @click="toggleSelection(listData)" size="small" style="width: 100px;float: right;margin-right: 50px">批量审核</el-button>
+      <el-button type="primary" plain @click="toggleSelection(multipleSelection)" size="small" style="width: 100px;float: right;margin-right: 50px" v-if="popoverAlive.SSSnum==='second'">批量关联</el-button>
         <el-table
           @row-click="addGoodsImg"
           v-loading="loading"
-          :height="260"
-          :data="dataList"
+          :data="CouponListResult.rows"
           tooltip-effect="light"
-          style="width: 100%;">
+          style="width: 100%;"
+          ref="multipleTable"
+          @selection-change="handleSelectionChange"
+          :cell-style="styleH">
+          <el-table-column
+            v-if="popoverAlive.SSSnum==='second'"
+            type="selection"
+            width="30">
+          </el-table-column>
           <el-table-column
             v-for="(item,index) in GoodsType"
             :label="item.name"
@@ -31,14 +46,26 @@
             :key="index"
             show-overflow-tooltip>
             <template slot-scope="scope">
-              <span style="margin-left: 10px" v-if="item.which!=='img' && item.which!=='status'">{{ scope.row[item.which]}}</span>
-              <span style="margin-left: 10px" v-else-if="item.which!=='img' && item.which==='status'">{{ scope.row[item.which] ? '已审核' : '待审核'}}</span>
-              <img :src="scope.row[item.which]" alt="" style="width: 100%;height: 52px;" v-else>
+              <!--<span style="margin-left: 10px" v-if="item.which!=='img' && item.which!=='status'">{{ scope.row[item.which]}}</span>-->
+              <!--<span style="margin-left: 10px" v-if="item.which==='status'">{{ scope.row[item.which] ? '已审核' : '待审核'}}</span>-->
+              <span v-if="item.which==='time'">{{ scope.row.startTime | changeTime}}--{{ scope.row.endTime | changeTime}}</span>
+              <span v-else-if="item.which==='ct'">{{ scope.row.ct | changeTime}}</span>
+              <span v-else-if="item.which==='auditTime'">{{ scope.row.auditTime | changeTime}}</span>
+              <span v-else-if="item.which==='sellerName'">{{ scope.row.sellerName ? scope.row.sellerName : '平台'}}</span>
+              <span v-else-if="item.which==='price'">{{ scope.row.price/100}}</span>
+              <span v-else>{{ scope.row[item.which]}}</span>
+              <!--<img :src="scope.row[item.which]" alt="" style="width: 100%;height: 52px;" v-else>-->
             </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="popoverAlive.SSSnum==='first'"
+                size="mini"
+                plain
+                @click="choseDown(scope.$index, scope.row)" plain>取消关联</el-button>
+            <el-button
+              v-if="popoverAlive.SSSnum==='second'"
                 size="mini"
                 plain
                 @click="chose(scope.$index, scope.row)" plain>关联</el-button>
@@ -53,7 +80,7 @@
         :page-sizes="[10, 20, 30, 50]"
         :page-size="value"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="dataList.length">
+        :total="CouponListResult.total">
       </el-pagination>
     </div>
   </div>
@@ -62,7 +89,7 @@
 <style lang="scss" scoped>
   .demo{
     width: 940px;
-    height: 430px;
+    height: auto;
     background: #F0FAFF;
     margin-left: -300px;
     margin-top: -250px;
@@ -126,14 +153,17 @@
   }
   .block{
     text-align: right;
-    margin-top: 10px;
+    margin: 5px 0;
   }
   p .el-radio+.el-radio{
     margin-left: 0;
   }
- /* p .el-radio-group{
-    width:160px;
-  }*/
+  p .el-checkbox-group{
+    display: inline-block;
+  }
+  .el-checkbox+.el-checkbox{
+    margin-left: 0;
+  }
 </style>
 <script>
   import { mapActions } from 'vuex'
@@ -141,153 +171,226 @@
   export default {
     data() {
       return {
+        styleH:{
+          padding:'6px 0'
+        },
         input:'',
         input1:'',
         input2:'',
         currentPage4:1,
         value:10,
-        dataList:[
-          {
-            img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517312094397&di=dc91797bd10995cefa017bb65954fa68&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F71cf3bc79f3df8dc5504829acb11728b471028fb.jpg',
-            name:'OL圈产品反反复复付付付付付付付付付付付付付付',
-            sale:'100',
-            classF:'各种分类',
-            upOrDown:'已上架',
-            status:1,
-            much:'1355',
-            whoGet:'OL圈'
-          },{
-            img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517312094397&di=dc91797bd10995cefa017bb65954fa68&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F71cf3bc79f3df8dc5504829acb11728b471028fb.jpg',
-            name:'OL圈产品反反复复付付付付付付付付付付付付付付',
-            sale:'100',
-            classF:'各种分类',
-            upOrDown:'已上架',
-            status:0,
-            much:'1355',
-            whoGet:'OL圈'
-          },{
-            img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517312094397&di=dc91797bd10995cefa017bb65954fa68&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F71cf3bc79f3df8dc5504829acb11728b471028fb.jpg',
-            name:'OL圈产品反反复复付付付付付付付付付付付付付付',
-            sale:'100',
-            classF:'各种分类',
-            upOrDown:'已上架',
-            status:0,
-            much:'1355',
-            whoGet:'OL圈'
-          },{
-            img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517312094397&di=dc91797bd10995cefa017bb65954fa68&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F71cf3bc79f3df8dc5504829acb11728b471028fb.jpg',
-            name:'OL圈产品反反复复付付付付付付付付付付付付付付',
-            sale:'100',
-            classF:'各种分类',
-            upOrDown:'已上架',
-            status:0,
-            much:'1355',
-            whoGet:'OL圈'
-          },{
-            img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517312094397&di=dc91797bd10995cefa017bb65954fa68&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F71cf3bc79f3df8dc5504829acb11728b471028fb.jpg',
-            name:'OL圈产品反反复复付付付付付付付付付付付付付付',
-            sale:'100',
-            classF:'各种分类',
-            upOrDown:'已上架',
-            status:0,
-            much:'1355',
-            whoGet:'OL圈'
-          },
-        ],
+        multipleSelection:[],
         GoodsType:[
           {
             name:'标题',
             width:'70',
-            which:'img'
+            which:'title'
           },{
             name:'有效期',
-            width:'70',
-            which:'name'
+            width:'90',
+            which:'time'
           },{
             name:'券价值',
-            width:'70',
-            which:'sale'
+            width:'60',
+            which:'price'
           },{
             name:'产品',
-            width:'70',
-            which:'classF'
+            width:'120',
+            which:'productName'
           },{
             name:'券总数量',
             width:'70',
-            which:'upOrDown'
+            which:'num'
           },{
             name:'已领数量',
             width:'70',
-            which:'status'
+            which:'receivedNum'
           },{
             name:'已使用',
             width:'70',
-            which:'much'
+            which:'useNum'
           },{
-            name:'限领数量',
-            width:'70',
-            which:'whoGet'
-          },{
+            name:'限领数',
+            width:'60',
+            which:'limitReceived'
+          }/*,{
             name:'状态',
             width:'70',
             which:'whoGet'
-          },{
+          }*/,{
             name:'供应商',
             width:'70',
-            which:'whoGet'
+            which:'sellerName'
           },{
             name:'创建时间',
-            width:'70',
-            which:'whoGet'
+            width:'75',
+            which:'ct'
           },{
             name:'审核时间',
-            width:'70',
-            which:'whoGet'
+            width:'75',
+            which:'auditTime'
           }
           ],
-        updataTwo:''
+        updataTwo:[]
       };
     },
     components:{
 
     },
-    created(){
-
-
-    },
     computed:{
       ...mapGetters([
-      'loading',
+      'loading','CouponListResult','YHQwhichResult','popoverAlive'
       ]),
-
+    },
+    mounted(){
+      if(this.popoverAlive.SSSnum==='first'){
+        this.CouponListActions({page:1,rows:10,chose:'chose',filter_I_isAudit:1,conponActivityId:this.YHQwhichResult.item.id})
+      }else {
+        if(this.YHQwhichResult.item.isPublic===0){
+          this.CouponListActions({page:1,rows:10,chose:'chose',filter_I_isAudit:1,filter_I_isPublic:0})
+        }else{
+          this.CouponListActions({page:1,rows:10,chose:'chose',filter_I_isAudit:1,filter_I_isPublic:1})
+        }
+      }
     },
     methods: {
       ...mapActions([
-        'popoverAlert'
+        'popoverAlert','CouponListActions','ActivelinkCouponActions','changelinkCouponActions'
       ]),
-      morePull(rows) {
-
+      toggleSelection(data) {
+        if(data.length>0){
+        let str=[]
+          data.forEach((val,index) => {
+          str.push(val.id)
+          })
+        let obj={
+          activityId:this.YHQwhichResult.item.id,
+          couponIds:str.join(',')
+        }
+        this.ActivelinkCouponActions(obj)
+         this.popoverAlert()
+        }else{
+          this.$message({
+            message:'请选择优惠券',
+            type:'warning'
+          })
+        }
       },
       seachData(){
+        let str=''
+        let obj={
+          page:1,
+          rows:10,
+          chose:'chose',
+          filter_I_isAudit:1
+        }
+          if(this.input){
+            obj.filter_S_title=this.input
+          }
 
+          if(this.updataTwo.length>0){
+              obj.limitLevels= this.updataTwo.join(',')
+          }
+            if(this.popoverAlive.SSSnum==='first'){
+              obj.conponActivityId=this.YHQwhichResult.item.id
+            }else{
+              if(this.YHQwhichResult.item.isPublic===0){
+                obj.filter_I_isPublic=0
+              }else{
+                obj.filter_I_isPublic=1
+              }
+            }
+            this.CouponListActions(obj)
+         /* else{
+            if(this.popoverAlive.SSSnum==='first'){
+              obj.filter_L_conponActivityId=this.YHQwhichResult.item.id
+            }
+            this.CouponListActions(obj)
+          }*/
 
       },
-      chose(){
-
+      chose(index,row){
+          let obj={
+            activityId:this.YHQwhichResult.item.id,
+            couponIds:row.id
+          }
+          this.ActivelinkCouponActions(obj)
+          this.popoverAlert()
       },
-
+      choseDown(index,row){
+          let obj={
+            activityId:this.YHQwhichResult.item.id,
+            couponId:row.id
+          }
+          this.changelinkCouponActions(obj)
+        this.popoverAlert()
+      },
       handleSizeChange(val) {
         //console.log(`每页 ${val} 条`);
         this.value=val
-
+        let obj={
+          page:1,
+          rows:this.value,
+          chose:'chose',
+          filter_I_isAudit:1
+        }
+        if(this.input){
+          obj.filter_S_title=this.input
+        }
+        if(this.updataTwo){
+          obj.limitLevels=this.updataTwo.join(',')
+        }
+        if(this.popoverAlive.SSSnum==='first'){
+          obj.conponActivityId=this.YHQwhichResult.item.id
+        }else{
+          if(this.YHQwhichResult.item.isPublic===0){
+            obj.filter_I_isPublic=0
+          }else{
+            obj.filter_I_isPublic=1
+          }
+        }
+        this.CouponListActions(obj)
       },
       handleCurrentChange(val) {
        // console.log(`当前页: ${val}`);
         this.currentPage4=val
+        let obj={
+          page:this.currentPage4,
+          rows:10,
+          chose:'chose',
+          filter_I_isAudit:1
+        }
+        if(this.input){
+          obj.filter_S_title=this.input
+        }
+        if(this.updataTwo){
+          obj.limitLevels=this.updataTwo.join(',')
+        }
+        if(this.popoverAlive.SSSnum==='first'){
+          obj.conponActivityId=this.YHQwhichResult.item.id
+        }else{
+          if(this.YHQwhichResult.item.isPublic===0){
+            obj.filter_I_isPublic=0
+          }else{
+            obj.filter_I_isPublic=1
+          }
+        }
+        this.CouponListActions(obj)
 
       },
       addGoodsImg(row,event,column){
 
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      changeLebal(item){
+        let that=this
+        item.forEach(function(val,index){
+          if(val===0){
+            that.updataTwo=[0]
+          }
+        })
       }
     }
   };

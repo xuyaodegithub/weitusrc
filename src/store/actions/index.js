@@ -14,7 +14,7 @@ var textCsTow=''
 var textCsYHQ=''
   if(num===0){
     textCs='/apis'
-    textCsTow='/apis'
+    textCsTow=/*'/apis'*/'http://test-admin.olquan.cn'
     textCsYHQ='http://test-admin.olquan.cn'
   }else{
     textCs='http://api-admin.olquan.cn'
@@ -266,7 +266,7 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       })
       .catch(function(err){
         context.commit('changeloading')
-        console.log(err)
+        //console.log(err)
       })
   },
   //清除数据
@@ -717,7 +717,11 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   },
 
 
-
+  //获取专享商品列表
+  plusProductListActions (context,data) {
+    context.commit('SET_PRODUCT_LIST',data)
+    context.dispatch('GoodsListGet',['/admin/plus/product/list','GET_PLUS_PRODUCT_LIST','productlistMM'])
+  },
 //优惠券get封装
   YHQListGet (context,funUrl) {
     context.commit('changeloading')
@@ -726,19 +730,18 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       url:textCsYHQ+funUrl[0],
       dataType: 'JSON',
       params: context.state.editor[funUrl[2]]
+    }).then(function(res){
+      context.commit('changeloading')
+      if(res.data){
+        context.commit(types[funUrl[1]],res)
+      }else{
+        Message({
+          showClose: true,
+          message:res.data.message,
+          type: 'warning'
+        });
+      }
     })
-      .then(function(res){
-        context.commit('changeloading')
-        if(res.data){
-          context.commit(types[funUrl[1]],res)
-        }else{
-          Message({
-            showClose: true,
-            message:res.data.message,
-            type: 'warning'
-          });
-        }
-      })
       .catch(function(err){
         context.commit('changeloading')
         console.log(err)
@@ -752,21 +755,29 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       url:textCsYHQ+funUrl[0],
       dataType: 'JSON',
       data: qs.stringify(context.state.editor[funUrl[2]])
-    })
-      .then(function(res){
-        Message({
-          showClose: true,
-          message: res.data=='success' ? '操作成功' : '操作失败',
-          type: res.data=='success' ? 'success' : 'warning'
-        });
-        if(res.data=='success'){
-          context.dispatch('CouponListActions',{page:1,rows:10})
-          if(funUrl[1] != ''){
-            context.commit(types[funUrl[1]],res)
+    }).then(function(res){
+      Message({
+        showClose: true,
+        message: res.data=='success' ? '操作成功' : '操作失败',
+        type: res.data=='success' ? 'success' : 'warning'
+      });
+      if(res.data=='success'){
+        if(funUrl[2]==='upDataCouponMM' || funUrl[2]==='ActivelinkCouponMM'){
+          if(funUrl[3]){
+            context.dispatch('CouponListActions',{page:1,rows:10,filter_I_isAudit:0})
           }else{
+            context.dispatch('CouponListActions',{page:1,rows:10,filter_I_isAudit:1})
           }
+        }else{
+          context.dispatch('CouponListActions',{page:1,rows:10,filter_I_isAudit:0})
         }
-      })
+        context.dispatch('CouponActiveListActions',{page:1,rows:10})
+        if(funUrl[1] != ''){
+          context.commit(types[funUrl[1]],res)
+        }else{
+        }
+      }
+    })
       .catch(function(err){
         console.log(err)
       })
@@ -775,14 +786,19 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
   YHQwhichActions(context,str){
     context.commit('SET_YHQ_WHICH',str)
   },
- //优惠券
+  //优惠券
   YHQonlyActions(context,str){
     context.commit('SET_YHQ_ONLY',str)
   },
   //优惠券列表
   CouponListActions (context,data) {
-    context.commit('SET_COUPON_LIST_RESULT',data)
-    context.dispatch('YHQListGet',['/admin/coupon/list','GET_COUPON_LIST_RESULT','CouponLsitMM'])
+    if(data.chose==='chose'){
+      context.commit('SET_COUPON_WITH_LIST_RESULT',data)
+      context.dispatch('YHQListGet',['/admin/coupon/list','GET_COUPON_LIST_RESULT','CouponwithLsitMM'])
+    }else{
+      context.commit('SET_COUPON_LIST_RESULT',data)
+      context.dispatch('YHQListGet',['/admin/coupon/list','GET_COUPON_LIST_RESULT','CouponLsitMM'])
+    }
   },
   //创建优惠券/修改
   createCouponActions (context,data) {
@@ -791,7 +807,11 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
       context.dispatch('YHQListPost',['/admin/coupon/save','','createCouponMM'])
     }else{
       context.commit('SET_UPDATA_COUPON',data)
-      context.dispatch('YHQListPost',['/admin/coupon/save','','upDataCouponMM'])
+      if(data.Which==='first'){
+        context.dispatch('YHQListPost',['/admin/coupon/save','','upDataCouponMM',1])
+      }else{
+        context.dispatch('YHQListPost',['/admin/coupon/save','','upDataCouponMM'])
+      }
     }
   },
   //删除优惠券
@@ -802,25 +822,100 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
 //审核优惠券
   doAuditCouponActions (context,id) {
     context.commit('SET_DOAUDIT_COUPON',id)
-    context.dispatch('YHQListPost',['/admin/coupon/doAudit','','doAuditCouponMM'])
+    context.dispatch('YHQListPost',['/admin/coupon/doAudit','','doAuditCouponMM',1])
   },
   //创建优惠券活动
   saveCouponActiveActions(context,data){
     context.commit('SET_SAVE_COUPON_ACTIVE',data)
     context.dispatch('YHQListPost',['/admin/coupon/activity/save','','saveCouponActiveMM'])
   },
+  //修改优惠券活动
+  updataCouponActiveActions(context,data){
+    context.commit('SET_UPDATA_COUPON_ACTIVE',data)
+    context.dispatch('YHQListPost',['/admin/coupon/activity/save','','updataCouponActiveMM'])
+  },
   //获取优惠券活动列表
   CouponActiveListActions(context,data){
-    context.commit('SET_COUPON_LIST_RESULT',data)
-    context.dispatch('YHQListGet',['/admin/coupon/activity/list','GET_COUPON_ACTIVE_LIST','CouponLsitMM'])
+    context.commit('SET_COUPON_ACTIVE_LIST',data)
+    context.dispatch('YHQListGet',['/admin/coupon/activity/list','GET_COUPON_ACTIVE_LIST','CouponActiveListMM'])
   },
 //删除优惠券活动
   deleteCouponActiveActions(context,data){
     context.commit('SET_DELETE_COUPON_ACTIVE',data)
     context.dispatch('YHQListPost',['/admin/coupon/activity/delete','','deleteCouponActiveMM'])
+  },
+//优惠券活动关联优惠券
+  ActivelinkCouponActions(context,data){
+    context.commit('SET_ACTIVE_LINK_COUPON',data)
+    context.dispatch('YHQListPost',['/admin/coupon/activity/linkCoupon','','ActivelinkCouponMM'])
+  },
+////////////////////供应商优惠券
+  StoreYHQAction(context,data){
+    context.commit('SET_STORE_YHQ',data)
+  },
+//供应商优惠券列表
+  StoreYHQListActions(context,data){
+    context.commit('changeloading')
+    context.commit('SET_STORE_YHQLIST',data)
+    axios.get(textCsYHQ+'/admin/coupon2/list',{//post请求时 是三个参数  第一个是url 第二个传参 第三个配置项
+      params: context.state.editor.StoreYHQListMM
+    }).then(res => {
+      context.commit('changeloading')
+      context.commit('GET_STORE_YHQLIST',res)
+    }).catch(err => {
+      context.commit('changeloading')
+    })
+  },
+  //供应商创建优惠券
+  StoreCreteYHQActions (context,data) {
+    context.commit('SET_STORE_CRETE_YHQ',data)
+    axios({
+      method: 'post',
+      url:textCsYHQ+'/admin/coupon2/save',
+      dataType: 'JSON',
+      data: qs.stringify(context.state.editor.StoreCreteYHQMM)
+    }).then(res =>{
+      context.dispatch('mSuccess')
+      context.dispatch('StoreYHQListActions',{page:1,rows:10,sellerId:context.state.result.sellID,filter_I_isAudit:0})
+      if(data.name==='second'){
+        context.dispatch('StoreYHQListActions',{page:1,rows:10,sellerId:context.state.result.sellID,filter_I_isAudit:1})
+      }
+    }).catch(err => {
+
+    })
+  },
+  //供应商删除优惠券
+  StoreDeleteYHQActions (context,data) {
+    context.commit('SET_STORE_DELETE_YHQ',data)
+    axios({
+      method:'post',
+      url:textCsYHQ+'/admin/coupon2/delete',
+      dataType:'JSON',
+      data: qs.stringify(context.state.editor.StoreDeleteYHQMM)
+    }).then(res => {
+      context.dispatch('StoreYHQListActions',{page:1,rows:10,sellerId:context.state.result.sellID,filter_I_isAudit:0})
+    }).catch(res => {
+
+    })
+  },
+  ///////////优惠券统计
+  couponoCuntActions(context,data){
+    context.commit('SET_STORE_COUPONO_CUNT',data)
+    context.dispatch('YHQListGet',['/admin/coupon/count','GET_STORE_COUPONO_CUNT','couponoCuntMM'])
+  },
+  //取消关联
+  changelinkCouponActions(context,data){
+    context.commit('SET_CHANGE_LINK_COUPON',data)
+    context.dispatch('YHQListPost',['/admin/coupon/linkCancel','','changelinkCouponMM'])
   }
-
-
+  /*axios.post('http://test-admin.olquan.cn/admin/coupon2/save',{
+      data:qs.stringify(context.state.editor.StoreCreteYHQMM)
+    }).then(res => {
+      context.commit('changeloading')
+      context.dispatch('StoreYHQListActions',{page:1,rows:10})
+    }).catch(err => {
+      context.commit('changeloading')
+    })*/
 
 }
 

@@ -14,22 +14,22 @@
         <el-input v-model="input2" placeholder="请输入内容" size="mini"></el-input>
       </p>
       <p style="line-height: 28px;" v-if="commodityResult.modelSampleCode !=='catlist1'">
-        <label  style="width: 70px;">推荐到首页:</label><el-radio-group v-model="upGoods" :disabled="radiosResult !== '拼团商品'">
+        <label  style="width: 70px;">推荐到首页:</label><el-radio-group v-model="upGoods" disabled><!--:="radiosResult !== '拼团商品'"-->
         <el-radio :label=1 style="width: auto;">是</el-radio>
         <el-radio :label=0 style="width: auto;">否</el-radio>
       </el-radio-group></p>
       <p style="line-height: 28px;"  v-if="commodityResult.modelSampleCode !=='catlist1'">
-        <label>产品类型:</label><el-radio-group v-model="classGoods" :disabled="radiosResult !== '积分试用商品'">
+        <label>产品类型:</label><el-radio-group v-model="classGoods" disabled><!--:="radiosResult !== '积分试用商品'"-->
         <el-radio :label=0 style="width: auto;">待审核</el-radio>
         <el-radio :label=1 style="width: auto;">已通过</el-radio>
       </el-radio-group></p>
       <p style="line-height: 28px;" v-if="commodityResult.modelSampleCode ==='catlist1'">
-        <label  style="width: 70px;">推荐到首页:</label><el-radio-group v-model="upGoods" :disabled="radio2 !== '拼团商品'">
+        <label  style="width: 70px;">推荐到首页:</label><el-radio-group v-model="upGoods" disabled><!--:disabled="radio2 !== '拼团商品'"-->
         <el-radio :label=1 style="width: auto;">是</el-radio>
         <el-radio :label=0 style="width: auto;">否</el-radio>
       </el-radio-group></p>
       <p style="line-height: 28px;"  v-if="commodityResult.modelSampleCode ==='catlist1'">
-        <label>产品类型:</label><el-radio-group v-model="classGoods" :disabled="radio2 !== '积分试用商品'">
+        <label>产品类型:</label><el-radio-group v-model="classGoods" disabled><!--:disabled="radio2 !== '积分试用商品'"-->
         <el-radio :label=0 style="width: auto;">待审核</el-radio>
         <el-radio :label=1 style="width: auto;">已通过</el-radio>
       </el-radio-group></p>
@@ -42,7 +42,7 @@
             :value="item.label">
           </el-option>
         </el-select>
-      <el-select v-model="table1" placeholder="请选择" size="mini" style="width: 160px;" @change="changeradioJFC(table1)" v-if="radiosResult==='积分试用商品' || radiosResult==='更多试用商品'">
+      <el-select v-model="table1" placeholder="请选择" size="mini" style="width: 160px;" @change="changeradioJFC(table1)" v-if="radiosResult==='积分试用商品' || radiosResult==='更多试用商品'" disabled>
           <el-option
             v-for="item in arrResult"
             :key="item.value"
@@ -101,7 +101,8 @@
       <Vpintuan></Vpintuan>
     </div>
     <div v-else-if="radiosResult==='积分试用商品'">
-      <Vjifen></Vjifen>
+      <!--<Vjifen></Vjifen>-->
+      <Vmore></Vmore>
     </div>
     <div v-else-if="radiosResult==='更多试用商品'">
       <Vmore></Vmore>
@@ -109,8 +110,8 @@
     </div>
     <div v-else>
       <VclassListpintuan v-if="radio2==='拼团商品'"></VclassListpintuan>
-      <VclassListjifen v-else-if="radio2==='积分试用商品'"></VclassListjifen>
-      <VclassListmore v-else-if="radio2==='更多试用商品'"></VclassListmore>
+      <!--<VclassListjifen v-else-if="radio2==='积分试用商品'"></VclassListjifen>-->
+      <VclassListmore v-else-if="radio2==='更多试用商品' || radio2==='积分试用商品'"></VclassListmore>
       <div  v-else-if="radio2==='普通商品'">
         <el-table
           v-loading="loading"
@@ -289,10 +290,10 @@
         }, {
           value: '2',
           label: '拼团商品'
-        }, {
+        }/*, {
           value: '3',
           label: '积分试用商品'
-        }, {
+        }*/, {
           value: '4',
           label: '更多试用商品'
         }],
@@ -304,7 +305,7 @@
           label: '更多试用商品'
         }],
         upGoods:1,
-        table1:'积分试用商品'
+        table1:'更多试用商品'
       };
     },
     components:{
@@ -328,7 +329,7 @@
         }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='拼团商品'){
           return this.productlistResult.total
         }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='积分试用商品'){
-          return this.scoreBuyListResult.total
+          return this.freeUseListResult.total
         }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='更多试用商品'){
           return this.freeUseListResult.total
         }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='普通商品'){
@@ -336,7 +337,7 @@
         }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='拼团商品'){
           return this.productlistResult.total
         }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='积分试用商品'){
-          return this.scoreBuyListResult.total
+          return this.freeUseListResult.total
         }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='更多试用商品'){
           return this.freeUseListResult.total
         }
@@ -416,16 +417,17 @@
           filter_S_productName_contains:this.input,
           page:this.currentPage4,
           rows:this.value,
-          filter_I_isRecommend:this.upGoods,
+          //filter_I_isRecommend:this.upGoods,
           sortField:'sort',
-          filter_I_status:this.classGoods
+          //filter_I_status:this.classGoods
         }
         if(this.radiosResult==='普通商品'){
           this.getDataListActions(data)
         }else if(this.radiosResult==='拼团商品'){
           this.productlistActions(data)
         }else if(this.radiosResult==='积分试用商品'){
-          this.scoreBuyListActions(data)
+          //this.scoreBuyListActions(data)
+          this.freeUseListActions(data)
         }else{
           this.freeUseListActions(data)
         }
@@ -446,7 +448,8 @@
         }else if(this.radio2==='拼团商品'){
           this.productlistActions(data)
         }else if(this.radio2==='积分试用商品'){
-          this.scoreBuyListActions(data)
+          //this.scoreBuyListActions(data)
+          this.freeUseListActions(data)
         }else{
           this.freeUseListActions(data)
         }

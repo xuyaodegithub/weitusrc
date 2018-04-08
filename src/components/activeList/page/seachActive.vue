@@ -7,28 +7,28 @@
         style="width: 100%">
         <el-table-column
           label="活动名称"
-          width="180">
+          width="200">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.name}}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="开始时间"
-          width="180">
+          width="200">
           <template slot-scope="scope">
             <span style="margin-left: 10px;">{{ scope.row.startTime }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="结束时间"
-          width="180">
+          width="200">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.endTime }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="状态"
-          width="180">
+          width="200">
           <template slot-scope="scope">
             <span style="margin-left: 10px" v-if="scope.row.start=='0'">未开启</span>
             <span style="margin-left: 10px" v-if="scope.row.start=='1'">已开启</span>
@@ -108,7 +108,7 @@ export default {
      // oInput.setAttribute('id','copyText')
      // oInput.onload=function() {
      // alert( '活动地址：http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
-      this.$store.commit('activeIdchange',row.id)
+      this.$store.commit('activeIdchange','http://ol-site.olquan.com/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
       this.popoverAlert('VactiveDress')
      /* let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
         Url.select(); // 选择对象

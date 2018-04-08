@@ -1,14 +1,14 @@
 <template>
   <div id="newActive">
-    <p><label>优惠券活动名称:</label><el-input v-model="input" placeholder="请输入活动名称" size="small"></el-input></p>
-    <p><label>活动分享标题:</label><el-input v-model="input3" placeholder="请输入活动标题" size="small"></el-input></p>
-    <p><label style="vertical-align: top">活动分享描述:</label><el-input type="textarea" v-model="input1" placeholder="请输入活动描述" size="small" style="font-size: 12px;"></el-input></p>
+    <p><label v-if="YHQwhichResult.item==='1'">优惠券活动名称:</label><label v-else>优惠券礼包名称:</label><el-input v-model="input" placeholder="请输入活动名称" size="small"></el-input></p>
+    <p><label v-if="YHQwhichResult.item==='1'">活动分享标题:</label><label v-else>礼包分享标题:</label><el-input v-model="input3" placeholder="请输入活动标题" size="small"></el-input></p>
+    <p><label style="vertical-align: top" v-if="YHQwhichResult.item==='1'">活动分享描述:</label><label style="vertical-align: top" v-else>礼包分享描述:</label><el-input type="textarea" v-model="input1" placeholder="请输入活动描述" size="small" style="font-size: 12px;"></el-input></p>
     <p><label>分享图标:</label><el-input v-model="input0" size="small" style="width: 400px;"></el-input>
       <el-upload
         class="upload-demo"
         ref="uploadfirst"
         name="img"
-        action="/apis/admin/buildblocks/uploadImage"
+        action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
         :on-success="upSuccessfirst"
         :on-error="upErre"
         :file-list="fileList"
@@ -18,7 +18,7 @@
         <el-button style="margin-left: 10px;" size="mini" type="primary" @click="submitUploadfirst" plain>确认上传</el-button>
       </el-upload>
     </p>
-    <p><label>页面主图:</label><el-input v-model="input2" size="small" style="width: 400px;"></el-input>
+    <p><label v-if="YHQwhichResult.item==='1'">页面主图:</label><label v-else>礼包主图:</label><el-input v-model="input2" size="small" style="width: 400px;"></el-input>
       <el-upload
         class="upload-demo"
         ref="uploadTWO"
@@ -34,8 +34,20 @@
       </el-upload>
     </p>
     <p class="tep"><label>是否启用:</label>
-      <el-radio v-model="updata2" label=1>启用</el-radio>
-      <el-radio v-model="updata2" label=0>不启用</el-radio>
+      <!--<el-radio v-model="updata2" label=0>不启用</el-radio>-->
+      <!--<el-radio v-model="updata2" label=1>启用</el-radio>-->
+      <el-radio-group v-model="updata2" size="small">
+        <el-radio :label="0">不启用</el-radio>
+        <el-radio :label="1">启用</el-radio>
+      </el-radio-group>
+    </p>
+    <p class="tep"><label>是否对外公开:</label>
+      <!--<el-radio v-model="updata2" label=0>不启用</el-radio>-->
+      <!--<el-radio v-model="updata2" label=1>启用</el-radio>-->
+      <el-radio-group v-model="outKnow" size="small" disabled>
+        <el-radio :label="0">不对外公开</el-radio>
+        <el-radio :label="1">对外公开</el-radio>
+      </el-radio-group>
     </p>
     <p>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">确定</el-button></p>
@@ -50,6 +62,7 @@ export default {
   name: 'YHQActive',
   data () {
     return {
+      outKnow:1,
       input:'',
       input0:'',
       input1:'',
@@ -65,18 +78,24 @@ export default {
     this.input1='';
     this.updata2='';
     this.fileList=[];
+    this.fileListTWO=[];
     this.input0='';
     this.input2='';
     this.input3='';
+    if(this.YHQwhichResult.item==='1'){
+      this.outKnow=1
+    }else{
+      this.outKnow=0
+    }
   },
   computed:{
     ...mapGetters([
-
-    ])
+'YHQwhichResult'
+    ]),
   },
   methods: {
     ...mapActions([
-     'popoverAlert'
+     'popoverAlert','saveCouponActiveActions','YHQwhichActions'
     ]),
     submitUploadfirst () {
       this.$refs.uploadfirst.submit();
@@ -90,7 +109,7 @@ export default {
         message:'上传成功',
         type: 'success'
       })
-      this.input0=response.result
+      this.input0='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/'+response.result
     },
     upErre (response, file, fileList) {
       this.$message({
@@ -105,22 +124,21 @@ export default {
         message:'上传成功',
         type: 'success'
       })
+      this.input2='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/'+response.result
     },
 
     upload(){
-
-    },
-    dateformat(data) {
-      if(data){
-      let year=data.getFullYear()
-      let month=data.getMonth()+1
-      let day= data.getDate()
-      let hour= data.getHours()
-      let min=data.getMinutes()
-      let sec=data.getSeconds()
-      console.log(year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec)
-      return year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec
-    }
+      let obj={
+        mainImg:this.input2,
+        isEnable:this.updata2,
+        name:this.input,
+        shareDescription:this.input1,
+        shareIcon:this.input0,
+        shareTitle:this.input3,
+        isPublic:this.outKnow
+      }
+    this.saveCouponActiveActions(obj)
+    this.YHQwhichActions({title:'VseachCouponActive',item:''})
     },
   }
 }

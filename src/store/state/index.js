@@ -203,15 +203,17 @@ const  editor = {//定义入参
   getDataListMM:{
     filter_S_productName:'',
     page:'',
-    rows:''
+    rows:'',
+    filter_I_sellerId:''
   },
-  //获取拼团商品列表
+  //获取拼团商品列表/获取专享产品列表
   productlistMM: {
     filter_I_isRecommend:'',
     filter_S_productName_contains:'',
     page:'',
     rows:'',
-    sortField:''
+    sortField:'',
+    filter_I_sellerId:''
   },
   //获取更多试用商品列表
   freeUseListMM: {
@@ -229,19 +231,29 @@ const  editor = {//定义入参
     sortField:''
   },
 
-
+//优惠券
   //优惠券列表//优惠券活动列表
   CouponLsitMM : {
+    filter_I_isAudit:'',
     page:'',
     rows:''
   },
+  CouponwithLsitMM : {
+    conponActivityId:'',
+    filter_S_title:'',
+    limitLevels:'',
+    page:'',
+    rows:'',
+    filter_I_isAudit:'',
+    filter_I_isPublic:''
+  },
   //创建优惠券
   createCouponMM:{
-    endTime:'', expireRemind:'',limitLevel:'', limitReceived:'', num:'', price:'', startTime:'',title:'',type:'',productIds:'',isAudit:''
+    endTime:'', expireRemind:'',limitLevel:'', limitReceived:'', num:'', price:'', startTime:'',title:'',type:'',productIds:'',isAudit:'',togetherProductIds:'',productType:'',isPublic:''
   },
-   //修改优惠券
+  //修改优惠券
   upDataCouponMM:{
-    id:'', num:'',title:''//,endTime:'', expireRemind:'',limitLevel:'', limitReceived:'', price:'', startTime:'',type:'',productIds:''//,isAudit:''
+    id:'', num:'',title:'',endTime:'', startTime:'', expireRemind:'',limitLevel:'', limitReceived:'', price:'',type:'',productIds:'',togetherProductIds:'',productType:'',isPublic:''
   },
   //删除优惠券
   deleteCouponMM:{
@@ -249,333 +261,54 @@ const  editor = {//定义入参
   },
   //审核优惠券
   doAuditCouponMM:{
-    ids:''
+    ids:'',
+    limitLevel:'',
+    expireNotifyDay:''
+  },
+  //优惠券活动列表
+  CouponActiveListMM:{
+    page:'',rows:'',filter_S_name:'',filter_I_isPublic:''
   },
   //创建优惠券活动
   saveCouponActiveMM: {
-    activityImg:'', name:'', shareDescription:'',shareImg:'',shareTitle:'',isEnable:''
+    mainImg:'', name:'', shareDescription:'',shareIcon:'',shareTitle:'',isEnable:'',isPublic:''
+  },
+  //修改优惠券活动
+  updataCouponActiveMM: {
+    mainImg:'', name:'', shareDescription:'',shareIcon:'',shareTitle:'',isEnable:'',id:'',isPublic:''
   },
 //删除优惠券活动
   deleteCouponActiveMM: {
-   id:''
+    id:''
   },
   //优惠券活动关联优惠券
   ActivelinkCouponMM:{
     activityId:'',
     couponIds:''
   },
+  //供应商优惠券列表
+  StoreYHQListMM:{
+    filter_S_title:'', limitLevels:'', page:'', rows:'', sellerId:'',filter_I_isAudit:'',filter_I_isPublic:''
+  },
+  //供应商创建优惠券
+  StoreCreteYHQMM:{
+    endTime:'',limitReceived:'',num:'',price:'',productIds:'',togetherProductIds:'',productType:'',sellerId:'',startTime:'',title:'',type:'',id:'',isPublic:''
+  },
+  //供应商删除优惠券
+  StoreDeleteYHQMM:{
+    id:'', sellerId:''
+  },
+////////////////////优惠券统计
+  couponoCuntMM:{
+    filter_S_title:'', page:'', rows:''
+  },
+  changelinkCouponMM:{
+    activityId:'',couponId:''
+  },
 
 };
 
 const result = { //接收请求后的数据
-  //省份列表
-  cityList:[
-    {
-      "id": "1",
-      "name": "北京",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "010",
-      "zipcode": "100000",
-      "depth": "1"
-    },
-    {
-      "id": "2",
-      "name": "安徽",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "3",
-      "name": "福建",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "4",
-      "name": "甘肃",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "5",
-      "name": "广东",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "6",
-      "name": "广西",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "7",
-      "name": "贵州",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "8",
-      "name": "海南",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "9",
-      "name": "河北",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "10",
-      "name": "河南",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "11",
-      "name": "黑龙江",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "12",
-      "name": "湖北",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "13",
-      "name": "湖南",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "14",
-      "name": "吉林",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "15",
-      "name": "江苏",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "16",
-      "name": "江西",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "17",
-      "name": "辽宁",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "18",
-      "name": "内蒙古",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "19",
-      "name": "宁夏",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "20",
-      "name": "青海",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "21",
-      "name": "山东",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "22",
-      "name": "山西",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "23",
-      "name": "陕西",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "24",
-      "name": "上海",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "021",
-      "zipcode": "200000",
-      "depth": "1"
-    },
-    {
-      "id": "25",
-      "name": "四川",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "26",
-      "name": "天津",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "022",
-      "zipcode": "300000",
-      "depth": "1"
-    },
-    {
-      "id": "27",
-      "name": "西藏",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "28",
-      "name": "新疆",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "29",
-      "name": "云南",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "30",
-      "name": "浙江",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "",
-      "zipcode": "",
-      "depth": "1"
-    },
-    {
-      "id": "31",
-      "name": "重庆",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "023",
-      "zipcode": "404100",
-      "depth": "1"
-    },
-    {
-      "id": "32",
-      "name": "香港",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "00852",
-      "zipcode": "999077",
-      "depth": "1"
-    },
-    {
-      "id": "33",
-      "name": "澳门",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "00853",
-      "zipcode": "999078",
-      "depth": "1"
-    },
-    {
-      "id": "34",
-      "name": "台湾",
-      "parentid": "0",
-      "parentname": "",
-      "areacode": "00886",
-      "zipcode": "",
-      "depth": "1"
-    }],
   //城市列表
   smallCityList:[],
   //县级列表
@@ -585,7 +318,8 @@ const result = { //接收请求后的数据
   //弹框属性
   popoverAlive: {
     openOrClose: false,
-    title: ''
+    title: '',
+    SSSnum:''
   },
   //id品牌
   getByIdResult: {},
@@ -732,23 +466,36 @@ const result = { //接收请求后的数据
   ImgUrlResult:'',
 
 
-
-
-  //优惠券活动
-  YHQwhichResult:'VseachCouponActive',
 //优惠券
-  YHQonlyResult:{title:'VseachCoupon',item:''},
+  //专享产品list
+  plusProductListResult:[],
+  //优惠券活动
+  YHQwhichResult:{title:'VseachCouponActive',item:''},
+//优惠券
+  YHQonlyResult:{title:'VseachCoupon',item:'',Which:''},
 //供应商优惠券
-  StoreYHQResult:'VseachStoreCoupon',
+  StoreYHQResult:{title:'VseachStoreCoupon',item:'',trueOrfalse:false},
   //获取优惠券列表
-  CouponListResult:{
-    okGo:[],
-    noGo:[]
-  },
+  CouponListResult:[],
   //优惠券活动列表
   CouponActiveListResult:[],
   //优惠券关联商品集合
-  CouponWithGoodsResult:'',
+  CouponWithGoodsResult:{
+    productType:'',
+    togetherProductIds:'',
+    productIds:'',
+    price:'',
+    productName:''
+  },
+//供应商优惠券列表
+  StoreYHQListResult:[],
+//搜索栏
+  SeachWhiche:'',
+  SeachWhiche2:'',
+  /////////////////////////////////供应商id
+  sellID:'',
+//供应商统计
+  couponoCuntResult:[],
 
 
   loginResult:[],

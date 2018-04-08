@@ -118,7 +118,7 @@ export const GET_SCOREBUY_LIST = 'GET_SCOREBUY_LIST';
 //修改state属性需要全部走mutations
 
 
-
+//优惠券
 //优惠券Active
 export const SET_YHQ_WHICH = 'SET_YHQ_WHICH';
 //优惠券
@@ -127,6 +127,7 @@ export const SET_YHQ_ONLY = 'SET_YHQ_ONLY';
 export const SET_STORE_YHQ = 'SET_STORE_YHQ';
 //优惠券列表
 export const SET_COUPON_LIST_RESULT = 'SET_COUPON_LIST_RESULT';
+export const SET_COUPON_WITH_LIST_RESULT = 'SET_COUPON_WITH_LIST_RESULT';
 export const GET_COUPON_LIST_RESULT = 'GET_COUPON_LIST_RESULT';
 //创建优惠券
 export const SET_CREATE_COUPON = 'SET_CREATE_COUPON';
@@ -138,10 +139,28 @@ export const SET_DELETE_COUPONMM = 'SET_DELETE_COUPONMM';
 export const SET_DOAUDIT_COUPON = 'SET_DOAUDIT_COUPON';
 //创建优惠券活动
 export const SET_SAVE_COUPON_ACTIVE = 'SET_SAVE_COUPON_ACTIVE';
+//修改优惠券活动
+export const SET_UPDATA_COUPON_ACTIVE = 'SET_UPDATA_COUPON_ACTIVE';
 //优惠券活动list
+export const SET_COUPON_ACTIVE_LIST = 'SET_COUPON_ACTIVE_LIST';
 export const GET_COUPON_ACTIVE_LIST = 'GET_COUPON_ACTIVE_LIST';
 //删除优惠券活动
 export const SET_DELETE_COUPON_ACTIVE = 'SET_DELETE_COUPON_ACTIVE';
+//优惠券活动关联优惠券
+export const SET_ACTIVE_LINK_COUPON = 'SET_ACTIVE_LINK_COUPON';
+//供应商优惠券列表
+export const SET_STORE_YHQLIST = 'SET_STORE_YHQLIST';
+export const GET_STORE_YHQLIST = 'GET_STORE_YHQLIST';
+//供应商创建优惠券
+export const SET_STORE_CRETE_YHQ = 'SET_STORE_CRETE_YHQ';
+//供应商删除优惠券
+export const SET_STORE_DELETE_YHQ = 'SET_STORE_DELETE_YHQ';
+//////////////////////优惠券统计
+export const SET_STORE_COUPONO_CUNT = 'SET_STORE_COUPONO_CUNT';
+export const GET_STORE_COUPONO_CUNT = 'GET_STORE_COUPONO_CUNT';
+export const GET_PLUS_PRODUCT_LIST = 'GET_PLUS_PRODUCT_LIST';//专享产品list
+//取消关联优惠券
+export const SET_CHANGE_LINK_COUPON = 'SET_CHANGE_LINK_COUPON';
 
 
 

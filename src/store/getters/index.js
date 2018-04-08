@@ -69,10 +69,10 @@ const getters = {//返回state内的数据进行模板使用
     pickerOptions2:state => {
       return state.result.pickerOptions2
     },
-    //省市选择器
-    cityListResult: state => {
-      return state.result.cityList
-    },
+    // //省市选择器
+    // cityListResult: state => {
+    //   return state.result.cityList
+    // },
     //城市列表
     smallCityList: state => {
       return state.result.smallCityList
@@ -172,20 +172,24 @@ const getters = {//返回state内的数据进行模板使用
 
 
 
-
-  //优惠券Active
+    //优惠群
+    //专享产品list
+    plusProductListResult:state => {
+      return state.result.plusProductListResult
+    },
+    //优惠券Active
     YHQwhichResult: state => {
       return state.result.YHQwhichResult
     },
-  //优惠券
+    //优惠券
     YHQonlyResult: state => {
-          return state.result.YHQonlyResult
-        },
+      return state.result.YHQonlyResult
+    },
 //供应商优惠券
     StoreYHQResult: state => {
       return state.result.StoreYHQResult
     },
-  //优惠券列表
+    //优惠券列表
     CouponListResult: state =>{
       return state.result.CouponListResult
     },
@@ -197,6 +201,26 @@ const getters = {//返回state内的数据进行模板使用
     CouponActiveListResult: state =>{
       return state.result.CouponActiveListResult
     },
+//供应商优惠券列表
+    StoreYHQListResult: state =>{
+      return state.result.StoreYHQListResult
+    },
+//搜索栏
+    seachWhicheResult: state => {
+      return state.result.SeachWhiche
+    },
+    seachWhicheResult2: state => {
+      return state.result.SeachWhiche2
+    },
+//////////sellID
+    sellIDResult: state =>{
+      return state.result.sellID
+    },
+    //优惠券统计
+    couponoCuntResult: state =>{
+      return state.result.couponoCuntResult
+    },
+
 
     loginResult: state => {
       return state.result.loginResult

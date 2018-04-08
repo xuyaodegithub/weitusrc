@@ -5,7 +5,7 @@
     </div>
     <div class="popover-main">
       <p>
-        http://ol-site.olquan.com/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id={{this.$store.state.result.activeId}}
+       {{this.$store.state.result.activeId}}
       </p>
     </div>
   </div>

@@ -1,11 +1,11 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
-      <router-link to="index">首页</router-link> &gt; 活动页面设计
-      <el-button type="success" round size="mini" icon="el-icon-plus" @click="newPush()" style="margin-top: 10px">新增</el-button>
-      <el-button type="success" size="mini" round style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})">返回</el-button>
+      <router-link to="index">首页</router-link> &gt; 活动管理
+      <el-button type="success" round size="mini" icon="el-icon-plus" @click="newPush()" style="margin-top: 10px" v-if="activeChangeResult.item==='vSeachActive'">新增</el-button>
+      <el-button type="success" size="mini" round style="margin-top: 10px" @click="activeActions({obj:{},item:'vSeachActive'})" v-if="activeChangeResult.item!=='vSeachActive'">返回</el-button>
     </p>
-    <div class="logo-list">
+    <div class="logo-list" v-if="activeChangeResult.item==='vSeachActive'">
       <label>活动ID</label><el-input v-model="input" placeholder="请输入活动ID" size="small"></el-input>
       <el-button type="primary" style="width:100px" round size="mini" icon="el-icon-search" @click="seachActive(input)">搜索</el-button>
     </div>
@@ -13,6 +13,9 @@
       <keep-alive>
         <component :is="activeChangeResult.item"></component>
       </keep-alive>
+    </div>
+    <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>
+      <v-popover></v-popover>
     </div>
   </div>
 
@@ -26,6 +29,7 @@
   import vBianji from '../page/bianji.vue'
   import vUpdataActive from '../page/updataActive.vue'
   import vByIdActive from '../alert/byIdActive.vue'
+  import vPopover from '../../popover/popover.vue'
 export default {
   name: 'huodong',
   data () {
@@ -39,7 +43,7 @@ export default {
     ])
   },
   components:{
-    vSeachActive,vNewActive,vBianji,vUpdataActive,vByIdActive
+    vSeachActive,vNewActive,vBianji,vUpdataActive,vByIdActive,vPopover
   },
   methods: {
     ...mapActions([
@@ -62,6 +66,18 @@ export default {
       }
       this.activeActions(data)
     },
+    upOk(){
+      let obj={
+        subassembly: this.addCommodityResult,
+        background: this.backColorResult
+      }
+      let data={
+        id:this.activeChangeResult.obj.id,
+        data:JSON.stringify(obj)
+      }
+      console.log(data)
+      this.uploadDataToOSSActions(data)
+    },
   }
 }
 </script>
@@ -69,7 +85,7 @@ export default {
 <style scoped>
   .logo-list{
     font-size:14px;
-    margin-top:16px;
+    margin-top: 16px;
   }
   .logo-list .el-input{
     width:150px;
@@ -85,8 +101,9 @@ export default {
     border:0;
     margin:0;
     color: #333;
-    font-weight: 550;
+    font-weight: 600;
     text-indent:0;
+    overflow:hidden;
   }
   #toindex > p .el-button--mini,#toindex .el-button--mini.is-round{
     float: right;

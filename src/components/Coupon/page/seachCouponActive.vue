@@ -3,7 +3,7 @@
     <div class="seach-list">
       <el-table
         v-loading="loading"
-        :data="listData"
+        :data="CouponActiveListResult.rows"
         style="width: 100%">
         <el-table-column
           v-for="(item,index) in dataList"
@@ -11,29 +11,36 @@
           :width="item.width"
           :key="index">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row[item.which]}}</span>
+            <span style="margin-left: 10px" v-if="item.which==='ct'">{{ scope.row[item.which] | changeTime}}</span>
+            <span style="margin-left: 10px" v-else-if="item.which==='isEnable'">{{ scope.row[item.which]==0 ? '未启用':'已启用'}}</span>
+            <span style="margin-left: 10px" v-else-if="item.which==='isPublic'">{{ scope.row[item.which]==0 ? '不公开':'公开'}}</span>
+            <span style="margin-left: 10px" v-else>{{ scope.row[item.which]}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="380">
           <template slot-scope="scope">
             <el-button
               size="mini"
+              icon="el-icon-message"
               @click="linkTo(scope.$index, scope.row)" plain>链接</el-button>
-             <el-button
-               type="primary"
-               plain
+            <el-button
               size="mini"
-              @click="lookOut(scope.$index, scope.row)" plain>预览</el-button>
+              type="info"
+              icon="el-icon-star-off"
+              @click="watchOld(scope.$index, scope.row)" plain>查看已关联</el-button>
             <el-button
               size="mini"
               type="success"
+              icon="el-icon-star-off"
               @click="bianji(scope.$index, scope.row)" plain>关联优惠券</el-button>
             <el-button
               type="primary"
               size="mini"
+              icon="el-icon-edit"
               @click="Updata(scope.$index, scope.row)" plain>编辑</el-button>
             <el-button
               size="mini"
+              icon="el-icon-delete"
               type="danger"
               @click="handleDelete(scope.$index, scope.row)" plain>删除</el-button>
           </template>
@@ -48,7 +55,7 @@
         :page-sizes="[10, 20, 30, 50]"
         :page-size="value"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="listData.length">
+        :total="CouponActiveListResult.total">
       </el-pagination>
     </div>
   </div>
@@ -59,6 +66,7 @@
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
 export default {
+    props:['msg'],
   name: 'YHQActiveList',
   data () {
     return {
@@ -68,64 +76,32 @@ export default {
       dataList:[
         {
           name:'活动名称',
-          width:'180',
+          width:'150',
           which:'name'
         },{
-          name:'分享标题',
-          width:'100',
-          which:'timer'
-        },{
-          name:'领取等级',
-          width:'100',
-          which:'Grade'
-        },{
-          name:'关联产品',
-          width:'150',
-          which:'data'
+          name:'添加时间',
+          width:'200',
+          which:'ct'
         },{
           name:'关联优惠券张数',
-          width:'120',
-          which:'allnum'
+          width:'130',
+          which:'couponCount'
         },{
           name:'是否启用',
-          width:'100',
-          which:'status'
+          width:'130',
+          which:'isEnable'
         },
-      ],
-      listData:[{
-        name:'年货优惠券',
-        timer:'30天',
-        data:'dlam',
-        allnum:'100',
-        status:'待审核',
-        Grade:'白领'
-      },{
-        name:'年货优惠券',
-        timer:'30天',
-        data:'dlam',
-        allnum:'100',
-        status:'待审核',
-        Grade:'金领'
-      },{
-        name:'年货优惠券',
-        timer:'30天',
-        data:'dlam',
-        allnum:'100',
-        status:'待审核',
-        Grade:'粉领'
-      },{
-        name:'年货优惠券',
-        timer:'30天',
-        data:'dlam',
-        allnum:'100',
-        status:'待审核',
-        Grade:'粉领'
-      }]
+      {
+          name:'公开状态',
+          width:'110',
+          which:'isPublic'
+        },
+      ]
     }
   },
   computed:{
     ...mapGetters([
-      'loading',
+      'loading','CouponActiveListResult'
     ])
   },
   mounted(){
@@ -133,20 +109,22 @@ export default {
       page:1,
       rows:10
     }
-
+this.CouponActiveListActions(data)
   },
   methods: {
     ...mapActions([
-   'popoverAlert','YHQwhichActions'
+   'popoverAlert','YHQwhichActions','CouponActiveListActions','deleteCouponActiveActions'
     ]),
     linkTo(index,row){
-
+      this.$store.commit('activeIdchange','http://ol-site.olquan.com/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id)
+      this.popoverAlert('VactiveDress')
     },
     bianji(index,row){
-      this.popoverAlert('VwithYHQ')
+      this.popoverAlert(['VwithYHQ','second'])
+      this.YHQwhichActions({title:'VseachCouponActive',item:row})
     },
     Updata(index,row){
-this.YHQwhichActions('VupDataCouponActive')
+this.YHQwhichActions({title:'VupDataCouponActive',item:row})
     },
     handleDelete(index,row){
       this.$confirm('此操作将删除该活动, 是否继续?', '提示', {
@@ -154,8 +132,7 @@ this.YHQwhichActions('VupDataCouponActive')
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
-
+        this.deleteCouponActiveActions(row.id)
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -169,6 +146,13 @@ this.YHQwhichActions('VupDataCouponActive')
        page:this.currentPage4,
        rows:val
      }
+       if(this.msg.title){
+        data.filter_S_name=this.msg.title
+       }
+      if(this.msg.status==0 || this.msg.status==1){
+        data.filter_I_isPublic=this.msg.status
+       }
+      this.CouponActiveListActions(data)
     },
     handleCurrentChange(val) {
       this.currentPage4=val
@@ -176,9 +160,17 @@ this.YHQwhichActions('VupDataCouponActive')
         page:val,
         rows:this.value
       }
+      if(this.msg.title){
+        data.filter_S_name=this.msg.title
+      }
+      if(this.msg.status==0 || this.msg.status==1){
+        data.filter_I_isPublic=this.msg.status
+      }
+      this.CouponActiveListActions(data)
     },
-    lookOut(){
-
+    watchOld(index,row){
+      this.popoverAlert(['VwithYHQ','first'])
+      this.YHQwhichActions({title:'VseachCouponActive',item:row})
     }
   }
 }

@@ -6,7 +6,7 @@
         <p><label>组件类型:</label><span>BANNER</span></p>
       </div>
       <div class="img">
-        <p class="clear">
+        <p class="clear" style="margin-bottom: 10px;">
           <i class="el-icon-delete cu" style="margin-left: 5px" @click="moveDelete()"></i>
           <i class="el-icon-caret-right cu" @click="moveRight()"></i>
           <i class="el-icon-caret-left cu" @click="moveLeft()"></i>
@@ -23,7 +23,7 @@
                 <!--<el-button type="success" plain style="margin-top: 5px;margin-left: 0;" size="mini" @click="addGoodsList()">关联商品</el-button>--></li>
             </ul>
             <el-upload
-              action="/apis/admin/buildblocks/uploadImage"
+              action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
               name="img"
               :multiple=true
               :show-file-list=false
@@ -53,12 +53,14 @@
                 :value="item.name ? item.name : ''">
               </el-option>
             </el-select>
+            <p>
             <label style="margin-right: 20px;width: 60px;text-align: right;display: inline-block;">链接:</label>
             <el-input v-model="ImgUrlResult" placeholder="请输入内容" size="mini" :disabled="openOrclose" @blur="change()" v-if="radio2!==17"></el-input>
             <el-input v-model="input" placeholder="请输入内容" size="mini" :disabled="openOrclose" @blur="change()" v-if="radio2===17"></el-input>
             <!--<el-input v-model="input" placeholder="请输入内容" size="mini" :disabled="radio2===31"></el-input>-->
             <!--<el-button style="width: 60px;margin: 0;padding: 4px;" type="success" size="mini" @click="change()">生成链接</el-button>-->
-            <label style="margin-right: 20px;display: inline-block;width: 60px;text-align: right;margin-top: 10px">图片边距:</label><el-input v-model="lineData" placeholder="请输入内容" size="mini" @blur="change2()"></el-input>
+            </p>
+            <p><label style="margin-right: 23px;display: inline-block;width: 60px;text-align: right;margin-top: 10px">图片边距:</label><el-input v-model="lineData" placeholder="请输入内容" size="mini" @blur="change2()"></el-input></p>
           </div>
       </div>
       <!--<p> <el-button type="primary" plain size="mini" @click="addimg()">修改图片</el-button></p>-->
@@ -179,13 +181,14 @@ export default {
           {title:'清仓拼列表', which:12},
           {title:'保险', which:4},
           {title:'开通粉领', which:3},
+          {title:'粉领续费', which:32},
           {title:'粉领专享', which:5},
           //{title:'积分试用列表', which:13},
-          {title:'积分试用产品详情', which:14},
+          {title:'试用产品详情', which:14},
           {title:'全球购列表', which:15},
           {title:'家居日用首页', which:16},
           {title:'品牌馆', which:17},
-          {title:'试用中心', which:19},
+          {title:'试用', which:19},
           {title:'产品详情', which:20},
           {title:'品牌特卖', which:21},
           {title:'限时购', which:22},
@@ -300,6 +303,8 @@ export default {
           this.radio2=17
         }else if(this.commodityResult.contents[key].type===18){
           this.radio2=29
+        }else if(this.commodityResult.contents[key].type===19){
+          this.radio2=32
         }else if(this.commodityResult.contents[key].type===0){
           this.radio2=31
         }else{
@@ -318,7 +323,7 @@ export default {
           that.commodityResult.contents[that.num].width=oImg.width
           that.commodityResult.contents[that.num].height=oImg.height*/
           obj.width=oImg.width
-          obj.height=oImg.width
+          obj.height=oImg.height
           obj.image='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
           obj.isTrue=false
           that.commodityResult.contents.push(obj)
@@ -508,11 +513,14 @@ export default {
           }*/
         }else if(key===2){
           console.log(this.commodityResult.contents[this.num])
-          this.input='http://ol-h5-preview.olquan.cn/index/index'
+          this.input='http://ol-h5-preview.olquan.cn/index/newIndex'
           this.addType(10)
         }else if(key===3){
           this.input='http://ol-site.olquan.com/weixin/member/openStore'
           this.addType(11)
+        }else if(key===32){
+          this.input='http://ol-site.olquan.com/weixin/member/renewConfirmOrder'
+          this.addType(19)
         }else if(key===4){
           this.input='http://www.ins-box.com/channelcps?channelCode=966262c61960ed971942347b443c7743&to=http://www.ins-box.com/pagecontent?pageContentId=100044'
           this.addType(16)
@@ -585,7 +593,7 @@ export default {
           this.addType(17)
           this.popoverAlert('VclassSell')
         }else if(key===19){
-          this.input='http://ol-h5-preview.olquan.cn/try/center?type=3'
+          this.input='http://ol-h5-preview.olquan.cn/try/moretry'
           this.addType(1)
         }else if(key===20){
           this.$store.commit('changeRadios','普通商品')
@@ -700,7 +708,7 @@ export default {
 <style>
  #zujianData .banner-t{
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
  #zujianData .banner-t label{
     margin-right: 10px;
@@ -737,7 +745,7 @@ export default {
   height:100%;
   }
  #zujianData .banner .img{
-    padding:20px;
+    padding:10px;
     background:rgba(242, 242, 242, 1);
   }
  #zujianData .anchor-b{

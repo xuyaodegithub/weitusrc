@@ -13,6 +13,9 @@ const mutations = {//mutations内是改变state内的值得作用
     }else if(typeof where == "string"){
       state.result.popoverAlive.title = where;
     }
+    if(typeof where == "object" && where.length>=2){
+      state.result.popoverAlive.SSSnum = where[1];
+    }
   },
   //loading
   changeloading (state) {
@@ -104,6 +107,7 @@ const mutations = {//mutations内是改变state内的值得作用
       state.editor.getDataListMM.page=data.page
       state.editor.getDataListMM.filter_S_productName=data.filter_S_productName
       state.editor.getDataListMM.rows=data.rows
+      state.editor.getDataListMM.filter_I_sellerId=data.filter_I_sellerId
     }
   },
   [types.GET_ACTIVE_DATA_LIST] (state,res) {
@@ -572,6 +576,7 @@ const mutations = {//mutations内是改变state内的值得作用
     state.editor.productlistMM.page=data.page
     state.editor.productlistMM.rows=data.rows
     state.editor.productlistMM.sortField=data.sortField
+    state.editor.productlistMM.filter_I_sellerId=data.filter_I_sellerId
   },
   [types.GET_PRODUCT_LIST] (state,res) {
     state.result.productlistResult=res.data
@@ -610,39 +615,59 @@ const mutations = {//mutations内是改变state内的值得作用
 
 
 
+  //优惠券
 
-
+//专享产品list
+  [types.GET_PLUS_PRODUCT_LIST](state,res){
+    state.result.plusProductListResult=res.data
+  },
   //优惠券Active
   [types.SET_YHQ_WHICH](state,str){
-    state.result.YHQwhichResult=str
+    state.result.YHQwhichResult.item=str.item
+    state.result.YHQwhichResult.title=str.title
   },
-[types.SET_YHQ_ONLY](state,str){
+  [types.SET_YHQ_ONLY](state,str){
     state.result.YHQonlyResult.title=str.title
     state.result.YHQonlyResult.item=str.item
+    state.result.YHQonlyResult.Which=str.Which
   },
 //供应商优惠券
-[types.SET_STORE_YHQ](state,str){
-  state.result.StoreYHQResult=str
-},
+  [types.SET_STORE_YHQ](state,str){
+    state.result.StoreYHQResult.title=str.title
+    state.result.StoreYHQResult.item=str.item
+    state.result.StoreYHQResult.trueOrfalse=str.trueOrfalse
+  },
 //优惠券列表
   [types.SET_COUPON_LIST_RESULT](state,data){
     state.editor.CouponLsitMM.page=data.page
     state.editor.CouponLsitMM.rows=data.rows
+    state.editor.CouponLsitMM.filter_I_isAudit=data.filter_I_isAudit
   },
-[types.GET_COUPON_LIST_RESULT](state,res){
-    state.result.CouponListResult={
-      noGo:[],
-      okGo:[]
-    }
-    if(res.data.rows.length>0){
-      for(let i=0;i<res.data.rows.length;i++){
-        if(res.data.rows[i].isAudit===0){
-          state.result.CouponListResult.noGo.push(res.data.rows[i])
-        }else{
-          state.result.CouponListResult.okGo.push(res.data.rows[i])
-        }
-      }
-    }
+  //关联优惠券列表
+  [types.SET_COUPON_WITH_LIST_RESULT](state,data){
+    state.editor.CouponwithLsitMM.filter_S_title=data.filter_S_title
+    state.editor.CouponwithLsitMM.filter_I_isAudit=data.filter_I_isAudit
+    state.editor.CouponwithLsitMM.limitLevels=data.limitLevels
+    state.editor.CouponwithLsitMM.page=data.page
+    state.editor.CouponwithLsitMM.rows=data.rows
+    state.editor.CouponwithLsitMM.conponActivityId=data.conponActivityId
+    state.editor.CouponwithLsitMM.filter_I_isPublic=data.filter_I_isPublic
+  },
+  [types.GET_COUPON_LIST_RESULT](state,res){
+    // state.result.CouponListResult={
+    //   noGo:[],
+    //   okGo:[]
+    // }
+    // if(res.data.rows.length>0){
+    //   for(let i=0;i<res.data.rows.length;i++){
+    //     if(res.data.rows[i].isAudit===0){
+    //       state.result.CouponListResult.noGo.push(res.data.rows[i])
+    //     }else{
+    //       state.result.CouponListResult.okGo.push(res.data.rows[i])
+    //     }
+    //   }
+    // }
+    state.result.CouponListResult=res.data
   },
 //创建优惠券
   [types.SET_CREATE_COUPON](state,data){
@@ -656,54 +681,158 @@ const mutations = {//mutations内是改变state内的值得作用
     state.editor.createCouponMM.num=data.num
     state.editor.createCouponMM.price=data.price
     state.editor.createCouponMM.productIds=data.productIds
+    state.editor.createCouponMM.productType=data.productType
+    state.editor.createCouponMM.togetherProductIds=data.togetherProductIds
     state.editor.createCouponMM.isAudit=data.isAudit
+    state.editor.createCouponMM.isPublic=data.isPublic
   },
 //修改优惠券
   [types.SET_UPDATA_COUPON](state,data){
     state.editor.upDataCouponMM.title=data.title
-   // state.editor.upDataCouponMM.type=data.type
-   // state.editor.upDataCouponMM.startTime=data.startTime
-   // state.editor.upDataCouponMM.endTime=data.endTime
-   // state.editor.upDataCouponMM.expireRemind=data.expireRemind
-   // state.editor.upDataCouponMM.limitLevel=data.limitLevel
-    //state.editor.upDataCouponMM.limitReceived=data.limitReceived
     state.editor.upDataCouponMM.num=data.num
-    //state.editor.upDataCouponMM.price=data.price
-    //state.editor.upDataCouponMM.productIds=data.productIds
     state.editor.upDataCouponMM.id=data.id
-    //state.editor.upDataCouponMM.isAudit=data.isAudit
-
+    state.editor.upDataCouponMM.endTime=data.endTime
+    state.editor.upDataCouponMM.startTime=data.startTime
+    state.editor.upDataCouponMM.expireRemind=data.expireRemind
+    state.editor.upDataCouponMM.limitLevel=data.limitLevel
+    state.editor.upDataCouponMM.limitReceived=data.limitReceived
+    state.editor.upDataCouponMM.price=data.price
+    state.editor.upDataCouponMM.type=data.type
+    state.editor.upDataCouponMM.productIds=data.productIds
+    state.editor.upDataCouponMM.togetherProductIds=data.togetherProductIds
+    state.editor.upDataCouponMM.productType=data.productType
+    state.editor.upDataCouponMM.isPublic=data.isPublic
   },
   //删除优惠券
   [types.SET_DELETE_COUPONMM] (state,id) {
     state.editor.deleteCouponMM.id=id
   },
   //审核优惠券
-  [types.SET_DOAUDIT_COUPON] (state,ids) {
-    state.editor.doAuditCouponMM.ids=ids
+  [types.SET_DOAUDIT_COUPON] (state,data) {
+    state.editor.doAuditCouponMM.ids=data.ids
+    state.editor.doAuditCouponMM.limitLevel=data.limitLevel
+    state.editor.doAuditCouponMM.expireNotifyDay=data.expireNotifyDay
   },
   //创建优惠券活动
   [types.SET_SAVE_COUPON_ACTIVE] (state,data) {
     state.editor.saveCouponActiveMM.shareTitle=data.shareTitle
-    state.editor.saveCouponActiveMM.shareImg=data.shareImg
+    state.editor.saveCouponActiveMM.shareIcon=data.shareIcon
     state.editor.saveCouponActiveMM.name=data.name
-    state.editor.saveCouponActiveMM.activityImg=data.activityImg
+    state.editor.saveCouponActiveMM.mainImg=data.mainImg
     state.editor.saveCouponActiveMM.isEnable=data.isEnable
     state.editor.saveCouponActiveMM.shareDescription=data.shareDescription
+    state.editor.saveCouponActiveMM.isPublic=data.isPublic
+  },
+  //修改优惠券活动
+  [types.SET_UPDATA_COUPON_ACTIVE] (state,data) {
+    state.editor.updataCouponActiveMM.shareTitle=data.shareTitle
+    state.editor.updataCouponActiveMM.shareIcon=data.shareIcon
+    state.editor.updataCouponActiveMM.name=data.name
+    state.editor.updataCouponActiveMM.mainImg=data.mainImg
+    state.editor.updataCouponActiveMM.isEnable=data.isEnable
+    state.editor.updataCouponActiveMM.shareDescription=data.shareDescription
+    state.editor.updataCouponActiveMM.id=data.id
+    state.editor.updataCouponActiveMM.isPublic=data.isPublic
   },
   //优惠券活动列表
+  [types.SET_COUPON_ACTIVE_LIST](state,res){
+    state.editor.CouponActiveListMM.rows=res.rows
+    state.editor.CouponActiveListMM.page=res.page
+    state.editor.CouponActiveListMM.filter_S_name=res.filter_S_name
+    state.editor.CouponActiveListMM.filter_I_isPublic=res.filter_I_isPublic
+  },
   [types.GET_COUPON_ACTIVE_LIST](state,res){
-    state.result.CouponActiveListResult=res.data.rows
+    state.result.CouponActiveListResult=res.data
   },
   //删除优惠券活动
   [types.SET_DELETE_COUPON_ACTIVE](state,id){
-    state.editor.ddeleteCouponActiveMM.id=id
+    state.editor.deleteCouponActiveMM.id=id
+  },
+  //优惠券活动关联优惠券
+  [types.SET_ACTIVE_LINK_COUPON](state,data){
+    state.editor.ActivelinkCouponMM.activityId=data.activityId
+    state.editor.ActivelinkCouponMM.couponIds=data.couponIds
   },
   //优惠券关联商品集合
-  Coupon_With_Goods (state,res) {
-    state.result.CouponWithGoodsResult=res
+  Coupon_With_Goods (state,data) {
+    state.result.CouponWithGoodsResult.productType=data.productType
+    state.result.CouponWithGoodsResult.togetherProductIds=data.togetherProductIds
+    state.result.CouponWithGoodsResult.productIds=data.productIds
+    state.result.CouponWithGoodsResult.price=data.price
+    state.result.CouponWithGoodsResult.productName=data.productName
   },
-
+  //供应商优惠券列表
+  [types.SET_STORE_YHQLIST](state,data){
+    state.editor.StoreYHQListMM.filter_S_title=data.filter_S_title
+    state.editor.StoreYHQListMM.limitLevels=data.limitLevels
+    state.editor.StoreYHQListMM.page=data.page
+    state.editor.StoreYHQListMM.rows=data.rows
+    state.editor.StoreYHQListMM.sellerId=data.sellerId
+    state.editor.StoreYHQListMM.filter_I_isAudit=data.filter_I_isAudit
+    state.editor.StoreYHQListMM.filter_I_isPublic=data.filter_I_isPublic
+  },
+  [types.GET_STORE_YHQLIST](state,res){
+    state.result.StoreYHQListResult=res.data
+    // state.result.StoreYHQListResult={
+    //   noGo:[],
+    //   okGo:[]
+    // }
+    // if(res.data.rows.length>0){
+    //   for(let i=0;i<res.data.rows.length;i++){
+    //     if(res.data.rows[i].isAudit===0){
+    //       state.result.StoreYHQListResult.noGo.push(res.data.rows[i])
+    //     }else{
+    //       state.result.StoreYHQListResult.okGo.push(res.data.rows[i])
+    //     }
+    //   }
+    // }
+  },
+  //供应商创建优惠券
+  [types.SET_STORE_CRETE_YHQ](state,data){
+    state.editor.StoreCreteYHQMM.title=data.title
+    state.editor.StoreCreteYHQMM.sellerId=data.sellerId
+    state.editor.StoreCreteYHQMM.productIds=data.productIds
+    state.editor.StoreCreteYHQMM.productType=data.productType
+    state.editor.StoreCreteYHQMM.togetherProductIds=data.togetherProductIds
+    state.editor.StoreCreteYHQMM.type=data.type
+    state.editor.StoreCreteYHQMM.price=data.price
+    state.editor.StoreCreteYHQMM.num=data.num
+    state.editor.StoreCreteYHQMM.limitReceived=data.limitReceived
+    state.editor.StoreCreteYHQMM.endTime=data.endTime
+    state.editor.StoreCreteYHQMM.startTime=data.startTime
+    state.editor.StoreCreteYHQMM.id=data.id
+    state.editor.StoreCreteYHQMM.isPublic=data.isPublic
+  },
+  //供应商删除优惠券
+  [types.SET_STORE_DELETE_YHQ] (state,data) {
+    state.editor.StoreDeleteYHQMM.id=data.id
+    state.editor.StoreDeleteYHQMM.sellerId=data.sellerId
+  },
+  //搜索栏
+  SEACHWHICHE(state,data){
+    state.result.SeachWhiche=data
+  },
+  SEACHWHICHE2(state,data){
+    state.result.SeachWhiche2=data
+  },
+  /////////////////////sellID
+  sellID(state,id){
+    state.result.sellID=id
+  },
+  //优惠券统计
+  [types.SET_STORE_COUPONO_CUNT](state,data){
+    state.editor.couponoCuntMM.page=data.page
+    state.editor.couponoCuntMM.rows=data.rows
+    state.editor.couponoCuntMM.filter_S_title=data.filter_S_title
+  },
+  [types.GET_STORE_COUPONO_CUNT](state,res){
+    state.result.couponoCuntResult=res.data
+  },
+  //取消关联优惠券
+  [types.SET_CHANGE_LINK_COUPON](state,data){
+    state.editor.changelinkCouponMM.activityId=data.activityId
+    state.editor.changelinkCouponMM.couponId=data.couponId
+  }
 }
 
 export default mutations

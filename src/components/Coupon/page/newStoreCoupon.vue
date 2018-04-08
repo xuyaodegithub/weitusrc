@@ -10,29 +10,35 @@
       start-placeholder="开始日期"
       end-placeholder="结束日期"
       align="right">
-    </el-date-picker><span style="color:#999999; margin-left: 10px">按天计算</span></p>
+    </el-date-picker>
+      <!--<span style="color:#999999; margin-left: 10px">按天计算</span>--></p>
     <p><label>优惠券类型:</label><el-radio-group v-model="radio" size="small">
       <el-radio :label="1">单品优惠券</el-radio>
     </el-radio-group>
     </p>
-    <p><label>优惠券价值:</label><el-input v-model="input2" size="small"></el-input>
+    <p><label>优惠券价值:</label><el-input v-model="input2" size="small"></el-input><span style="color:#999999; margin-left: 10px">请输入整数，不可带小数点</span>
     </p>
-    <p><label>关联产品:</label><el-input v-model="input3" placeholder="" size="small" disabled></el-input>
-      <el-button type="success" round size="mini" style="width:100px" @click="popoverAlert('VchoseGoods')">浏览</el-button>
+    <p><label>关联产品:</label><el-input v-model="CouponWithGoodsResult.productName" placeholder="" size="small"  style="width: 300px;" disabled></el-input>
+      <el-button type="success" round size="mini" style="width:100px" @click="popoverAlert('VChoseGoodsStore')">浏览</el-button>
     </p>
     <p><label style="vertical-align: top">券总数量:</label><el-input type="text" v-model="input1" placeholder="请输入数量" size="small"></el-input>
-    <span style="color:#999999; margin-left: 10px">已领100</span>
     </p>
-    <p><label>每个ID限领数量:</label>
-      <el-select v-model="value" placeholder="请选择" size="small">
+    <p><label>每个ID限领数量:</label><el-input type="text" v-model="value" placeholder="请输入数量" size="small"></el-input>
+     <!-- <el-select v-model="value" placeholder="请选择" size="small">
         <el-option
           v-for="item in options"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
-      </el-select>
-      <span style="color:#999999; margin-left: 10px">单次只能领一次，使用之后可重复领取</span>
+      </el-select>-->
+      <!--<span style="color:#999999; margin-left: 10px">如果数量不限请输入0</span>-->
+    </p>
+    <p class="tep"><label>公开状态:</label>
+      <el-radio-group v-model="updata10" size="small">
+        <el-radio :label="0">否</el-radio>
+        <el-radio :label="1">是</el-radio>
+      </el-radio-group>
     </p>
     <p>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">提交审核</el-button></p>
@@ -57,6 +63,7 @@ export default {
       updataTwo:'',
       updataThree:'',
       radio:'',
+      updata10:'',
       options:[
         {
           value: '1',
@@ -85,44 +92,50 @@ export default {
     this.updataTwo='';
     this.input0='';
     this.input2='';
-    this.input3='';
     this.value='';
-    this.radio=1
+    this.radio=1;
+    this.updata10=1
   },
   computed:{
     ...mapGetters([
-        'pickerOptions2'
+        'pickerOptions2','CouponWithGoodsResult','sellIDResult'
     ])
   },
   methods: {
     ...mapActions([
-    'popoverAlert','createCouponActions'
+    'popoverAlert','StoreCreteYHQActions','StoreYHQAction'
     ]),
     upload(){
       let obj={
-        endTime:this.input0[1],
-        expireRemind:this.updataThree,
-        limitLevel:this.updataTwo,
+        endTime:this.input0[1].getTime(),
         limitReceived:this.value,
         num:this.input1,
-        price:this.input2,
-        startTime:this.input0[0],
+        price:this.input2*100,
+        productIds:this.CouponWithGoodsResult.productIds,
+        togetherProductIds:this.CouponWithGoodsResult.togetherProductIds,
+        productType:this.CouponWithGoodsResult.productType,
+        sellerId:this.sellIDResult,
+        startTime:this.input0[0].getTime(),
         title:this.input,
-        type:this.radio
+        type:this.radio,
+        isPublic:this.updata10,
       }
-      this.createCouponActions(obj)
-    },
-    dateformat(data) {
-      if(data){
-      let year=data.getFullYear()
-      let month=data.getMonth()+1
-      let day= data.getDate()
-      let hour= data.getHours()
-      let min=data.getMinutes()
-      let sec=data.getSeconds()
-      console.log(year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec)
-      return year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec
-    }
+      if(this.input2>=this.CouponWithGoodsResult.price){
+        this.$message({
+          message:"优惠券价值不得超过商品最低价，请重新输入价值",
+          type:'warning'
+        })
+      }else{
+      if(parseInt(this.input1) < parseInt(this.value)){
+        this.$message({
+          message:"限领数量不得超过总数量",
+          type:'warning'
+        })
+      }else {
+        this.StoreCreteYHQActions(obj)
+        this.StoreYHQAction({title: 'VseachStoreCoupon', item: ''})
+      }
+      }
     },
   }
 }

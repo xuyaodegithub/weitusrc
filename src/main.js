@@ -45,6 +45,9 @@ Vue.filter('changeTime',function(val){
   let hour= data.getHours()
   let min=data.getMinutes()
   let sec=data.getSeconds()
+    if(month.length<2){
+      month='0'+month
+    }
   //console.log(year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec)
   return year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec
 }else{

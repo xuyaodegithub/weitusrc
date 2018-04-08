@@ -29,6 +29,7 @@ import Active from '@/components/activeList/subassembly/huodong.vue'
 import CouponActive from '@/components/Coupon/subassembly/CouponActiveIndex.vue'
 import Coupon from '@/components/Coupon/subassembly/CouponIndex.vue'
 import StoreCoupon from '@/components/Coupon/subassembly/upStoreYHQ.vue'
+import StoreCount from '@/components/Coupon/subassembly/CouponCount.vue'
 
 
 import Yemian from '@/components/firstPage/yemian.vue'
@@ -190,6 +191,11 @@ export default new Router({
             name:"StoreCoupon",
             component:StoreCoupon
           },
+           {
+            path: '10-5',
+            name:"StoreCount",
+            component:StoreCount
+          },
           {
             path: 'index',
             name:"Toindex",
@@ -205,10 +211,10 @@ export default new Router({
   ],
   scrollBehavior (to, from, savedPosition) {//路由切换时滚轮位置
     // return 期望滚动到哪个的位置
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
+    // if (savedPosition) {
+    //   return savedPosition
+    // } else {
+    //   return { x: 0, y: 0 }
+    // }
   }
 })

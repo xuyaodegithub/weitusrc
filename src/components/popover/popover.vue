@@ -25,6 +25,7 @@
 //优惠券
   import VchoseGoods from '../Coupon/alert/ChoseGoods.vue'
   import VwithYHQ from '../Coupon/alert/withYHQ.vue'
+  import VChoseGoodsStore from '../Coupon/alert/ChoseGoodsStore.vue'
 
 
 
@@ -37,7 +38,8 @@
       };
     },
     components:{
-     vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground,VactiveDress,VclassSell,VactiveLianJian,VchoseGoods,VwithYHQ
+     vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground,VactiveDress,VclassSell,VactiveLianJian,
+      VchoseGoods,VwithYHQ,VChoseGoodsStore
 
     },
     methods: {

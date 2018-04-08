@@ -34,8 +34,16 @@
       </el-upload>
     </p>
     <p class="tep"><label>是否启用:</label>
-      <el-radio v-model="updata2" label=1>启用</el-radio>
-      <el-radio v-model="updata2" label=0>不启用</el-radio>
+      <el-radio v-model="updata2" :label=1>启用</el-radio>
+      <el-radio v-model="updata2" :label=0>不启用</el-radio>
+    </p>
+    <p class="tep"><label>是否对外公开:</label>
+      <!--<el-radio v-model="updata2" label=0>不启用</el-radio>-->
+      <!--<el-radio v-model="updata2" label=1>启用</el-radio>-->
+      <el-radio-group v-model="outKnow" size="small" disabled>
+        <el-radio :label="0">不对外公开</el-radio>
+        <el-radio :label="1">对外公开</el-radio>
+      </el-radio-group>
     </p>
     <p>
     <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">确定</el-button></p>
@@ -58,25 +66,27 @@ export default {
       updata2:'',
       fileList:[],
       fileListTWO:[],
+      outKnow:''
     }
   },
   activated(){
-    this.input='';
-    this.input1='';
-    this.updata2='';
+    this.input=this.YHQwhichResult.item.name;
+    this.input1=this.YHQwhichResult.item.shareDescription;
+    this.updata2=this.YHQwhichResult.item.isEnable;
     this.fileList=[];
-    this.input0='';
-    this.input2='';
-    this.input3='';
+    this.input0=this.YHQwhichResult.item.shareIcon;
+    this.input2=this.YHQwhichResult.item.mainImg;
+    this.input3=this.YHQwhichResult.item.shareTitle;
+    this.outKnow=this.YHQwhichResult.item.isPublic;
   },
   computed:{
     ...mapGetters([
-
+'YHQwhichResult'
     ])
   },
   methods: {
     ...mapActions([
-     'popoverAlert'
+     'popoverAlert','updataCouponActiveActions','YHQwhichActions'
     ]),
     submitUploadfirst () {
       this.$refs.uploadfirst.submit();
@@ -90,7 +100,7 @@ export default {
         message:'上传成功',
         type: 'success'
       })
-      this.input2=response.result
+      this.input0='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/'+response.result
     },
     upErre (response, file, fileList) {
       this.$message({
@@ -99,23 +109,28 @@ export default {
         type: 'warning'
       })
     },
-    upSuccessfirst (response, file, fileList) {
-      this.$message({
-        showClose: true,
-        message:'上传成功',
-        type: 'success'
-      })
-    },
     upSuccessTwo (response, file, fileList) {
       this.$message({
         showClose: true,
         message:'上传成功',
         type: 'success'
       })
+      this.input2='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/'+response.result
     },
 
     upload(){
-
+      let obj={
+        mainImg:this.input2,
+        isEnable:this.updata2,
+        name:this.input,
+        shareDescription:this.input1,
+        shareIcon:this.input0,
+        shareTitle:this.input3,
+        id:this.YHQwhichResult.item.id,
+        //isPublic:this.outKnow
+      }
+      this.updataCouponActiveActions(obj)
+      this.YHQwhichActions({title:'VseachCouponActive',item:''})
     },
     dateformat(data) {
       if(data){

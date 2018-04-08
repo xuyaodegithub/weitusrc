@@ -1,40 +1,45 @@
 <template>
   <div>
     <el-container>
-  	<el-header>
-      <div class="header-t">
-        <p :class="{cu : ttyy}" style="font-size: 28px;line-height: 60px;color:#ff2b81;height:60px;text-shadow: 5px 5px 5px #FF0000;">OL圈 <i style="font-size:20px;color: #fbffae;">管理后台</i></p>
-     <!-- <button class="cu">返回首页</button>-->
-        <p class="h-title">OL圈2.0总平台</p>
-      <el-menu
-        :default-active="activeIndex2"
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#303242"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-submenu index="8">
-          <template slot="title">
-            <img src="../../../static/slogo.png" alt="" class="valign">欢迎：<span id="myown">heheheh</span>
-          </template>
-          <el-menu-item index="8-1">安全设置</el-menu-item>
-          <el-menu-item index="8-2">退出</el-menu-item>
-        </el-submenu>
-      </el-menu>
-      </div>
-    </el-header>
-    <div class="flexx">
-    	<asidle></asidle>
-    <el-main>
-    	<router-view style=" width:1052px;"/>
-    </el-main>
+      <el-header>
+        <div class="header-t">
+          <p :class="{cu : ttyy}" style="font-size: 28px;line-height: 60px;color:#ff2b81;height:60px;text-shadow: 5px 5px 5px #FF0000;">OL圈 <i style="font-size:20px;color: #fbffae;">管理后台</i></p>
+       <!-- <button class="cu">返回首页</button>-->
+          <p class="h-title">OL圈2.0总平台</p>
+        <el-menu
+          :default-active="activeIndex2"
+          class="el-menu-demo"
+          mode="horizontal"
+          @select="handleSelect"
+          background-color="#303242"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+          <el-submenu index="8">
+            <template slot="title">
+              <img src="../../../static/slogo.png" alt="" class="valign">欢迎：<span id="myown">heheheh</span>
+            </template>
+            <el-menu-item index="8-1">安全设置</el-menu-item>
+            <el-menu-item index="8-2">退出</el-menu-item>
+          </el-submenu>
+        </el-menu>
+        </div>
+      </el-header>
+      <el-container style="margin-top: 60px;">
+          <asidle></asidle>
+          <!--<el-container>-->
+        <el-main style="height: 580px;overflow: auto;width: 1110px;">
+          <router-view style="width:1102px;"/>
+          <p id="footer">© 2016 pinduoduo.com All rights reserved. (沪ICP备15010535号-13)</p>
+        </el-main>
+          <!--</el-container>-->
+      </el-container>
+  </el-container>
+    <transition name="slide-fade">
       <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>
         <v-popover></v-popover>
       </div>
-    </div>
-  </el-container>
-    <p id="footer">© 2016 pinduoduo.com All rights reserved. (沪ICP备15010535号-13)</p>
+    </transition>
+    <!--<p id="footer">© 2016 pinduoduo.com All rights reserved. (沪ICP备15010535号-13)</p>-->
   </div>
 </template>
 
@@ -79,7 +84,7 @@ export default {
 	width:100%;height: auto;
 }
 .el-main{
-	padding: 15px 0 0 20px;
+	padding: 15px 0 0 15px;
 }
 ul.el-menu-demo{
   height:60px;
@@ -88,9 +93,6 @@ ul.el-menu-demo{
   position: absolute;
   left:46%;
   top:60%;
-}
-.flexx{
-	display: flex;justify-content: flex-start;margin-top: 60px;
 }
 header{
   width:100%;background:#303242 ;
@@ -133,5 +135,20 @@ header img.valign{
   padding-bottom: 16px;
   text-align: center;
   color:#333;
+  margin-top: 15px;
+  /*position: absolute;*/
+  /*bottom: 0;*/
+  /*width:1110px;*/
+}
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

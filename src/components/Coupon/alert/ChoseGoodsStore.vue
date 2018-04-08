@@ -11,10 +11,9 @@
         <el-input v-model="input1" placeholder="请输入内容" size="mini"></el-input>
       </p>
       <p><label style="width:65px;">推荐到首页:</label>
-        <el-radio-group v-model="upGoods" disabled ><!--:disabled="classWh === '1'"-->
+        <el-radio-group v-model="upGoods" disabled><!--:disabled="classWh === '1'"-->
           <el-radio :label=0 style="width: auto;">否</el-radio>
           <el-radio :label=1 style="width: auto;">是</el-radio>
-
         </el-radio-group>
       </p>
       <p><label>分类:</label>
@@ -213,14 +212,15 @@
         filter_S_productName_contains:this.input,
         sortField:'sort',
         page:1,
-        rows:10
+        rows:10,
+        filter_I_sellerId:this.sellIDResult
       }
       this.getDataListActions(obj)
 
     },
     computed:{
       ...mapGetters([
-      'loading','CouponWithGoodsResult','getDataListResulr','productlistResult','plusProductListResult'
+      'loading','CouponWithGoodsResult','getDataListResulr','productlistResult','plusProductListResult','sellIDResult'
       ]),
       dataList:function(){
         if(this.classWh==='1'){
@@ -241,14 +241,15 @@
 
       },
       seachData(pages,rowss){
-        //console.log(this.classWh)
+        console.log(this.classWh)
         let obj={
           filter_S_productName:this.input,
-          //filter_I_isRecommend:this.upGoods,//推荐首页
+         // filter_I_isRecommend:this.upGoods,//推荐首页
           filter_S_productName_contains:this.input,
           sortField:'sort',
           page:pages,
-          rows:rowss
+          rows:rowss,
+          filter_I_sellerId:this.sellIDResult
         }
         if(this.classWh==='1'){
           this.getDataListActions(obj)
