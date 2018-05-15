@@ -82,7 +82,19 @@ export default {
      //this.$router.push('/login')
     },
   	 handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+       this.index=key
+       if(key=='1'){
+         this.tittle='vSeachlist'
+       }
+       if(key=='2'){
+         this.tittle='vSeachlist'
+       }
+       if(key=='3'){
+         this.tittle='vDownlist'
+       }
+       if(key=='4'){
+         this.tittle='vDownlist'
+       }
      },
       handleEdit(index, row) {
         console.log(index, row);
@@ -91,12 +103,12 @@ export default {
         console.log(index, row);
       },
       turnpage(key,title){
-      	if(key){
+      /*	if(key){
       		this.index=key
       	}
       	if(title){
       		this.tittle=title
-      	}
+      	}*/
       }
   }
 }

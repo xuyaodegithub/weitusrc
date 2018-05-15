@@ -19,7 +19,7 @@
     <p><label>优惠券价值:</label><el-input v-model="input2" size="small"></el-input><span style="color:#999999; margin-left: 10px">请输入整数，不可带小数点</span>
     </p>
     <p><label>关联产品:</label><el-input v-model="CouponWithGoodsResult.productName" placeholder="" size="small"  style="width: 300px;" disabled></el-input>
-      <el-button type="success" round size="mini" style="width:100px" @click="popoverAlert('VChoseGoodsStore')">浏览</el-button>
+      <el-button type="success" round size="mini" style="width:100px" @click="popoverAlert(['VChoseGoodsStore',''])">浏览</el-button>
     </p>
     <p><label style="vertical-align: top">券总数量:</label><el-input type="text" v-model="input1" placeholder="请输入数量" size="small"></el-input>
     </p>

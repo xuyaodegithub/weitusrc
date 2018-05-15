@@ -116,7 +116,7 @@ this.CouponActiveListActions(data)
    'popoverAlert','YHQwhichActions','CouponActiveListActions','deleteCouponActiveActions'
     ]),
     linkTo(index,row){
-      this.$store.commit('activeIdchange','http://ol-site.olquan.com/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id)
+      this.$store.commit('activeIdchange','http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id)
       this.popoverAlert('VactiveDress')
     },
     bianji(index,row){

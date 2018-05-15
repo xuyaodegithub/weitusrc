@@ -2,6 +2,9 @@
  * Created by Yan on 17/11/9.
  */
 const  editor = {//定义入参
+  //域名
+  axiosUrl:'http://test-admin.olquan.cn',//测试
+  //axiosUrl:'http://ol-h5-admin.olquan.cn',//正式
   //品牌管理、根据id获取
   getByIdMM:{
     id:null
@@ -210,17 +213,22 @@ const  editor = {//定义入参
   productlistMM: {
     filter_I_isRecommend:'',
     filter_S_productName_contains:'',
+    filter_I_isStick:'',
     page:'',
     rows:'',
     sortField:'',
-    filter_I_sellerId:''
+    filter_I_sellerId:'',
+    filter_I_status:'',
+    sortOrder:'',
+    startTime:''
   },
   //获取更多试用商品列表
   freeUseListMM: {
     filter_S_productName_contains:'',
     page:'',
     rows:'',
-    sortField:''
+    sortField:'',
+    sortOrder:''
   },
   //获取积分试用产品列表
   scoreBuyListMM: {
@@ -485,7 +493,11 @@ const result = { //接收请求后的数据
     togetherProductIds:'',
     productIds:'',
     price:'',
-    productName:''
+    productName:'',
+    costPriceView:'',
+    salePriceView:'',
+    marketPriceView:'',
+    image:''
   },
 //供应商优惠券列表
   StoreYHQListResult:[],

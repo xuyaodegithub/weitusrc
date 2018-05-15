@@ -201,6 +201,12 @@ export default {
         ]
       }
     },
+  mounted(){
+      window.addEventListener('scroll',function(){
+        let val=document.documentElement.scrollTop || document.body.scrollTop
+        console.log(val)
+      })
+  },
     watch: {
       commodityResult: {
         handler (curVal, oldVal) {

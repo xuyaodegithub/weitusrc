@@ -27,18 +27,21 @@
       <el-container style="margin-top: 60px;">
           <asidle></asidle>
           <!--<el-container>-->
-        <el-main style="height: 580px;overflow: auto;width: 1110px;">
-          <router-view style="width:1102px;"/>
+        <el-main style="height: 580px;overflow-y: auto;width: 1110px;overflow-x:hidden;position: relative;">
+          <keep-alive>
+           <router-view style="width:1102px;"/>
+          </keep-alive>
+          <transition name="slide-fade">
+            <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>
+              <v-popover></v-popover>
+            </div>
+          </transition>
           <p id="footer">© 2016 pinduoduo.com All rights reserved. (沪ICP备15010535号-13)</p>
         </el-main>
           <!--</el-container>-->
       </el-container>
   </el-container>
-    <transition name="slide-fade">
-      <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>
-        <v-popover></v-popover>
-      </div>
-    </transition>
+
     <!--<p id="footer">© 2016 pinduoduo.com All rights reserved. (沪ICP备15010535号-13)</p>-->
   </div>
 </template>
@@ -90,9 +93,10 @@ ul.el-menu-demo{
   height:60px;
 }
 .alertshow{
-  position: absolute;
-  left:46%;
-  top:60%;
+  position: fixed;
+  left:50%;
+  top:50%;
+  z-index:1000;
 }
 header{
   width:100%;background:#303242 ;

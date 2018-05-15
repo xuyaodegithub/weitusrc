@@ -91,8 +91,8 @@
     width: 940px;
     height: auto;
     background: #F0FAFF;
-    margin-left: -300px;
-    margin-top: -250px;
+    margin-left: -400px;
+    margin-top: -150px;
     border-radius: 5px;
     border: 1px solid #90CCE8;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);

@@ -108,7 +108,7 @@ export default {
      // oInput.setAttribute('id','copyText')
      // oInput.onload=function() {
      // alert( '活动地址：http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
-      this.$store.commit('activeIdchange','http://ol-site.olquan.com/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
+      this.$store.commit('activeIdchange','http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
       this.popoverAlert('VactiveDress')
      /* let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
         Url.select(); // 选择对象

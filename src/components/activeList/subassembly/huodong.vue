@@ -14,9 +14,9 @@
         <component :is="activeChangeResult.item"></component>
       </keep-alive>
     </div>
-    <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>
-      <v-popover></v-popover>
-    </div>
+    <!--<div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>-->
+      <!--<v-popover></v-popover>-->
+    <!--</div>-->
   </div>
 
 </template>

@@ -31,6 +31,11 @@
 
   import { mapActions } from 'vuex'
   import { mapGetters } from 'vuex'
+  //特卖产品
+  import WatchPrice from '../commodity/smallPopver/watchPrice.vue'
+  //试用产品
+  import OnTrialwatchPrice from '../commodity/smallPopver/OnTrialwatchPrice.vue'
+  import addCountry from '../commodity/smallPopver/addCountry.vue'
   export default {
     data() {
       return {
@@ -39,7 +44,7 @@
     },
     components:{
      vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground,VactiveDress,VclassSell,VactiveLianJian,
-      VchoseGoods,VwithYHQ,VChoseGoodsStore
+      VchoseGoods,VwithYHQ,VChoseGoodsStore,WatchPrice,OnTrialwatchPrice,addCountry
 
     },
     methods: {

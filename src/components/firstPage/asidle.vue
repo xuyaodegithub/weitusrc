@@ -1,8 +1,10 @@
 <template>
   <!--<div style="height: 500px;overflow: hidden">-->
+  <div style="position: relative;" class="activeHover">
+    <div class="fuCen"></div>
 	<el-aside width='210px' style="background-color: rgb(244, 245, 249);height: 600px;overflow: auto;overflow-x: hidden;padding-bottom: 15px;">
     <el-menu :default-openeds="[]"  background-color="#f4f5f9"  @open="handleOpen"
-      @close="handleClose" router >
+      @close="handleClose" router unique-opened	>
       <el-submenu index="1">
         <template slot="title"><i class="el-icon-date"></i>发货管理</template>
         <el-menu-item-group>
@@ -23,6 +25,13 @@
       <el-submenu index="3">
         <template slot="title"><i class="el-icon-goods"></i>商品管理</template>
         <el-menu-item-group>
+          <el-menu-item index="3-0">特卖商品管理</el-menu-item>
+          <el-menu-item index="3-8">试用商品管理</el-menu-item>
+          <el-menu-item index="3-10">督导设置</el-menu-item>
+          <el-menu-item index="3-11">粉领设置</el-menu-item>
+          <el-menu-item index="3-12">明星督导统计</el-menu-item>
+          <el-menu-item index="3-13">产品收益配置</el-menu-item>
+          <el-menu-item index="3-9">试用广告设置</el-menu-item>
           <el-menu-item index="3-1">品牌管理</el-menu-item>
           <el-menu-item index="3-2">分类管理</el-menu-item>
           <el-menu-item index="3-3">发布新商品</el-menu-item>
@@ -87,6 +96,7 @@
       <el-submenu index="10">
         <template slot="title"><i class="el-icon-picture-outline"></i>活动管理</template>
         <el-menu-item-group>
+          <el-menu-item index="10-6">菜单管理</el-menu-item>
           <el-menu-item index="10-1">活动页面设计</el-menu-item>
           <el-menu-item index="10-2">优惠券活动</el-menu-item>
           <el-menu-item index="10-3">优惠券管理</el-menu-item>
@@ -96,6 +106,7 @@
       </el-submenu>
     </el-menu>
 </el-aside>
+  </div>
 </template>
 
 <script>
@@ -129,4 +140,15 @@ export default {
   .el-aside div.el-menu-item-group__title{
 padding:0;
 }
+  .fuCen{
+    background:rgb(244, 245, 249);width:18px;height: 600px;position: absolute;right: 0; z-index: 1012;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+  }
+  .activeHover:hover .fuCen{
+    width:9px;
+  }
 </style>

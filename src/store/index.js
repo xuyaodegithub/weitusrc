@@ -8,6 +8,7 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 import servers from './modules/servers'
+import munes from './modules/muneManage'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
@@ -18,6 +19,7 @@ const store = new Vuex.Store({
   getters,
   modules: {
     servers : servers,
+    munes : munes
   }
 })
 

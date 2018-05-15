@@ -270,6 +270,13 @@
     components:{
 
     },
+    mounted(){
+      let Base64 = require('js-base64').Base64;
+      let id=Base64.encode('xuyaode85731')
+      let tuur=Base64.decode(id)
+      alert(id)
+      alert(tuur)
+    },
     computed:{
       ...mapGetters([
         'pickerOptions2','value4Result','numResult','ROOTResult','loginResult'

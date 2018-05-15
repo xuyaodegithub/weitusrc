@@ -14,14 +14,13 @@
         <el-radio-group v-model="upGoods" disabled ><!--:disabled="classWh === '1'"-->
           <el-radio :label=0 style="width: auto;">否</el-radio>
           <el-radio :label=1 style="width: auto;">是</el-radio>
-
         </el-radio-group>
       </p>
       <p><label>分类:</label>
         <el-input v-model="input2" placeholder="请输入内容" size="mini"></el-input>
       </p>
       <p><label>商品类型:</label>
-        <el-select v-model="classWh" placeholder="请选择类型" size="mini">
+        <el-select v-model="classWh" placeholder="请选择类型" size="mini" :disabled="popoverAlive.SSSnum=='one'">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -89,7 +88,7 @@
     width: 800px;
     height: 500px;
     background: #F0FAFF;
-    margin-left: -300px;
+    margin-left: -400px;
     margin-top: -250px;
     border-radius: 5px;
     border: 1px solid #90CCE8;
@@ -220,7 +219,7 @@
     },
     computed:{
       ...mapGetters([
-      'loading','CouponWithGoodsResult','getDataListResulr','productlistResult','plusProductListResult'
+      'loading','CouponWithGoodsResult','getDataListResulr','productlistResult','plusProductListResult','popoverAlive'
       ]),
       dataList:function(){
         if(this.classWh==='1'){
@@ -235,7 +234,7 @@
     },
     methods: {
       ...mapActions([
-        'popoverAlert','getDataListActions','productlistActions','plusProductListActions'
+        'popoverAlert','getDataListActions','productlistActions','plusProductListActions','getProductNormalsActions'//获取产品规格
       ]),
       morePull(rows) {
 
@@ -266,10 +265,17 @@
               togetherProductIds:'',
               productType:1,
               productIds:row.id,
-              price:row.price,
-              productName:row.productName
+              marketPriceView:row.marketPriceView,
+              price:row.store,
+              productName:row.productName,
+              costPriceView:row.costPriceView,//成本价
+              salePriceView:row.salePriceView,//销售价
+              image:row.image//销售价
             }
             this.$store.commit('Coupon_With_Goods',obj)
+            if(this.popoverAlive.SSSnum==='one'){
+              this.getProductNormalsActions(row.id)
+            }
           }else if(this.classWh==='2'){
            let obj={
              togetherProductIds:row.id,

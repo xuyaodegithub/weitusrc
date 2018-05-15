@@ -21,7 +21,7 @@ var textCsYHQ=''
     //textCsTow='http://106.15.49.17:8888/'
     //textCsTow='http://ol-admin.olquan.com'
     textCsTow='http://ol-h5-admin.olquan.cn'
-    textCsYHQ='http://test-admin.olquan.cn'
+    textCsYHQ='http://ol-h5-admin.olquan.cn'
   }
 const actions = {//actions,mutations内的方法只能有两个参数，一个是context一个是外部调用时传参，event事件对象参数除外
   //弹框修改属性
@@ -219,8 +219,8 @@ const actions = {//actions,mutations内的方法只能有两个参数，一个�
     axios.get(textCsTow+'/admin/buildblocks/product/list',{
       params:context.state.editor.getDataListMM
     }).then(res => {
-      context.commit('GET_ACTIVE_DATA_LIST',res)
       context.commit('changeloading')
+      context.commit('GET_ACTIVE_DATA_LIST',res)
     }).catch(
       function(err){
         context.commit('changeloading')

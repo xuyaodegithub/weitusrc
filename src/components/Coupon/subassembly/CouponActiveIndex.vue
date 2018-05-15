@@ -56,7 +56,15 @@ export default {
     Vcoupon,VseachCouponActive,VcouponActive,VupDataCouponActive,vPopover
   },
   mounted(){
-    //this.popoverAlert()
+//    let num=3
+//   let timer = setInterval(()=>{
+//      if(num<5){
+//        num++
+//        alert(num)
+//      }else{
+//        clearInterval(timer)
+//      }
+//    },1000)
   },
   methods: {
     ...mapActions([

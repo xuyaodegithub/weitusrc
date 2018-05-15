@@ -577,6 +577,10 @@ const mutations = {//mutations内是改变state内的值得作用
     state.editor.productlistMM.rows=data.rows
     state.editor.productlistMM.sortField=data.sortField
     state.editor.productlistMM.filter_I_sellerId=data.filter_I_sellerId
+    state.editor.productlistMM.filter_I_status=data.filter_I_status
+    state.editor.productlistMM.sortOrder=data.sortOrder
+    state.editor.productlistMM.filter_I_isStick=data.filter_I_isStick
+    state.editor.productlistMM.startTime=data.startTime
   },
   [types.GET_PRODUCT_LIST] (state,res) {
     state.result.productlistResult=res.data
@@ -587,6 +591,7 @@ const mutations = {//mutations内是改变state内的值得作用
     state.editor.freeUseListMM.page=data.page
     state.editor.freeUseListMM.rows=data.rows
     state.editor.freeUseListMM.sortField=data.sortField
+    state.editor.freeUseListMM.sortField=data.sortOrder
   },
   [types.GET_FREEUSE_LIST] (state,res) {
     state.result.freeUseListResult=res.data
@@ -610,9 +615,6 @@ const mutations = {//mutations内是改变state内的值得作用
   ImgnumKey(state,key){
     state.result.ImgnumKey=key
   },
-
-
-
 
 
   //优惠券
@@ -760,6 +762,10 @@ const mutations = {//mutations内是改变state内的值得作用
     state.result.CouponWithGoodsResult.productIds=data.productIds
     state.result.CouponWithGoodsResult.price=data.price
     state.result.CouponWithGoodsResult.productName=data.productName
+    state.result.CouponWithGoodsResult.costPriceView=data.costPriceView
+    state.result.CouponWithGoodsResult.salePriceView=data.salePriceView
+    state.result.CouponWithGoodsResult.marketPriceView=data.marketPriceView
+    state.result.CouponWithGoodsResult.image=data.image
   },
   //供应商优惠券列表
   [types.SET_STORE_YHQLIST](state,data){

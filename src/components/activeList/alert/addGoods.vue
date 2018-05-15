@@ -184,7 +184,7 @@
     width: 800px;
     height: 490px;
     background: #F0FAFF;
-    margin-left: -300px;
+    margin-left: -400px;
     margin-top: -250px;
     border-radius: 5px;
     border: 1px solid #90CCE8;
