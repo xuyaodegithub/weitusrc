@@ -23,7 +23,7 @@
                 <!--<el-button type="success" plain style="margin-top: 5px;margin-left: 0;" size="mini" @click="addGoodsList()">关联商品</el-button>--></li>
             </ul>
             <el-upload
-              action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
+              action="apis/admin/buildblocks/uploadImage"
               name="img"
               :multiple=true
               :show-file-list=false
@@ -522,7 +522,8 @@ export default {
           this.input='http://ol-h5-preview.olquan.cn/index/newIndex'
           this.addType(10)
         }else if(key===3){
-          this.input='http://ol-site.olquan.com/weixin/member/openStore'
+          this.input='http://ol-h5.olquan.cn/supervisor/buyPink'
+//          this.input='http://ol-site.olquan.com/weixin/member/openStore'
           this.addType(11)
         }else if(key===32){
           this.input='http://ol-site.olquan.com/weixin/member/renewConfirmOrder'

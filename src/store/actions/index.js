@@ -18,8 +18,6 @@ var textCsYHQ=''
     textCsYHQ='http://test-admin.olquan.cn'
   }else{
     textCs='http://api-admin.olquan.cn'
-    //textCsTow='http://106.15.49.17:8888/'
-    //textCsTow='http://ol-admin.olquan.com'
     textCsTow='http://ol-h5-admin.olquan.cn'
     textCsYHQ='http://ol-h5-admin.olquan.cn'
   }

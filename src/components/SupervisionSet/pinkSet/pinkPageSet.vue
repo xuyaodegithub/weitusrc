@@ -21,7 +21,7 @@
         </div>
       </el-form-item><!--"http://test-admin.olquan.cn/doUploadWithWaterMarkToOss2?waterMark=defaultWaterMark"-->
       <el-form-item label="开通内容:">
-        <div class="edit_container">
+        <div class="edit_container"  style="max-height: 500px;overflow-y: auto;">
           <quill-editor v-model="infoForm.a_content"
                         ref="myQuillEditor"
                         class="editer"
@@ -30,7 +30,7 @@
         </div>
       </el-form-item>
        <el-form-item label="邀请内容:">
-         <div class="edit_container">
+         <div class="edit_container" style="max-height: 500px;overflow-y: auto;">
            <quill-editor v-model="infoForm.b_content"
                          ref="myQuillEditor"
                          class="editer"
@@ -49,7 +49,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
-  //import { quillEditor } from 'vue-quill-editor' //调用编辑器
+  import vueQuillEditor from 'vue-quill-editor'
   import {quillEditor, Quill} from 'vue-quill-editor'
   import {container, ImageExtend, QuillWatch} from 'quill-image-extend-module'
   Quill.register('modules/ImageExtend', ImageExtend)
@@ -138,7 +138,7 @@
           data.id=this.pinkListResult.id
         }
         this.upinfoSaveActions(data)
-        console.log(this.editorText)
+       // console.log(this.editorText)
       },
       upSuccessfirst(response, file, fileList){
         this.dialogImageUrl='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
@@ -150,7 +150,10 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+  @import "~quill/dist/quill.core.css";
+  @import "~quill/dist/quill.snow.css";
+  @import "~quill/dist/quill.bubble.css";
   #superFirst{
     margin-top:16px;
     padding-left:15px;
@@ -180,5 +183,21 @@
   #SaleNewTwo div.el-upload--picture-card{
     position: relative;
     display: none;
+  }
+  .ql-toolbar.ql-snow{
+    position: absolute;
+    z-index:1000;
+    background: #ffffff;
+    top:0;
+  }
+  .ql-toolbar.ql-snow + .ql-container.ql-snow{
+    margin-top:100px;
+    overflow: auto;
+    min-height:200px;
+  }
+  .ql-snow .ql-tooltip{
+    /*position: fixed;*/
+    /*top:50%;*/
+    /*left:50%;*/
   }
 </style>

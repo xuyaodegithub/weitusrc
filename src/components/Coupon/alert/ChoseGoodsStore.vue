@@ -65,7 +65,7 @@
               <el-button
                 size="mini"
                 plain
-                @click="chose(scope.$index, scope.row)" plain>选择</el-button>
+                @click="chose(scope.$index, scope.row)">选择</el-button>
             </template>
           </el-table-column>
         </el-table>

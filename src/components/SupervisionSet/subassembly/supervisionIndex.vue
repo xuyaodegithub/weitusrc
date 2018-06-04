@@ -3,7 +3,7 @@
     <p id="toindex">
       <router-link to="index">首页</router-link> &gt; 督导设置
     </p>
-    <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+    <el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="开通督导页面设置" name="first">
         <v-first></v-first>
       </el-tab-pane>
@@ -83,22 +83,5 @@
     text-indent:0;
     overflow: hidden;
     margin-bottom: 15px;
-  }
-  .alertshow{
-    position: fixed;
-    left:50%;
-    top:50%;
-    z-index:1000;
-  }
-  .slide-fade-enter-active {
-    transition: all .3s ease;
-  }
-  .slide-fade-leave-active {
-    transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .slide-fade-enter, .slide-fade-leave-to
-    /* .slide-fade-leave-active for below version 2.1.8 */ {
-    transform: translateX(10px);
-    opacity: 0;
   }
 </style>

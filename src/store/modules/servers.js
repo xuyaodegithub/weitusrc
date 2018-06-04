@@ -18,6 +18,8 @@ import qs from 'qs';
 import api from '../fetch/api'
 import axios from 'axios'
  axios.defaults.baseURL ='http://test-admin.olquan.cn'
+axios.defaults.timeout = 10000;//10秒还未得到请求答复，就报超时错误
+//axios.default.headers={'X-Custom-Header': 'foobar'}//全局设置请求头
 import { Message } from 'element-ui';
 const servers={
   state:{
@@ -570,7 +572,11 @@ const servers={
             message:'操作成功',
             type: 'success'
           });
-          dispatch('storeGiftBagListActions',{  page:1,rows:10 })
+          if(data.type==='pink'){
+            dispatch('storeGiftBagListActions',{  page:1,rows:10,filter_I_type:1 })
+          }else{
+            dispatch('storeGiftBagListActions',{  page:1,rows:10,filter_I_type:2 })
+          }
         }
       }).catch(
         (error) => {

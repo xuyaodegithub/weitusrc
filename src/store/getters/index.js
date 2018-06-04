@@ -220,6 +220,10 @@ const getters = {//返回state内的数据进行模板使用
     couponoCuntResult: state =>{
       return state.result.couponoCuntResult
     },
+  //活动地址
+    activeIdResult:state =>{
+      return state.result.activeId
+    },
 
 
     loginResult: state => {

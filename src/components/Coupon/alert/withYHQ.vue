@@ -63,12 +63,12 @@
                 v-if="popoverAlive.SSSnum==='first'"
                 size="mini"
                 plain
-                @click="choseDown(scope.$index, scope.row)" plain>取消关联</el-button>
+                @click="choseDown(scope.$index, scope.row)">取消关联</el-button>
             <el-button
               v-if="popoverAlive.SSSnum==='second'"
                 size="mini"
                 plain
-                @click="chose(scope.$index, scope.row)" plain>关联</el-button>
+                @click="chose(scope.$index, scope.row)">关联</el-button>
             </template>
           </el-table-column>
         </el-table>

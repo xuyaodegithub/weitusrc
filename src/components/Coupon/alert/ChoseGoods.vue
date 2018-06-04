@@ -29,7 +29,7 @@
           </el-option>
         </el-select>
       </p>
-      <p style="margin: 0"><el-button type="primary" plain size="mini" style="" @click="seachData(currentPage4,value)">搜索</el-button></p>
+      <p style="margin: 0"><el-button type="primary" plain size="mini" @click="seachData(currentPage4,value)">搜索</el-button></p>
     </div>
         <el-table
           @row-click="addGoodsImg"
@@ -65,8 +65,8 @@
               <el-button
                 size="mini"
                 plain
-                @click="chose(scope.$index, scope.row)" plain>选择</el-button>
-            </template>
+                @click="chose(scope.$index, scope.row)">选择</el-button>
+              </template>
           </el-table-column>
         </el-table>
     <div class="block">

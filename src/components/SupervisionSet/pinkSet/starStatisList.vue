@@ -8,7 +8,8 @@
         style="width: 100%"
         ref="multipleTable"
         tooltip-effect="light"
-        :cell-style="Liststyle">
+        :cell-style="Liststyle"
+        :header-cell-style="{'color':'#000000','fontWeight':'600'}">
         <!--<el-table-column
           type="selection"
           width="30">
@@ -71,17 +72,17 @@
         },
         dataList: [
           {
-            name: '昵称', width: '200', which: 'nickName'
+            name: '昵称', width: '250', which: 'nickName'
           }, {
-            name: '会员账号', width: '150', which: 'accountNo'
-          }, {
+            name: '会员账号', width: '200', which: 'accountNo'
+          }/*, {
             name: '会员ID', width: '120', which: 'memberId'
-          }, {
+          }*/, {
             name: '高级督导数量', width: '120', which: 'highSupervisorCount'
           }, {
             name: '粉领数量', width: '120', which: 'storeCount'
           }, {
-            name: '总收益', width: '140', which: 'supervisorAmount'
+            name: '总收益', width: '160', which: 'supervisorAmount'
           }
         ],
         Liststyle: {

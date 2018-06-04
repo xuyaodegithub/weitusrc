@@ -22,10 +22,25 @@
       <el-radio-group v-model="status"><!--:disabled="classWh === '1'"-->
         <el-radio :label="0" style="width: auto;">全部</el-radio>
         <el-radio :label="1" style="width: auto;">普通试用</el-radio>
-        <el-radio :label="2" style="width: auto;">新品首试</el-radio>
+        <!--<el-radio :label="2" style="width: auto;">新品首试</el-radio>-->
         <el-radio :label="3" style="width: auto;">整点抢</el-radio>
         <!--<el-radio :label="4" style="width: auto;">试海外</el-radio>-->
       </el-radio-group>
+      <label>状态:</label><!--<el-input v-model="filter_I_status" placeholder="请输入产品名称" size="mini"></el-input>-->
+      <el-radio-group v-model="isAudio"><!--:disabled="classWh === '1'"-->
+        <el-radio :label=3 style="width: auto;">全部</el-radio>
+        <el-radio :label=0 style="width: auto;">下架</el-radio>
+        <el-radio :label=1 style="width: auto;">上架</el-radio>
+      </el-radio-group>
+      <label v-if="status===3">场次时间:</label>
+      <el-select v-model="value9" placeholder="请选择" size="mini"  v-if="status===3" clearable  style="width: 120px;">
+        <el-option
+          v-for="(item,index) in timerList"
+          :key="index"
+          :label="item.timer"
+          :value="item.timer">
+        </el-option>
+      </el-select>
       <!--<label>特卖时间:</label><el-date-picker type="date" placeholder="选择日期" v-model="date1" style="width:150px;" size="mini"></el-date-picker>-->
       <el-button type="primary" style="width:100px;margin-left: 20px;" round size="mini" icon="el-icon-search"
                  @click="seachGoodsList()">搜索
@@ -54,14 +69,23 @@
         Gtitle: '',
         isAudio: '',
         status: '',
+        value9:'',
+        timerList:[
+          {timer:'00:00'}, {timer:'01:00'}, {timer:'02:00'}, {timer:'03:00'}, {timer:'04:00'}, {timer:'05:00'}, {timer:'06:00'}, {timer:'07:00'},
+          {timer:'08:00'}, {timer:'09:00'}, {timer:'10:00'}, {timer:'11:00'}, {timer:'12:00'}, {timer:'13:00'}, {timer:'14:00'},
+          {timer:'15:00'}, {timer:'16:00'}, {timer:'17:00'}, {timer:'18:00'}, {timer:'19:00'}, {timer:'20:00'}, {timer:'21:00'},
+          {timer:'22:00'}, {timer:'23:00'},
+        ],
         seachMsg: {
           filter_S_productName: '',
           // filter_I_isRecommend:'',
           filter_I_type: '',
+          filter_I_status:'',
           sortField: 'sort',
           page: 1,
           rows: 10,
-          sortOrder: 'asc'
+          sortOrder: 'asc',
+          filter_S_dailyStartTime:''
         }
       }
     },
@@ -92,15 +116,15 @@
           rows: 10,
           sortOrder: 'asc'
         }
-//      if(this.isAudio!==3){
-//        obj.filter_I_isRecommend=this.isAudio
-//      }
-//      if(this.status!==3){
-//        obj.filter_I_status=this.status
-//      }
+        if(this.value9){
+          obj.filter_S_dailyStartTime=this.value9
+        }
+        if(this.isAudio!==3){
+          obj.filter_I_status=this.isAudio
+        }
         this.seachMsg = obj
         this.freeUseProductListActions(obj)
-
+        this.$store.commit('SET_PAGE_ROWS',obj)
       },
       addGoods () {
         this.title = 'NewOntrial'

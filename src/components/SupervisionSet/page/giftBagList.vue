@@ -8,7 +8,8 @@
         style="width: 100%"
         ref="multipleTable"
         tooltip-effect="light"
-        :cell-style="Liststyle">
+        :cell-style="Liststyle"
+        :header-cell-style="{'color':'#000000','fontWeight':'600'}">
         <!--<el-table-column
           type="selection"
           width="30">
@@ -133,7 +134,8 @@
           type: 'warning'
         }).then(() => {
           let data={
-            id:id
+            id:id,
+            type:'sup'
           }
         this.storeGiftBagDeleteActions(data)
         }).catch(() => {

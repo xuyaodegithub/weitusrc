@@ -2,7 +2,7 @@
   <!--<div style="height: 500px;overflow: hidden">-->
   <div style="position: relative;" class="activeHover">
     <div class="fuCen"></div>
-	<el-aside width='210px' style="background-color: rgb(244, 245, 249);height: 600px;overflow: auto;overflow-x: hidden;padding-bottom: 15px;">
+	<el-aside width='210px' style="background-color: rgb(244, 245, 249);height: 600px;overflow: auto;overflow-x: hidden;padding-bottom: 35px;">
     <el-menu :default-openeds="[]"  background-color="#f4f5f9"  @open="handleOpen"
       @close="handleClose" router unique-opened	>
       <el-submenu index="1">

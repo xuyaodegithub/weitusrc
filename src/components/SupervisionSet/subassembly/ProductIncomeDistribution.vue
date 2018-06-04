@@ -30,13 +30,13 @@
           <p><label>高级督导收益:</label>
             <el-input v-model="isSoHighSupervisor" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>高级督导收益:</label>
+          <p><label>高级督导收益(高层次):</label>
             <el-input v-model="isHighSupervisor" placeholder="请输入内容" size="small"></el-input>
           </p>
           <p><label>联创收益:</label>
             <el-input v-model="isSoWithCreate" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>联创收益:</label>
+          <p><label>联创收益(高层次):</label>
             <el-input v-model="isWithCreate" placeholder="请输入内容" size="small"></el-input>
           </p>
           <p><label>城市合伙人收益:</label>
@@ -74,13 +74,13 @@
           <p><label>高级督导特卖收益:</label>
             <el-input v-model="isHighSupervisorPlusMore" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>高级督导特卖收益:</label>
+          <p><label>高级督导特卖收益(高层次):</label>
             <el-input v-model="isHighSupervisorPlus" placeholder="请输入内容" size="small"></el-input>
           </p>
           <p><label>联创特卖收益:</label>
             <el-input v-model="isSoWithCreatePlus" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>联创特卖收益:</label>
+          <p><label>联创特卖收益(高层次):</label>
             <el-input v-model="isWithCreatePlus" placeholder="请输入内容" size="small"></el-input>
           </p>
           <p><label>特卖产品利润提成比例:</label>
@@ -149,10 +149,10 @@
           this.isGolenShare = newVal.oneGolenScore
           this.isPinkShare = newVal.oneStoreScore//
           this.isSupervisor = newVal.supervisorScore
-          this.isSoHighSupervisor = newVal.highSupervisorMoreScore
-          this.isHighSupervisor = newVal.highSupervisorScore//
-          this.isSoWithCreate = newVal.starSupervisorMoreScore
-          this.isWithCreate = newVal.starSupervisorScore
+          this.isSoHighSupervisor = newVal.highSupervisorScore
+          this.isHighSupervisor = newVal.highSupervisorMoreScore//
+          this.isSoWithCreate = newVal.starSupervisorScore
+          this.isWithCreate = newVal.starSupervisorMoreScore
           this.isCityPartner = newVal.cityPartnerCommission
           this.isDreamPartner = newVal.productDreamPartnerCommission
           this.isWealthPartner = newVal.productWealthPartnerCommission
@@ -166,10 +166,10 @@
         handler (newVal, oldVal) {
           this.isPlusCommission = newVal.storePlusCommissionRate
           this.isSuperPlusCommission = newVal.supervisorPlusCommissionRate
-          this.isHighSupervisorPlusMore = newVal.highSupervisorPlusMoreCommissionRate
-          this.isHighSupervisorPlus = newVal.highSupervisorPlusCommissionRate
-          this.isSoWithCreatePlus = newVal.starSupervisorPlusMoreCommissionRate
-          this.isWithCreatePlus = newVal.starSupervisorPlusCommissionRate
+          this.isHighSupervisorPlusMore = newVal.highSupervisorPlusCommissionRate
+          this.isHighSupervisorPlus = newVal.highSupervisorPlusMoreCommissionRate
+          this.isSoWithCreatePlus = newVal.starSupervisorPlusCommissionRate
+          this.isWithCreatePlus = newVal.starSupervisorPlusMoreCommissionRate
           this.isPlusCommissionRate = newVal.plusCommissionRate
 
         },
@@ -210,10 +210,10 @@
             oneGolenScore: this.isGolenShare,
             oneStoreScore: this.isPinkShare,//,
             supervisorScore: this.isSupervisor,
-            highSupervisorMoreScore: this.isSoHighSupervisor,
-            highSupervisorScore: this.isHighSupervisor,//
-            starSupervisorMoreScore: this.isSoWithCreate,
-            starSupervisorScore: this.isWithCreate,
+            highSupervisorScore: this.isSoHighSupervisor,
+            highSupervisorMoreScore: this.isHighSupervisor,//
+            starSupervisorScore: this.isSoWithCreate,
+            starSupervisorMoreScore: this.isWithCreate,
             cityPartnerCommission: this.isCityPartner,
             productDreamPartnerCommission: this.isDreamPartner,
             productWealthPartnerCommission: this.isWealthPartner,
@@ -226,10 +226,10 @@
           let data = {
             storePlusCommissionRate: this.isPlusCommission,
             supervisorPlusCommissionRate: this.isSuperPlusCommission,
-            highSupervisorPlusMoreCommissionRate: this.isHighSupervisorPlusMore,
-            highSupervisorPlusCommissionRate: this.isHighSupervisorPlus,
-            starSupervisorPlusMoreCommissionRate: this.isSoWithCreatePlus,
-            starSupervisorPlusCommissionRate: this.isWithCreatePlus,
+            highSupervisorPlusCommissionRate: this.isHighSupervisorPlusMore,
+            highSupervisorPlusMoreCommissionRate: this.isHighSupervisorPlus,
+            starSupervisorPlusCommissionRate : this.isSoWithCreatePlus,
+            starSupervisorPlusMoreCommissionRate: this.isWithCreatePlus,
             plusCommissionRate: this.isPlusCommissionRate
           }
           this.setProductCommissionInfoActions(data)

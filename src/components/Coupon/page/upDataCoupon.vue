@@ -1,17 +1,33 @@
 <template>
   <div id="newActive">
     <p><label>优惠券标题:</label><el-input v-model="input" placeholder="请输入标题" size="small" :disabled="YHQonlyResult.Which==='second'"></el-input></p>
-    <p><label>有效期:</label><el-date-picker
-      size="small"
-      v-model="input0"
-      type="datetimerange"
-      :picker-options="pickerOptions2"
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      align="right"
-      :disabled="YHQonlyResult.Which==='second'">
-    </el-date-picker><span style="color:#999999; margin-left: 10px">按天计算</span></p>
+    <p><label>有效期类型:</label>
+      <el-radio-group v-model="radio2" :disabled="YHQonlyResult.Which==='second'">
+        <el-radio :label="1">固定日期</el-radio>
+        <el-radio :label="2">固定时长</el-radio>
+      </el-radio-group>
+    </p>
+    <p v-if="radio2==1"><label>固定日期:</label>
+      <el-date-picker
+        size="small"
+        :editable="false"
+        :disabled="YHQonlyResult.Which==='second'"
+        v-model="input0"
+        type="datetimerange"
+        :picker-options="{'format':'HH'}"
+        format="yyyy-MM-dd HH点"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :default-time="['00:00:00', '00:00:00']"
+        align="right">
+      </el-date-picker>
+      <!--<span style="color:#999999; margin-left: 10px">按天计算</span>--></p>
+    <p v-if="radio2==2">
+      <label>固定时长:</label>
+      <el-input v-model="autoTime" placeholder="请输入内容" size="small" :disabled="YHQonlyResult.Which==='second'"></el-input>
+      <span style="color:#999999; margin-left: 10px">按天计算</span>
+    </p>
     <p><label>优惠券类型:</label><el-radio-group v-model="radio" size="small">
       <el-radio :label="1">单品优惠券</el-radio>
     </el-radio-group>
@@ -90,6 +106,8 @@ export default {
       updataTwo:[],
       updataThree:[],
       radio:'',
+      radio2:'',
+      autoTime:'',
       id:'',
       options:[
         {
@@ -129,13 +147,15 @@ export default {
         id:this.YHQonlyResult.item.id,
         num:this.input1,
         itemson:'update',
-        Which:this.YHQonlyResult.Which
+        Which:this.YHQonlyResult.Which,
+        isAudit:this.updata2
       }
       console.log(this.YHQonlyResult.Which)
       if(this.YHQonlyResult.Which==='first'){
         obj.title=this.input
-        obj.endTime=this.input0[1].getTime()
-        obj.startTime=this.input0[0].getTime()
+//        obj.endTime=this.input0[1].getTime()
+//        obj.startTime=this.input0[0].getTime()
+        obj.validType=this.radio2
         obj.expireRemind=this.updataThree.join(',')
         obj.limitLevel=this.updataTwo.join(',')
         obj.limitReceived=this.value
@@ -145,6 +165,12 @@ export default {
         obj.togetherProductIds=this.CouponWithGoodsResult.togetherProductIds ? this.CouponWithGoodsResult.togetherProductIds : '0'
         obj.productType=this.CouponWithGoodsResult.productType
         obj.isPublic=this.updata10
+        if(this.radio2==1){
+          obj.endTime=this.input0[1].getTime()
+          obj.startTime=this.input0[0].getTime()
+        }else{
+          obj.validPeriodDays=this.autoTime
+        }
        // obj.itemson='create'
       }
       console.log(obj)
@@ -171,6 +197,8 @@ export default {
       this.radio=1
       this.id=this.YHQonlyResult.item.id;
       this.updata10=this.YHQonlyResult.item.isPublic;
+      this.radio2=this.YHQonlyResult.item.validType;
+      this.autoTime=this.YHQonlyResult.item.validPeriodDays;
       console.log(this.updataThree)
     },
   }

@@ -27,9 +27,9 @@
       <el-container style="margin-top: 60px;">
           <asidle></asidle>
           <!--<el-container>-->
-        <el-main style="height: 580px;overflow-y: auto;width: 1110px;overflow-x:hidden;position: relative;">
+        <el-main style="height: 580px;overflow-y: auto;overflow-x:hidden;position: relative;">
           <keep-alive>
-           <router-view style="width:1102px;"/>
+           <router-view style="min-width:1102px;"/>
           </keep-alive>
           <transition name="slide-fade">
             <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>

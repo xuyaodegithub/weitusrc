@@ -190,11 +190,11 @@ export default {
           name:'产品', width:'140', which:'productName'
         },{
           name:'券总数量', width:'70', which:'num'
-        },/*{
+        },{
           name:'已领数量', width:'70', which:'receivedNum'
         },{
           name:'已使用', width:'70', which:'useNum'
-        },*/{
+        },{
           name:'限领数量', width:'70', which:'limitReceived'
         },{
           name:'状态', width:'80', which:'isAudit'

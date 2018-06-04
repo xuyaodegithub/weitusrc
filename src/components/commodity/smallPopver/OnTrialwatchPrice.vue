@@ -39,7 +39,6 @@
               }}</span>
             <span style="margin-left: 10px" v-else>{{scope.row[item.which]}}</span>
           </template>
-          >
         </el-table-column>
       </el-table>
     </div>
@@ -151,6 +150,8 @@
           isSetTop: this.popoverAlive.SSSnum.isSetTop,
           // normalStores:'',//试用库存
           tip: this.popoverAlive.SSSnum.tip,
+          freeUseDays:this.popoverAlive.SSSnum.freeUseDays,
+          buyCount:this.popoverAlive.SSSnum.buyCount
           // startDate:,
           //endDate:'',
         }

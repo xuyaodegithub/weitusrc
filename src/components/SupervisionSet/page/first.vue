@@ -49,8 +49,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
-//  import { quillEditor } from 'vue-quill-editor' //调用编辑器
-//  import {quillRedefine} from 'vue-quill-editor-upload'//富文本上传插件
+  import vueQuillEditor from 'vue-quill-editor'
   import {quillEditor, Quill} from 'vue-quill-editor'
   import {container, ImageExtend, QuillWatch} from 'quill-image-extend-module'
   Quill.register('modules/ImageExtend', ImageExtend)
@@ -152,6 +151,9 @@
 </script>
 
 <style lang="scss">
+  @import "~quill/dist/quill.core.css";
+  @import "~quill/dist/quill.snow.css";
+  @import "~quill/dist/quill.bubble.css";
   #superFirst{
     margin-top:16px;
     padding-left:15px;

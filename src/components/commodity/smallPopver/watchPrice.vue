@@ -224,7 +224,7 @@
     }
     .el-input {
       width: 70%;
-      margin-top: 15px;
+      /*margin-top: 15px;*/
     }
     label {
       width: 60px;

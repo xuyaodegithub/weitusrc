@@ -1,17 +1,31 @@
 <template>
   <div id="newActive">
     <p><label>优惠券标题:</label><el-input v-model="input" placeholder="请输入标题" size="small"></el-input></p>
-    <p><label>有效期:</label><el-date-picker
-      size="small"
-      v-model="input0"
-      type="datetimerange"
-      :picker-options="pickerOptions2"
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      align="right">
-    </el-date-picker>
+    <p><label>有效期类型:</label>
+      <el-radio-group v-model="radio2">
+        <el-radio :label="1">固定日期</el-radio>
+        <el-radio :label="2">固定时长</el-radio>
+      </el-radio-group>
+    </p>
+    <p v-if="radio2==1"><label>固定日期:</label>
+      <el-date-picker
+        :editable="false"
+        size="small"
+        v-model="input0"
+        type="datetimerange"
+        :picker-options="{'format':'HH'}"
+        format="yyyy-MM-dd HH点"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :default-time="['00:00:00', '00:00:00']"
+        align="right">
+      </el-date-picker>
       <!--<span style="color:#999999; margin-left: 10px">按天计算</span>--></p>
+    <p v-if="radio2==2">
+      <label>固定时长:</label>
+      <el-input v-model="autoTime" placeholder="请输入内容" size="small"></el-input><span style="color:#999999; margin-left: 10px">按天计算</span>
+    </p>
     <p><label>优惠券类型:</label><el-radio-group v-model="radio" size="small">
       <el-radio :label="1">单品优惠券</el-radio>
     </el-radio-group>
@@ -62,6 +76,8 @@ export default {
       input4:'',
       updataTwo:'',
       updataThree:'',
+      radio2:'',
+      autoTime:'',
       radio:'',
       updata10:'',
       options:[
@@ -95,6 +111,8 @@ export default {
     this.value='';
     this.radio=1;
     this.updata10=1
+    this.radio2='';
+    this.autoTime='';
   },
   computed:{
     ...mapGetters([
@@ -107,7 +125,8 @@ export default {
     ]),
     upload(){
       let obj={
-        endTime:this.input0[1].getTime(),
+//        endTime:this.input0[1].getTime(),
+        validType:this.radio2,
         limitReceived:this.value,
         num:this.input1,
         price:this.input2*100,
@@ -115,10 +134,16 @@ export default {
         togetherProductIds:this.CouponWithGoodsResult.togetherProductIds,
         productType:this.CouponWithGoodsResult.productType,
         sellerId:this.sellIDResult,
-        startTime:this.input0[0].getTime(),
+//        startTime:this.input0[0].getTime(),
         title:this.input,
         type:this.radio,
         isPublic:this.updata10,
+      }
+      if(this.radio2==1){
+        obj.endTime=this.input0[1].getTime()
+        obj.startTime=this.input0[0].getTime()
+      }else{
+        obj.validPeriodDays=this.autoTime
       }
       if(this.input2>=this.CouponWithGoodsResult.price){
         this.$message({

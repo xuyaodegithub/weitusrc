@@ -3,10 +3,10 @@
     <div class="popover-head">
       <span class="title">活动链接</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
-    <div class="popover-main">
-      <p>
-       {{this.$store.state.result.activeId}}
-      </p>
+    <div class="popover-main"  v-html="activeIdResult">
+      <!--<p>-->
+       <!--{{this.$store.state.result.activeId}}-->
+      <!--</p>-->
     </div>
   </div>
 </template>
@@ -87,7 +87,7 @@
     },
     computed: {
       ...mapGetters([
-        'popoverAlive','addCommodityResult'
+        'popoverAlive','addCommodityResult','activeIdResult'
       ])
     },
     methods: {

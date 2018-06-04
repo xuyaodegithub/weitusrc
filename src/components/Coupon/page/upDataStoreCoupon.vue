@@ -1,17 +1,33 @@
 <template>
   <div id="newActive">
     <p><label>优惠券标题:</label><el-input v-model="input" placeholder="请输入标题" size="small" :disabled="StoreYHQResult.trueOrfalse"></el-input></p>
-    <p><label>有效期:</label><el-date-picker
-      size="small"
-      v-model="input0"
-      type="datetimerange"
-      :picker-options="pickerOptions2"
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      align="right"
-      :disabled="StoreYHQResult.trueOrfalse">
-    </el-date-picker><span style="color:#999999; margin-left: 10px">按天计算</span></p>
+    <p><label>有效期类型:</label>
+      <el-radio-group v-model="radio2" :disabled="YHQonlyResult.Which==='second'">
+        <el-radio :label="1">固定日期</el-radio>
+        <el-radio :label="2">固定时长</el-radio>
+      </el-radio-group>
+    </p>
+    <p v-if="radio2==1"><label>固定日期:</label>
+      <el-date-picker
+        size="small"
+        :editable="false"
+        :disabled="YHQonlyResult.Which==='second'"
+        v-model="input0"
+        type="datetimerange"
+        :picker-options="{'format':'HH'}"
+        format="yyyy-MM-dd HH点"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :default-time="['00:00:00', '00:00:00']"
+        align="right">
+      </el-date-picker>
+      <!--<span style="color:#999999; margin-left: 10px">按天计算</span>--></p>
+    <p v-if="radio2==2">
+      <label>固定时长:</label>
+      <el-input v-model="autoTime" placeholder="请输入内容" size="small" :disabled="YHQonlyResult.Which==='second'"></el-input>
+      <span style="color:#999999; margin-left: 10px">按天计算</span>
+    </p>
     <p><label>优惠券类型:</label><el-radio-group v-model="radio" size="small">
       <el-radio :label="1">单品优惠券</el-radio>
     </el-radio-group>
@@ -61,6 +77,8 @@ export default {
       input1:'',
       input2:'',
       input3:'',
+      radio2:'',
+      autoTime:'',
       radio:'',
       updata10:'',
       options:[
@@ -92,6 +110,8 @@ export default {
     this.radio=this.StoreYHQResult.item.type;
     this.value=this.StoreYHQResult.item.limitReceived;
     this.updata10=this.StoreYHQResult.item.isPublic;
+    this.radio2=this.StoreYHQResult.item.radio2;
+    this.autoTime=this.StoreYHQResult.item.autoTime;
     console.log(this.CouponWithGoodsResult)
   },
   computed:{
@@ -112,8 +132,9 @@ export default {
   }
   console.log(this.CouponWithGoodsResult)
   if(this.StoreYHQResult.trueOrfalse===false){
-    data.startTime=this.input0[0].getTime()
-    data.endTime=this.input0[1].getTime()
+//    data.startTime=this.input0[0].getTime()
+//    data.endTime=this.input0[1].getTime()
+    data.validType=this.radio2
     data.limitReceived=this.value
     data.price=this.input2*100
     data.type=this.radio
@@ -122,6 +143,12 @@ export default {
     data.productIds=this.CouponWithGoodsResult.productIds
     data.togetherProductIds=this.CouponWithGoodsResult.togetherProductIds ? this.CouponWithGoodsResult.togetherProductIds : ''
     data.productType=this.CouponWithGoodsResult.productType
+    if(this.radio2==1){
+      data.endTime=this.input0[1].getTime()
+      data.startTime=this.input0[0].getTime()
+    }else{
+      data.validPeriodDays=this.autoTime
+    }
   }else{
     data.name='second'
   }
