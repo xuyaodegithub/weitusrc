@@ -94,52 +94,7 @@
       ...mapActions([
         'popoverAlert','addCommodityActions','popoverAlert'
       ]),
-      addSub () {
-        //console.log(this.checkList)
-        let arr = []
-        let that=this
-        this.checkList.forEach(function(item,index){
-          if (item == '产品列表') {
-            let obj = {}
-            obj.name = that.input ? that.input : item
-            obj.modelSampleCode = 'catlist1'
-            obj.marginData=''
-            obj.contents = []
-            arr.push(obj)
-          }
-          if(item=='轮播图'){
-            let obj={}
-            obj.name = that.input ? that.input : item
-            obj.modelSampleCode = 'advertisingFigure'
-            obj.marginData=''
-            obj.contents=[]
-            arr.push(obj)
-          }
-          if(item=="等分（最多5等分）" || item=='BANNER'){
-            let obj={};
-            obj.name = that.input ? that.input : item
-            obj.modelSampleCode="f5"
-            obj.marginData=''
-            obj.contents=[]
-            arr.push(obj)
-          }
-          if(item=="滑动的"){
-            let obj={}
-            obj.name = that.input ? that.input : item
-            obj.modelSampleCode="titleproducttouch"
-            obj.marginData=''
-            obj.contents=[]
-            arr.push(obj)
-          }
-        })
-       /* let  arr2=this.addCommodityResult
-        for(let i=0;i<arr.length;i++){
-          arr2.push(arr[i])
-        }*/
 
-        this.addCommodityActions(arr)
-        this.popoverAlert()
-      }
     }
   };
 </script>

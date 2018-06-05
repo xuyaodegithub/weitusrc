@@ -8,8 +8,9 @@
         class="upload-demo"
         ref="uploadfirst"
         name="img"
-        action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
+        action="apis/admin/buildblocks/uploadImage"
         :on-success="upSuccessfirst"
+        :before-upload="beforeup"
         :on-error="upErre"
         :file-list="fileList"
         list-type="picture"
@@ -140,6 +141,24 @@ export default {
     this.saveCouponActiveActions(obj)
     this.YHQwhichActions({title:'VseachCouponActive',item:''})
     },
+    beforeup(file){
+      //var file = this.files[0];
+      alert("文件大小:"+(file.size / 1024).toFixed(1)+"kB");
+      if (window.FileReader) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        //监听文件读取结束后事件
+        reader.onloadend = function (e) {
+//          showXY(e.target.result,file.fileName);
+          console.log(e.target.result)
+          var img = new Image();
+          img.src = e.target.result;
+          img.onload=function(){
+            alert("Width:"+img.width+", Height:"+img.height);
+          }
+        };
+      }
+    }
   }
 }
 </script>

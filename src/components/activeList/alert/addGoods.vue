@@ -34,7 +34,7 @@
         <el-radio :label=1 style="width: auto;">已通过</el-radio>
       </el-radio-group></p>
       <P v-if="commodityResult.modelSampleCode !=='catlist1'"><label>商品类型:</label>
-        <el-select v-model="radiosResult" placeholder="请选择" size="mini" style="width: 160px;"  :disabled="radiosResult!=='积分试用商品'" v-if="radiosResult!=='积分试用商品' && radiosResult!=='更多试用商品'">
+        <el-select v-model="radiosResult" placeholder="请选择" size="mini" style="width: 160px;"  :disabled="radiosResult!=='积分试用商品'" v-if="radiosResult!=='积分试用商品' && radiosResult!=='试用商品'">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -42,7 +42,7 @@
             :value="item.label">
           </el-option>
         </el-select>
-      <el-select v-model="table1" placeholder="请选择" size="mini" style="width: 160px;" @change="changeradioJFC(table1)" v-if="radiosResult==='积分试用商品' || radiosResult==='更多试用商品'" disabled>
+      <el-select v-model="table1" placeholder="请选择" size="mini" style="width: 160px;" @change="changeradioJFC(table1)" v-if="radiosResult==='积分试用商品' || radiosResult==='试用商品'" disabled>
           <el-option
             v-for="item in arrResult"
             :key="item.value"
@@ -100,11 +100,10 @@
     <div v-else-if="radiosResult==='拼团商品'">
       <Vpintuan></Vpintuan>
     </div>
-    <div v-else-if="radiosResult==='积分试用商品'">
-      <!--<Vjifen></Vjifen>-->
-      <Vmore></Vmore>
+    <div v-else-if="radiosResult==='专享商品'">
+      <Vjifen></Vjifen>
     </div>
-    <div v-else-if="radiosResult==='更多试用商品'">
+    <div v-else-if="radiosResult==='试用商品'">
       <Vmore></Vmore>
     </div>
     </div>
@@ -290,12 +289,12 @@
         }, {
           value: '2',
           label: '拼团商品'
-        }/*, {
+        }, {
           value: '3',
-          label: '积分试用商品'
-        }*/, {
+          label: '专享商品'
+        }, {
           value: '4',
-          label: '更多试用商品'
+          label: '试用商品'
         }],
         arrResult:[{
           value: '1',
@@ -321,24 +320,25 @@
     },
     computed:{
       ...mapGetters([
-       'radiosResult','ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult'
+       'radiosResult','ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult',
+        'plusProductListResult'
       ]),
       objNum:function(){
         if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='普通商品'){
           return this.getDataListResulr.total
         }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='拼团商品'){
           return this.productlistResult.total
-        }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='积分试用商品'){
-          return this.freeUseListResult.total
-        }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='更多试用商品'){
+        }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='专享商品'){
+          return this.plusProductListResult.total
+        }else if(this.commodityResult.modelSampleCode !=='catlist1' && this.radiosResult==='试用商品'){
           return this.freeUseListResult.total
         }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='普通商品'){
           return this.getDataListResulr.total
         }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='拼团商品'){
           return this.productlistResult.total
-        }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='积分试用商品'){
-          return this.freeUseListResult.total
-        }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='更多试用商品'){
+        }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='专享商品'){
+          return this.plusProductListResult.total
+        }else if(this.commodityResult.modelSampleCode ==='catlist1' && this.radio2==='试用商品'){
           return this.freeUseListResult.total
         }
       },
@@ -348,7 +348,7 @@
     },
     methods: {
       ...mapActions([
-        'popoverAlert','getDataListActions','productlistActions','freeUseListActions','scoreBuyListActions'
+        'popoverAlert','getDataListActions','productlistActions','freeUseListActions','scoreBuyListActions','plusProductListActions'
       ]),
       morePull(rows) {
         //console.log(rows())
@@ -425,11 +425,11 @@
           this.getDataListActions(data)
         }else if(this.radiosResult==='拼团商品'){
           this.productlistActions(data)
-        }else if(this.radiosResult==='积分试用商品'){
+        }else if(this.radiosResult==='试用商品'){
           //this.scoreBuyListActions(data)
           this.freeUseListActions(data)
         }else{
-          this.freeUseListActions(data)
+          this.plusProductListActions(data)
         }
 
       },
@@ -473,7 +473,7 @@
         obj.type=2
         obj.productId=row.id
         obj.indexId=20
-        obj.url='http://ol-site.olquan.com/weixin/product/newProductDetail?productId='+row.id
+        obj.url='http://ol-site.olquan.cn/weixin/product/newProductDetail?productId='+row.id
         obj.image=this.commodityResult.contents[this.ImgnumKeyResult].image
         obj.width=this.commodityResult.contents[this.ImgnumKeyResult].width
         obj.height=this.commodityResult.contents[this.ImgnumKeyResult].height

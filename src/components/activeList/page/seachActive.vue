@@ -28,13 +28,13 @@
         </el-table-column>
         <el-table-column
           label="状态"
-          width="200">
+          width="150">
           <template slot-scope="scope">
             <span style="margin-left: 10px" v-if="scope.row.start=='0'">未开启</span>
             <span style="margin-left: 10px" v-if="scope.row.start=='1'">已开启</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="342">
           <template slot-scope="scope">
             <input type="text" class="CopyText" v-model="msgSS" style="opacity: 0;position: absolute;z-index: -111;">
             <el-button
@@ -108,7 +108,7 @@ export default {
      // oInput.setAttribute('id','copyText')
      // oInput.onload=function() {
      // alert( '活动地址：http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
-      this.$store.commit('activeIdchange','http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
+      this.$store.commit('activeIdchange','外部链接(非APP和非公众号内部使用)：http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id+'<br>内部链接(APP和公众号内部使用)：http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
       this.popoverAlert('VactiveDress')
      /* let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
         Url.select(); // 选择对象

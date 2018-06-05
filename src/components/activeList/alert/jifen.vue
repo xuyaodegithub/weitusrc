@@ -3,7 +3,7 @@
         @row-click="addGoodsImg"
         v-loading="loading"
         :height="280"
-        :data="scoreBuyListResult.rows"
+        :data="plusProductListResult.rows"
         tooltip-effect="light"
         style="width: 100%"
         class="cu">
@@ -24,12 +24,12 @@
           prop="endDate"
           label="结束时间">
         </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="limitCount"-->
+          <!--label="库存数量">-->
+        <!--</el-table-column>-->
         <el-table-column
           prop="limitCount"
-          label="库存数量">
-        </el-table-column>
-        <el-table-column
-          prop="memberLimitCount"
           label="每人限购数量">
         </el-table-column>
         <el-table-column
@@ -165,21 +165,21 @@
     },
     computed:{
       ...mapGetters([
-       'ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult'
+       'ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult','plusProductListResult'
       ]),
     },
     methods: {
       ...mapActions([
-        'popoverAlert','getDataListActions','productlistActions','freeUseListActions','scoreBuyListActions'
+        'popoverAlert','getDataListActions','productlistActions','freeUseListActions','scoreBuyListActions','plusProductListActions'
       ]),
       addGoodsImg(row,event,column){
         //console.log(JSON.stringify(row))
         console.log(row)
         let obj={}
-        obj.type=2
+        obj.type=21
         obj.productId=row.productId
-        obj.indexId=14
-        obj.url = 'http://ol-h5-preview.olquan.cn/try/trygoods/id/' + row.productId
+        obj.indexId=13
+        obj.url = 'http://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.productId
         obj.image=this.commodityResult.contents[this.ImgnumKeyResult].image
         obj.width=this.commodityResult.contents[this.ImgnumKeyResult].width
         obj.height=this.commodityResult.contents[this.ImgnumKeyResult].height

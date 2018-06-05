@@ -183,7 +183,6 @@ export default {
           {title:'开通粉领', which:3},
           {title:'粉领续费', which:32},
           {title:'粉领专享', which:5},
-          //{title:'积分试用列表', which:13},
           {title:'试用产品详情', which:14},
           {title:'全球购列表', which:15},
           {title:'家居日用首页', which:16},
@@ -197,16 +196,12 @@ export default {
           {title:'今日上新', which:27},
           {title:'活动', which:29},
           {title:'小金库充值', which:30},
+          {title:'特卖首页', which:33},
+          {title:'专享产品详情', which:13},
           {title:'无链接', which:31},
         ]
       }
     },
-  mounted(){
-      window.addEventListener('scroll',function(){
-        let val=document.documentElement.scrollTop || document.body.scrollTop
-        console.log(val)
-      })
-  },
     watch: {
       commodityResult: {
         handler (curVal, oldVal) {
@@ -265,6 +260,8 @@ export default {
           this.radio2=19
         }else if(this.commodityResult.contents[key].type===2 && this.commodityResult.contents[key].indexId===20){
           this.radio2=20
+        }else if(this.commodityResult.contents[key].type===21 && this.commodityResult.contents[key].indexId===13){
+          this.radio2=13
         }else if(this.commodityResult.contents[key].type===2 && this.commodityResult.contents[key].indexId===14){
           this.radio2=14
         }else if(this.commodityResult.contents[key].type===2 && this.commodityResult.contents[key].indexId===1){
@@ -311,6 +308,8 @@ export default {
           this.radio2=29
         }else if(this.commodityResult.contents[key].type===19){
           this.radio2=32
+        }else if(this.commodityResult.contents[key].type===20){
+          this.radio2=33
         }else if(this.commodityResult.contents[key].type===0){
           this.radio2=31
         }else{
@@ -570,10 +569,11 @@ export default {
           this.input='http://ol-h5-preview.olquan.cn/index/moreindex/id/5'
           this.addType(15)
           this.addTypeId(5)
-        }/*else if(key===13){
-          this.input='http://ol-h5-preview.olquan.cn/try/center?type=3'
-        }*/else if(key===14){
-          this.$store.commit('changeRadios','积分试用商品')
+        }else if(key===13){
+          this.$store.commit('changeRadios','专享商品')
+          this.addGoodsList()
+        }else if(key===14){
+          this.$store.commit('changeRadios','试用商品')
           this.addGoodsList()
           //this.input=
          /* if(this.commodityResult.contents[this.num].productId) {
@@ -643,6 +643,9 @@ export default {
         }else if(key===30){
           this.input='http://ol-site.olquan.com/weixin/member/coffersRecharge'
           this.addType(12)
+        }else if(key===33){
+          this.input='http://ol-h5.olquan.cn/index/pinkIndex'
+          this.addType(20)
         }else if(key===31){
           this.input='#'
           this.addType(0)

@@ -4,7 +4,8 @@
       <el-table
         v-loading="loading"
         :data="CouponActiveListResult.rows"
-        style="width: 100%">
+        style="width: 100%"
+        :header-cell-style="{'color':'#000000','fontWeight':'600'}">
         <el-table-column
           v-for="(item,index) in dataList"
           :label="item.name"
@@ -116,7 +117,7 @@ this.CouponActiveListActions(data)
    'popoverAlert','YHQwhichActions','CouponActiveListActions','deleteCouponActiveActions'
     ]),
     linkTo(index,row){
-      this.$store.commit('activeIdchange','http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id)
+      this.$store.commit('activeIdchange','外部链接(非APP和非公众号内部使用)： http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id+'<br>内部链接(APP和公众号内部使用)： http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id)
       this.popoverAlert('VactiveDress')
     },
     bianji(index,row){
