@@ -182,7 +182,7 @@ export default {
           {title:'保险', which:4},
           {title:'开通粉领', which:3},
           {title:'粉领续费', which:32},
-          {title:'粉领专享', which:5},
+//          {title:'粉领专享', which:5},
           {title:'试用产品详情', which:14},
           {title:'全球购列表', which:15},
           {title:'家居日用首页', which:16},
@@ -197,7 +197,7 @@ export default {
           {title:'活动', which:29},
           {title:'小金库充值', which:30},
           {title:'特卖首页', which:33},
-          {title:'专享产品详情', which:13},
+          {title:'特卖产品详情', which:13},
           {title:'无链接', which:31},
         ]
       }

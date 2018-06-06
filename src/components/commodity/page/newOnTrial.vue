@@ -5,7 +5,8 @@
     <!--</div>-->
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="产品名称:">
-        <p style="width: 60%;display: inline-block;text-indent: 10px">{{CouponWithGoodsResult.productName}}</p>
+        <!--<p style="width: 60%;display: inline-block;text-indent: 10px">{{CouponWithGoodsResult.productName}}</p>-->
+        <el-input placeholder="请输入内容" size="small" :value="CouponWithGoodsResult.productName" style="width: 40%;display: inline-block;text-indent: 10px"  @change="changeRng"></el-input>
         <el-button type="success" size="mini" round style="margin-left: 15px;"
                    @click="popoverAlert(['VchoseGoods','one'])" v-if="upDataSaleGoodsResult.type ==='add'">选择产品
         </el-button>
@@ -450,7 +451,7 @@
             data.normalStores = /*JSON.stringify([this.form.namePrice])*/[this.form.namePrice].toString()
           }
         } else {
-          data.productName = this.upDataSaleGoodsResult.item.productName
+          data.productName = this.CouponWithGoodsResult.productName
           data.productId = this.upDataSaleGoodsResult.item.productId
           data.id = this.upDataSaleGoodsResult.item.id
           data.buyCount=this.upDataSaleGoodsResult.item.buyCount
@@ -553,7 +554,22 @@
           }
           this.BondMoney = arr
         }
-      }
+      },
+   changeRng(e){
+    console.log(e)
+    let obj={
+      togetherProductIds:this.CouponWithGoodsResult.togetherProductIds,
+      productType:this.CouponWithGoodsResult.productType,
+      productIds:this.CouponWithGoodsResult.productIds,
+      marketPrice:this.CouponWithGoodsResult.marketPrice,
+      price:this.CouponWithGoodsResult.price,
+      productName:e,
+      costPriceView:this.CouponWithGoodsResult.costPriceView,//成本价
+      salePriceView:this.CouponWithGoodsResult.salePriceView,//销售价
+      image:this.CouponWithGoodsResult.image//主图
+    }
+    this.$store.commit('Coupon_With_Goods',obj)
+  }
 
     }
   }
