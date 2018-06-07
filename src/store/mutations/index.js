@@ -647,7 +647,7 @@ const mutations = {//mutations内是改变state内的值得作用
   },
   //关联优惠券列表
   [types.SET_COUPON_WITH_LIST_RESULT](state,data){
-    state.editor.CouponwithLsitMM.filter_S_title=data.filter_S_title
+    state.editor.CouponwithLsitMM.filter_S_title_contains=data.filter_S_title
     state.editor.CouponwithLsitMM.filter_I_isAudit=data.filter_I_isAudit
     state.editor.CouponwithLsitMM.limitLevels=data.limitLevels
     state.editor.CouponwithLsitMM.page=data.page

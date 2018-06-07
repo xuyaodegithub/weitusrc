@@ -248,7 +248,7 @@ const  editor = {//定义入参
   },
   CouponwithLsitMM : {
     conponActivityId:'',
-    filter_S_title:'',
+    filter_S_title_contains:'',
     limitLevels:'',
     page:'',
     rows:'',

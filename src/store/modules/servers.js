@@ -408,7 +408,7 @@ const servers={
         }else{
           Message({
             showClose: true,
-            message:res.data.message,
+            message:res.data,
             type: 'warning'
           });
         }
