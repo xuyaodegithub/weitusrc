@@ -367,7 +367,7 @@
       upSuccessfirst(response, file, fileList) {
         let obj = {}
         let oImg = new Image()
-        oImg.src = 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
+        oImg.src = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
         let that = this
         //this.commodityResult.contents[this.num].image='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
         oImg.onload = function () {
@@ -377,7 +377,7 @@
           that.commodityResult.contents[that.num].height=oImg.height*/
           obj.width = oImg.width
           obj.height = oImg.height
-          obj.image = 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
+          obj.image = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
           obj.isTrue = false
           that.commodityResult.contents.push(obj)
         }
@@ -566,23 +566,23 @@
             }*/
         } else if (key === 2) {
           console.log(this.commodityResult.contents[this.num])
-          this.input = 'http://ol-h5-preview.olquan.cn/index/newIndex'
+          this.input = 'https://ol-h5-preview.olquan.cn/index/newIndex'
           this.addType(10)
         } else if (key === 3) {
-          this.input = 'http://ol-h5-preview.olquan.cn/supervisor/buyPink'
+          this.input = 'https://ol-h5-preview.olquan.cn/supervisor/buyPink'
 //          this.input='http://ol-h5.olquan.cn/supervisor/buyPink'
           this.addType(11)
         } else if (key === 32) {
-          this.input = 'http://ol-site.olquan.cn/weixin/member/renewConfirmOrder'
+          this.input = 'https://ol-site.olquan.cn/weixin/member/renewConfirmOrder'
           this.addType(19)
         } else if (key === 4) {
-          this.input = 'http://www.ins-box.com/channelcps?channelCode=966262c61960ed971942347b443c7743&to=http://www.ins-box.com/pagecontent?pageContentId=100044'
+          this.input = 'https://www.ins-box.com/channelcps?channelCode=966262c61960ed971942347b443c7743&to=http://www.ins-box.com/pagecontent?pageContentId=100044'
           this.addType(16)
         } else if (key === 5) {
-          this.input = 'http://ol-h5-preview.olquan.cn/mine/index'
+          this.input = 'https://ol-h5-preview.olquan.cn/mine/index'
           this.addType(13)
         } else if (key === 6) {
-          this.input = 'http://ol-h5-preview.olquan.cn/index/hotsale'
+          this.input = 'https://ol-h5-preview.olquan.cn/index/hotsale'
           this.addType(14)
         } else if (key === 7) {
           this.$store.commit('changeRadios', '拼团商品')
@@ -600,21 +600,21 @@
              this.radio2=''
            }*/
         } else if (key === 8) {
-          this.input = 'http://ol-h5-preview.olquan.cn/index/moreindex/id/1'
+          this.input = 'https://ol-h5-preview.olquan.cn/index/moreindex/id/1'
           this.addType(15)
           this.addTypeId(1)
         }/*else if(key===9){
           this.input='http://ol-site.olquan.com/weixin/product/newProductDetail?productId='+this.commodityResult.contents[this.num].id
         }*/ else if (key === 10) {
-          this.input = 'http://ol-h5-preview.olquan.cn/index/moreindex/id/4'
+          this.input = 'https://ol-h5-preview.olquan.cn/index/moreindex/id/4'
           this.addType(15)
           this.addTypeId(4)
         } else if (key === 11) {
-          this.input = 'http://ol-h5-preview.olquan.cn/index/moreindex/id/2'
+          this.input = 'https://ol-h5-preview.olquan.cn/index/moreindex/id/2'
           this.addType(15)
           this.addTypeId(2)
         } else if (key === 12) {
-          this.input = 'http://ol-h5-preview.olquan.cn/index/moreindex/id/5'
+          this.input = 'https://ol-h5-preview.olquan.cn/index/moreindex/id/5'
           this.addType(15)
           this.addTypeId(5)
         } else if (key === 13) {
@@ -637,18 +637,18 @@
              this.radio2=''
            }*/
         } else if (key === 15) {
-          this.input = 'http://ol-site.olquan.cn/weixin/auth?view=/weixin/globalShopping/vm'
+          this.input = 'https://ol-site.olquan.cn/weixin/auth?view=/weixin/globalShopping/vm'
           this.addType(7)
         } else if (key === 16) {
-          this.input = 'http://ol-site.olquan.cn/weixin/lifeHouse/lifeHouse?districtId=330185'
+          this.input = 'https://ol-site.olquan.cn/weixin/lifeHouse/lifeHouse?districtId=330185'
           this.addType(6)
         } else if (key === 17) {
           this.openOrclose = false
-          this.input = 'http://ol-site.olquan.cn/weixin/product/product?brandCode='
+          this.input = 'https://ol-site.olquan.cn/weixin/product/product?brandCode='
           this.addType(17)
           this.popoverAlert('VclassSell')
         } else if (key === 19) {
-          this.input = 'http://ol-h5-preview.olquan.cn/try/moretry'
+          this.input = 'https://ol-h5-preview.olquan.cn/try/moretry'
           this.addType(1)
         } else if (key === 20) {
           this.$store.commit('changeRadios', '普通商品')
@@ -668,19 +668,19 @@
            }*/
 
         } else if (key === 21) {
-          this.input = 'http://ol-site.olquan.cn/ol/weixin/index/indexRecommendBrand'
+          this.input = 'https://ol-site.olquan.cn/ol/weixin/index/indexRecommendBrand'
           this.addType(3)
         } else if (key === 22) {
-          this.input = 'http://ol-site.olquan.cn/weixin/limitBuy/limitBuy'
+          this.input = 'https://ol-site.olquan.cn/weixin/limitBuy/limitBuy'
           this.addType(4)
         } else if (key === 23) {
-          this.input = 'http://ol-site.olquan.cn/weixin/lifeHouse/lifeHouse'
+          this.input = 'https://ol-site.olquan.cn/weixin/lifeHouse/lifeHouse'
           this.addType(5)
         } else if (key === 26) {
-          this.input = 'http://ol-site.olquan.cn/weixin/auth?view=http://ol-site.olquan.cn/weixin/lifeHouse/lifeHouse?districtId=330104'
+          this.input = 'https://ol-site.olquan.cn/weixin/auth?view=http://ol-site.olquan.cn/weixin/lifeHouse/lifeHouse?districtId=330104'
           this.addType(8)
         } else if (key === 27) {
-          this.input = 'http://ol-site.olquan.cn/weixin/product/product?isNew=1'
+          this.input = 'https://ol-site.olquan.cn/weixin/product/product?isNew=1'
           this.addType(9)
         } else if (key === 29) {
           //this.input='http://ol-h5-preview.olquan.cn/activity/newact?id='+this.activeChangeResult.obj.id+'&memberId=778040'
@@ -695,10 +695,10 @@
           // this.popoverAlert('VactiveLianJian')
           this.CouponActiveListActions({})
         } else if (key === 30) {
-          this.input = 'http://ol-site.olquan.cn/weixin/member/coffersRecharge'
+          this.input = 'https://ol-site.olquan.cn/weixin/member/coffersRecharge'
           this.addType(12)
         } else if (key === 33) {
-          this.input = 'http://ol-h5.olquan.cn/index/pinkIndex'
+          this.input = 'https://ol-h5.olquan.cn/index/pinkIndex'
           this.addType(20)
         } else if (key === 31) {
           this.input = '#'
@@ -719,7 +719,7 @@
       addGoodsList() {
         if (this.commodityResult.name) {
           if (this.commodityResult.contents.length > 0) {
-            this.popoverAlert('vAddGoods')
+            this.popoverAlert(['vAddGoods','active'])
           } else {
             this.$message({
               message: '请先上传图片',
@@ -750,7 +750,7 @@
         let that = this
         // let arr=this.listActiveResult
         if (num === 1) {
-          that.input = 'http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id=' + key
+          that.input = 'https://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id=' + key
           if (that.commodityResult.contents.length > 0) {
             //if(this.radio2){}
             that.$set(that.commodityResult.contents[that.num], 'url', that.input)
@@ -762,7 +762,7 @@
             })
           }
         } else {
-          that.input = 'http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/' + key
+          that.input = 'https://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/' + key
           if (that.commodityResult.contents.length > 0) {
             //if(this.radio2){}
             that.$set(that.commodityResult.contents[that.num], 'url', that.input)

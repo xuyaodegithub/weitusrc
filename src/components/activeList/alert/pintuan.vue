@@ -179,11 +179,11 @@
         obj.height=this.commodityResult.contents[this.ImgnumKeyResult].height
         obj.isTrue=this.commodityResult.contents[this.ImgnumKeyResult].isTrue
         if(this.pintuanResult===1){
-          obj.url='http://ol-h5-preview.olquan.cn/index/goodsDetali/id/' + row.id + '?isLimit=0'
+          obj.url='https://ol-h5-preview.olquan.cn/index/goodsDetali/id/' + row.id + '?isLimit=0'
           obj.indexId=1
         }
         if(this.pintuanResult===7){
-          obj.url='http://ol-h5-preview.olquan.cn/index/goodsDetali/id/' + row.id + '?isLimit=1'
+          obj.url='https://ol-h5-preview.olquan.cn/index/goodsDetali/id/' + row.id + '?isLimit=1'
           obj.indexId=7
         }
         this.$store.commit('OtherImgUrl',obj.url)

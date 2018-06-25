@@ -131,33 +131,7 @@
   export default {
     data() {
       return {
-        input:'',
-        classGoods:1,
-        input1:'',
-        input2:'',
-        currentPage4:1,
-        value:10,
-        multipleSelection:[],
-        radio2:'普通商品',
-        options: [{
-          value: '1',
-          label: '普通商品'
-        }, {
-          value: '2',
-          label: '拼团商品'
-        }, {
-          value: '3',
-          label: '积分试用商品'
-        }, {
-          value: '4',
-          label: '更多试用商品'
-        }],
-        upGoods:1,
-        table1:[
-          {
 
-          }
-        ]
       };
     },
     created(){
@@ -179,7 +153,7 @@
         obj.type=21
         obj.productId=row.productId
         obj.indexId=13
-        obj.url = 'http://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.productId
+        obj.url = 'https://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.productId
         obj.image=this.commodityResult.contents[this.ImgnumKeyResult].image
         obj.width=this.commodityResult.contents[this.ImgnumKeyResult].width
         obj.height=this.commodityResult.contents[this.ImgnumKeyResult].height

@@ -287,7 +287,7 @@
         }
       },
       watchShare (row) {
-        this.$store.commit('activeIdchange', 'http://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.id + '?isShare=1')
+        this.$store.commit('activeIdchange', 'https://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.id + '?isShare=1')
         this.popoverAlert('VactiveDress')
       },
       ToSetUp (index, row) {

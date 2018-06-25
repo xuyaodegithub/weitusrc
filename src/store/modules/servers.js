@@ -152,7 +152,11 @@ const servers={
       canUpToStarResult:[],
       //获取产品佣金配置信息
       productCommissionInfoResult:'',
-      plusCommissionInfoResult:''
+      plusCommissionInfoResult:'',
+
+
+      ////发现模块
+      findMsgResult:''
     }
   },
   mutations:{
@@ -318,7 +322,12 @@ const servers={
         state.editor.setProductCommissionInfoMM.storePlusCommissionRate=data.storePlusCommissionRate
         state.editor.setProductCommissionInfoMM.supervisorPlusCommissionRate=data.supervisorPlusCommissionRate
         state.editor.setProductCommissionInfoMM.supervisorScore=data.supervisorScore
+    },
 
+
+    ///发现模块
+    GET_FIND_ACCOUNT(state,res){
+      state.page.findMsgResult=res.data
     }
 
   },
@@ -679,6 +688,13 @@ const servers={
           });
         }
       )
+    },
+
+
+
+    ////发现
+    findAccountActions({commit, dispatch, state, rootState},data){
+      dispatch('GoodsMsgGet',['/admin/findAccount/getByAutoId','GET_FIND_ACCOUNT',''])
     }
 
   }

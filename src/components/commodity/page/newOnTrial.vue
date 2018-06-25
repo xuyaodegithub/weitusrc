@@ -435,6 +435,13 @@
           data.isOverSeasProduct = this.isOutCountry
           data.countryId = this.value8
         }
+        else{
+          this.$message({
+            message:'商品大图不可为空',
+            type:'warning'
+          })
+          return
+        }
         if (this.upDataSaleGoodsResult.type === 'add') {
           data.productName = this.CouponWithGoodsResult.productName
           data.productId = this.CouponWithGoodsResult.productIds
@@ -509,10 +516,10 @@
         }
       },
       upSuccessfirst (response, file, fileList) {
-        this.dialogImageUrl = 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
+        this.dialogImageUrl = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
       },
       upSuccessfirst2 (response, file, fileList) {
-        this.dialogImageUrl2 = 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
+        this.dialogImageUrl2 = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
       },
       addCountry () {
         this.popoverAlert('addCountry')

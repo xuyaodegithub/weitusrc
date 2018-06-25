@@ -5,6 +5,8 @@ import Home from '@/components/firstPage/home.vue'
 import OrderQuery from '@/components/DeliveryManagement/subassembly/OrderQuery.vue'
 import BatchShipment from '@/components/DeliveryManagement/subassembly/BatchShipment.vue'
 import FreightTemplate from '@/components/DeliveryManagement/subassembly/FreightTemplate.vue'
+import Find from '@/components/SupervisionSet/page/newNumber.vue'
+import FindMsg from '@/components/SupervisionSet/subassembly/findMsg.vue'
 //模块2
 import SaleAfter from '@/components/afterSalesService/subassembly/saleAfter.vue'
 import SaleAfterQuality from '@/components/afterSalesService/subassembly/saleAfterQuality.vue'
@@ -63,6 +65,8 @@ export default new Router({
           { path: '1-1', name:"OrderQuery", component:OrderQuery },
           { path: '1-2', name:"BatchShipment", component:BatchShipment },
           { path: '1-3', name:"FreightTemplate", component:FreightTemplate },
+          { path: '1-4', name:"FindMsg", component:FindMsg },
+          { path: '1-5', name:"Find", component:Find },
           { path: '2-1', name:"SaleAfter", component:SaleAfter },
           { path: '2-2', name:"SaleAfterQuality", component:SaleAfterQuality },
           { path: '2-3', name:"SaleAfterSet", component:SaleAfterSet },
