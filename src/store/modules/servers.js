@@ -85,7 +85,8 @@ const servers={
       storeGiftBagListMM:{
         page:'',
         rows:'',
-        filter_I_type:''
+        filter_I_type: '',
+        filter_S_name:''
       },
       //新增修改礼包
       storeGiftBagSave1MM:{
@@ -124,7 +125,44 @@ const servers={
         productWealthPartnerCommission:'',selfGoldenScore:'',selfStoreScore:'',selfWhiteScore:'',starSupervisorMoreScore:'',
         starSupervisorPlusCommissionRate:'',starSupervisorPlusMoreCommissionRate:'',starSupervisorScore:'',storePlusCommissionRate:'',
         supervisorPlusCommissionRate:'',supervisorScore:''
-      }
+      },
+
+
+      //发现模块//新增账户信息
+      findAccountSaveMM: {
+        id: '',
+        logo: '',
+        name: '',
+        status: '',
+        desc: '',
+        type: ''
+      },
+      //新增发现文章
+      findSaveMsgMM: {
+        accountId: '',
+        content: '',
+        isStick: '',
+        linkUrls: '',
+        productId: '',
+        productName: '',
+        productType: '',
+        sort: '',
+        title: '',
+        type: '',
+        id:''
+      },
+      //根据id获取发现信息
+      findOnlyIdMM: {
+        id: ''
+      },
+      //发现文章列表
+      findTotalListMM: {
+        filter_L_accountId: '',
+        page:'',
+        rows:'',
+        filter_S_title:'',
+        filter_S_accountName:''
+      },
 
     },
     page:{
@@ -156,7 +194,13 @@ const servers={
 
 
       ////发现模块
-      findMsgResult:''
+      findMsgResult: {result:{}},
+      //新增账户信息
+      findAccountSaveResult: '',
+      //发现列表
+      findMsgListResult:{result:{}},
+      //根据id获取发现信息
+      findOnlyIdResult: ''
     }
   },
   mutations:{
@@ -246,7 +290,8 @@ const servers={
     SET_STORE_GIFTBAG_LIST(state,data){
       state.editor.storeGiftBagListMM.page=data.page
       state.editor.storeGiftBagListMM.rows=data.rows
-      state.editor.storeGiftBagListMM.filter_I_type=data.filter_I_type
+      state.editor.storeGiftBagListMM.filter_I_type = data.filter_I_type
+      state.editor.storeGiftBagListMM.filter_S_name = data.accountName
     },
     GET_STORE_GIFTBAG_LIST(state,res){
      state.page.storeGiftBagListResult=res.data
@@ -326,9 +371,53 @@ const servers={
 
 
     ///发现模块
-    GET_FIND_ACCOUNT(state,res){
-      state.page.findMsgResult=res.data
-    }
+    GET_FIND_ACCOUNT(state, res) {
+      state.page.findMsgResult = res.data
+    },
+    //新增账户信息
+    SET_FIND_ACCOUNT_SAVE(state, data) {
+      state.editor.findAccountSaveMM.name = data.name
+      state.editor.findAccountSaveMM.logo = data.logo
+      state.editor.findAccountSaveMM.id = data.id
+      state.editor.findAccountSaveMM.status = data.status
+      state.editor.findAccountSaveMM.desc = data.desc
+      state.editor.findAccountSaveMM.type = data.type
+    },
+    GET_FIND_ACCOUNT_SAVE(state, res) {
+      state.page.findAccountSaveResult = res.data
+    },
+    //发现列表
+    SET_FIND_MSG_LIST(state, data) {
+      state.editor.findTotalListMM.filter_L_accountId = data.filter_L_accountId
+      state.editor.findTotalListMM.page = data.page
+      state.editor.findTotalListMM.rows = data.rows
+      state.editor.findTotalListMM.filter_S_title = data.filter_S_title
+      state.editor.findTotalListMM.filter_S_accountName = data.filter_S_accountName
+    },
+    GET_FIND_MSG_LIST(state, res) {
+      state.page.findMsgListResult = res.data
+    },
+    //新增发现文章
+    SET_FIND_SAVE_MSG(state, data) {
+      state.editor.findSaveMsgMM.type = data.type
+      state.editor.findSaveMsgMM.title = data.title
+      state.editor.findSaveMsgMM.productId = data.productId
+      state.editor.findSaveMsgMM.content = data.content
+      state.editor.findSaveMsgMM.sort = data.sort
+      state.editor.findSaveMsgMM.productType = data.productType
+      state.editor.findSaveMsgMM.isStick = data.isStick
+      state.editor.findSaveMsgMM.linkUrls = data.linkUrls
+      state.editor.findSaveMsgMM.productName = data.productName
+      state.editor.findSaveMsgMM.accountId = data.accountId
+      state.editor.findSaveMsgMM.id=data.id
+    },
+    //根据id获取发现信息
+    SET_FIND_ONLY_ID(state, data) {
+      state.editor.findOnlyIdMM.id = data.id
+    },
+    GET_FIND_ONLY_ID(state, res) {
+      state.page.findOnlyIdResult = res.data
+    },
 
   },
   getters:{
@@ -373,6 +462,20 @@ const servers={
     plusCommissionInfoResult(state){
       return state.page.plusCommissionInfoResult
     },
+
+
+    //发现
+    findMsgResult: state => {
+      return state.page.findMsgResult
+    },
+    //发现列表
+    findMsgListResult: state => {
+      return state.page.findMsgListResult
+    },
+    //根据id获取发现信息
+    findOnlyIdResult: state => {
+      return state.page.findOnlyIdResult
+    }
   },
   actions:{
     //get获取封装
@@ -692,10 +795,87 @@ const servers={
 
 
 
-    ////发现
-    findAccountActions({commit, dispatch, state, rootState},data){
-      dispatch('GoodsMsgGet',['/admin/findAccount/getByAutoId','GET_FIND_ACCOUNT',''])
-    }
+    //get封装
+    findMsgGet ({dispatch, state, commit, rootState},funUrl) {
+      axios.defaults.baseURL =rootState.editor.axiosUrl;
+      axios({
+        method: 'get',
+        url:funUrl[0],
+        dataType: 'JSON',
+        params: state.editor[funUrl[2]]
+      }).then(function(res){
+        //console.log(res)
+        // context.commit('changeloading')
+        if(res.data.code===0){
+          if(funUrl[1]){
+            commit(funUrl[1],res)
+          }
+          Message({
+            message:'操作成功',
+            type:'success'
+          })
+          dispatch('findAccountActions',state.editor.storeGiftBagListMM)
+          dispatch('findMsgListActions',state.editor.findTotalListMM)
+        }else{
+          Message({
+            message:'操作失败',
+            type:'error'
+          })
+        }
+      })
+        .catch(function(err){
+          // context.commit('changeloading')
+          //console.log(err)
+        })
+    },
+    ////发现账号列表
+    findAccountActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_STORE_GIFTBAG_LIST', data)
+      dispatch('GoodsMsgGet', ['/admin/findAccount/list', 'GET_FIND_ACCOUNT', 'storeGiftBagListMM'])
+    },
+    //新增账户
+    findAccountSaveActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_FIND_ACCOUNT_SAVE', data)
+      dispatch('findMsgGet', ['/admin/findAccount/save', 'GET_FIND_ACCOUNT_SAVE', 'findAccountSaveMM'])
+    },
+    //发现列表
+    findMsgListActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_FIND_MSG_LIST', data)
+      dispatch('GoodsMsgGet', ['/admin/find/totalList', 'GET_FIND_MSG_LIST', 'findTotalListMM'])
+    },
+    //新增发现文章
+    findSaveMsgActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_FIND_SAVE_MSG', data)
+      dispatch('findMsgGet', ['/admin/find/save', '', 'findSaveMsgMM'])
+    },
+    // //根据id获取发现信息
+    findOnlyIdActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_FIND_ONLY_ID', data)
+      dispatch('GoodsMsgGet', ['/admin/find/getById', 'GET_FIND_ONLY_ID', 'findOnlyIdMM'])
+    },
+// //删除发现信息
+    deleteOnlyIdActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_FIND_ONLY_ID', data)
+      dispatch('findMsgGet', ['/admin/find/delete', 'GET_FIND_ONLY_ID', 'findOnlyIdMM'])
+    },
+    //删除某个文件
+    deleteOnlyfileIdActions({commit, dispatch, state, rootState}, data) {
+      axios.get('/admin/find/deleteFile', {
+        params:{fileId: data.fileId}
+      }).then(res => {
+        if (res.data.code === 0) {
+          Message({
+            message: '删除成功',
+            type: 'success'
+          })
+        } else {
+          Message({
+            message: '操作失败',
+            type: 'error'
+          })
+        }
+      })
+    },
 
   }
 }

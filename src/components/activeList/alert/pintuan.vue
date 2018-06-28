@@ -173,6 +173,7 @@
         console.log(row)
         let obj={}
         obj.type=2
+        obj.productType=1
         obj.productId=row.productId
         obj.image=this.commodityResult.contents[this.ImgnumKeyResult].image
         obj.width=this.commodityResult.contents[this.ImgnumKeyResult].width

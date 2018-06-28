@@ -168,33 +168,35 @@
       ]),
       addGoodsImg (row, event, column) {
         if (this.popoverAlive.SSSnum === 'find') {
-          let obj={
-            togetherProductIds:'',
-            productType:1,
-            productIds:row.id,
-            marketPriceView:row.marketPriceView,
-            price:row.store,
-            productName:row.productName,
-            costPriceView:row.costPriceView,//成本价
-            salePriceView:row.salePriceView,//销售价
-            image:row.image//销售价
+          let obj = {
+            togetherProductIds: '',
+            productType: 4,
+            productIds: row.productId,
+            marketPriceView: '',
+            price: '',
+            productName: row.productName,
+            costPriceView: '',//成本价
+            salePriceView: '',//销售价
+            image: ''//销售价
           }
-          this.$store.commit('Coupon_With_Goods',obj)
-        } else {
-          console.log(row)
-          let obj = {}
-          obj.type = 2
-          obj.productId = row.productId
-          obj.indexId = 14
-          obj.url = 'https://ol-h5-preview.olquan.cn/try/trygoods/id/' + row.productId
-          obj.image = this.commodityResult.contents[this.ImgnumKeyResult].image
-          obj.width = this.commodityResult.contents[this.ImgnumKeyResult].width
-          obj.height = this.commodityResult.contents[this.ImgnumKeyResult].height
-          obj.isTrue = this.commodityResult.contents[this.ImgnumKeyResult].isTrue
-          this.$store.commit('OtherImgUrl', obj.url)
-          this.commodityResult.contents[this.ImgnumKeyResult] = obj
+          this.$store.commit('Coupon_With_Goods', obj)
           this.popoverAlert()
+          return
         }
+        console.log(row)
+        let obj = {}
+        obj.type = 2
+        obj.productType = 4
+        obj.productId = row.productId
+        obj.indexId = 14
+        obj.url = 'https://ol-h5-preview.olquan.cn/try/trygoods/id/' + row.productId
+        obj.image = this.commodityResult.contents[this.ImgnumKeyResult].image
+        obj.width = this.commodityResult.contents[this.ImgnumKeyResult].width
+        obj.height = this.commodityResult.contents[this.ImgnumKeyResult].height
+        obj.isTrue = this.commodityResult.contents[this.ImgnumKeyResult].isTrue
+        this.$store.commit('OtherImgUrl', obj.url)
+        this.commodityResult.contents[this.ImgnumKeyResult] = obj
+        this.popoverAlert()
       }
     }
   }

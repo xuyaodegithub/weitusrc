@@ -139,7 +139,7 @@
     },
     computed:{
       ...mapGetters([
-       'ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult','plusProductListResult'
+       'popoverAlive','ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult','plusProductListResult'
       ]),
     },
     methods: {
@@ -148,9 +148,26 @@
       ]),
       addGoodsImg(row,event,column){
         //console.log(JSON.stringify(row))
+        if(this.popoverAlive.SSSnum==='find'){
+          let obj={
+            togetherProductIds:'',
+            productType:9,
+            productIds:row.productId,
+            marketPriceView:'',
+            price:'',
+            productName:row.productName,
+            costPriceView:'',//成本价
+            salePriceView:'',//销售价
+            image:''//销售价
+          }
+          this.$store.commit('Coupon_With_Goods',obj)
+          this.popoverAlert()
+          return
+        }
         console.log(row)
         let obj={}
         obj.type=21
+        obj.productType=9
         obj.productId=row.productId
         obj.indexId=13
         obj.url = 'https://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.productId

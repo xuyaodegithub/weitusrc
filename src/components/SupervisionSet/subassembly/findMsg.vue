@@ -2,11 +2,11 @@
   <div id="smalltitle">
     <p id="toindex">
       <router-link to="index">首页</router-link> &gt; 发现列表管理
-      <el-button type="success" round size="mini" icon="el-icon-plus" style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods()"
+     <!-- <el-button type="success" round size="mini" icon="el-icon-plus" style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods()"
                  v-if="title=='vSeachmsg'">新增文章
-      </el-button>
+      </el-button>-->
       <el-button type="success" size="mini" round style="margin-top: 10px;float: right;margin-right: 50px;" icon="el-icon-back"
-                 @click="title='vSeachmsg'" v-else>返回
+                 @click="title='vSeachmsg'" v-if="title!=='vSeachmsg'">返回
       </el-button>
     </p>
     <div style="margin-bottom: 20px;" v-if="title==='vSeachmsg'">
@@ -23,6 +23,9 @@
         <component :is="title" v-on:to-change="changeTitle" :msg="seachMsg" :msgData="msgData"></component>
       </keep-alive>
     </div>
+    <!--<div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>-->
+      <!--<v-popover></v-popover>-->
+    <!--</div>-->
   </div>
 
 </template>
@@ -31,7 +34,8 @@
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
   import vNewmsg from '../page/newMsg.vue'
-  import vSeachmsg from '../page/seachMsg.vue'
+  import vSeachmsg from '../page/seachFindMsg.vue'
+//  import vPopover from '../../popover/popover.vue'
 
   export default {
     name: 'findMsg',
@@ -40,8 +44,18 @@
         title: 'vSeachmsg',
         isName: '',
         isNametitle:'',
-        seachMsg: {},
-        msgData:''
+        seachMsg: {
+          page:1,
+          rows:10,
+          filter_S_title:'',
+          filter_S_accountName:''
+        },
+        msgData:{
+          type: '',
+          item: '',
+          id: '',
+          which: ''
+        }
       }
     },
     watch: {
@@ -66,18 +80,22 @@
     },
     methods: {
       ...mapActions([
-        'popoverAlert'
+        'popoverAlert','findMsgListActions'
       ]),
       seachGoodsList () {
-
+        this.seachMsg.filter_S_title=this.isNametitle
+        this.seachMsg.filter_S_accountName=this.isName
+        this.findMsgListActions(this.seachMsg)
       },
       changeTitle (data) {
+        this.msgData.type = data.type
+        this.msgData.item = data.data
+        this.msgData.which = data.which
+        if (data.id) {
+          this.msgData.id = data.id
+        }
         this.title = data.title
-        this.msgData=data.data
       },
-      addGoods(){
-        this.title='vNewmsg'
-      }
 
     }
   }
@@ -104,4 +122,11 @@
     overflow: hidden;
     margin-bottom: 15px;
   }
+  .alertshow {
+     position: fixed;
+     left: 50%;
+     top: 50%;
+     z-index: 1000;
+   }
+
 </style>

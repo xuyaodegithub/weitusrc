@@ -5,7 +5,7 @@ import Home from '@/components/firstPage/home.vue'
 import OrderQuery from '@/components/DeliveryManagement/subassembly/OrderQuery.vue'
 import BatchShipment from '@/components/DeliveryManagement/subassembly/BatchShipment.vue'
 import FreightTemplate from '@/components/DeliveryManagement/subassembly/FreightTemplate.vue'
-import Find from '@/components/SupervisionSet/page/newNumber.vue'
+import Find from '@/components/SupervisionSet/subassembly/findNumber.vue'
 import FindMsg from '@/components/SupervisionSet/subassembly/findMsg.vue'
 //模块2
 import SaleAfter from '@/components/afterSalesService/subassembly/saleAfter.vue'

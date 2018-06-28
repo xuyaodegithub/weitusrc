@@ -14,6 +14,7 @@ const mutations = {//mutations内是改变state内的值得作用
       state.result.popoverAlive.title = where;
     }
     if(typeof where == "object" && where.length>=2){
+      // state.result.popoverAlive.title = where[0];
       state.result.popoverAlive.SSSnum = where[1];
     }
   },

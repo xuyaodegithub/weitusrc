@@ -471,6 +471,7 @@
         //console.log(JSON.stringify(row))
         let obj={}
         obj.type=2
+        obj.productType=1
         obj.productId=row.id
         obj.indexId=20
         obj.url='http://ol-site.olquan.cn/weixin/product/newProductDetail?productId='+row.id

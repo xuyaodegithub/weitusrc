@@ -264,7 +264,9 @@
           address: '【意大利袋鼠】【下单即送棉袜】4条装男士内裤男 莫代尔平角裤 中腰透气礼盒装',
           status:'编辑中',
           type:"新增"
-        }]
+        }],
+        numResult:'',
+        ROOTResult:''
       }
     },
     components:{
@@ -279,7 +281,7 @@
     },
     computed:{
       ...mapGetters([
-        'pickerOptions2','value4Result','numResult','ROOTResult','loginResult'
+        'pickerOptions2','value4Result','loginResult'
       ])
     },
     watch:{

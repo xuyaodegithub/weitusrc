@@ -5,8 +5,9 @@
     <!--</div>-->
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="产品名称:">
-        <!--<p style="width: 60%;display: inline-block;text-indent: 10px">{{CouponWithGoodsResult.productName}}</p>-->
-        <el-input placeholder="请输入内容" size="small" :value="CouponWithGoodsResult.productName" style="width: 40%;display: inline-block;text-indent: 10px"  @change="changeRng"></el-input>
+        <!--<p style="width: auto;display: inline-block;text-indent: 10px">{{CouponWithGoodsResult.productName}}</p>-->
+        <el-input placeholder="请输入内容" size="small" :value="CouponWithGoodsResult.productName"
+                  style="width: 40%;display: inline-block;text-indent: 10px" @change="changeRng"></el-input>
         <el-button type="success" size="mini" round style="margin-left: 15px;"
                    @click="popoverAlert(['VchoseGoods','one'])" v-if="upDataSaleGoodsResult.type ==='add'">选择产品
         </el-button>
@@ -67,10 +68,15 @@
           </el-button>
         </p>
       </el-form-item>
-      <el-form-item label="试用时间:">
-          <el-input v-model="tryTime" size="small"></el-input>
+      <el-form-item label="试用时间:" required>
+        <el-input v-model="tryTime" size="small"></el-input>
+        <span style="font-size: 12px;color: orange;margin-left: 10px;">（试用周期，关系到退款时间）</span>
       </el-form-item>
-       <el-form-item label="试用类型:">
+      <el-form-item label="推广奖励:" required>
+        <el-input v-model="promotionAward" size="small"></el-input>
+        <span style="font-size: 12px;color: orange;margin-left: 10px;">（单位元）</span>
+      </el-form-item>
+      <el-form-item label="试用类型:" required>
         <el-radio-group v-model="typeTrial"><!--:disabled="classWh === '1'"-->
           <el-radio :label=1 style="width: auto;">普通试用</el-radio>
           <!--<el-radio :label=2 style="width: auto;">新品首发</el-radio>-->
@@ -153,7 +159,7 @@
           :show-file-list="false"
           name="img"
           :on-success="upSuccessfirst"
-          action="apis/admin/buildblocks/uploadImage">
+          action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage">
           <div style="margin: 10px 0 0px 10px;">
             <img :src="dialogImageUrl" alt="" style="height: 84px;width: 213px;" class="valign" v-if="dialogImageUrl">
             <el-button size="mini" plain>点击上传</el-button>
@@ -162,8 +168,9 @@
           <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
         </el-upload>
       </el-form-item>
-      <el-form-item label="排序:">
+      <el-form-item label="排序:" required>
         <el-input v-model="form.sort" size="small"></el-input>
+        <span style="font-size: 12px;color: orange;margin-left: 10px;">（带 * 的为必填项）</span>
       </el-form-item>
       <el-form-item label="是否置顶:">
         <el-radio-group v-model="isSetTop"><!--:disabled="classWh === '1'"-->
@@ -190,15 +197,17 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { mapActions } from 'vuex'
+  import {mapGetters} from 'vuex'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'newOnTrial',
-    data () {
+    data() {
       return {
-        tryTime:'',
-        tryDay:[{title:'1天',val:1},{title:'2天',val:2},{title:'3天',val:3}],
+        tryTime: '',
+        promotionAward: '',
+//      isTypeTrial:false,
+        tryDay: [{title: '1天', val: 1}, {title: '2天', val: 2}, {title: '3天', val: 3}],
         timerList: [
           {timer: '00:00'}, {timer: '01:00'}, {timer: '02:00'}, {timer: '03:00'}, {timer: '04:00'}, {timer: '05:00'}, {timer: '06:00'}, {timer: '07:00'},
           {timer: '08:00'}, {timer: '09:00'}, {timer: '10:00'}, {timer: '11:00'}, {timer: '12:00'}, {timer: '13:00'}, {timer: '14:00'},
@@ -212,7 +221,6 @@
         isStatus: '',
         priceListUpdata: [],
         UpdataGoodsStore: [],
-        isStore: [],
         BondMoney: [],
         cellObj: {
           padding: '6px 0'
@@ -224,7 +232,7 @@
         value9: '',
         isSetTop: '',
         everyNum: '',
-        activeNum:true,
+        activeNum: true,
         form: {
           sort: '',
           name: '',
@@ -257,7 +265,7 @@
       ...mapGetters([
         'CouponWithGoodsResult', 'getProductNormalsResult', 'upDataSaleGoodsResult', 'FreeUseProductNormalsResult', 'countryListResult'
       ]),
-      priceList () {
+      priceList() {
         //console.log(this.getProductNormalsResult)
         // console.log(this.getProductNormalsResult)
         // if(this.upDataSaleGoodsResult.type==='add') {
@@ -291,7 +299,7 @@
     },
     watch: {
       FreeUseProductNormalsResult: {
-        handler (newVal, oldVal) {
+        handler(newVal, oldVal) {
           let that = this
           // console.log(newVal.title+','+oldVal.title)
           if (newVal.title == oldVal.title) {
@@ -309,7 +317,7 @@
         deep: true
       },
       getProductNormalsResult: {
-        handler (newVal, oldVal) {
+        handler(newVal, oldVal) {
           if (newVal.length < 1 && this.upDataSaleGoodsResult.type === 'add') {
             this.form.namePrice = this.CouponWithGoodsResult.price
           }
@@ -317,7 +325,7 @@
         deep: true
       }
     },
-    activated () {
+    activated() {
       if (this.upDataSaleGoodsResult.type === 'add') {
         let obj = {
           togetherProductIds: '',
@@ -347,9 +355,10 @@
         this.value9 = ''
         this.everyNum = ''
         this.typeTrial = ''
-        this.tryTime=''
         this.isSetTop = 1
         this.isStatus = 1
+        this.tryTime = '',
+        this.promotionAward=''
       } else {
         let obj = {
           togetherProductIds: '',
@@ -383,6 +392,7 @@
         this.everyNum = this.upDataSaleGoodsResult.item.dayLimitCount
         this.isOutCountry = this.upDataSaleGoodsResult.item.isOverSeasProduct
         this.tryTime = this.upDataSaleGoodsResult.item.freeUseDays
+        this.promotionAward=this.upDataSaleGoodsResult.item.promotionAward
         let data = {
           freeUseProductId: this.upDataSaleGoodsResult.item.id,
           type: 1
@@ -392,7 +402,7 @@
       }
 
     },
-    mounted () {
+    mounted() {
       // alert( null== undefined)
 
       this.getCountryActions()
@@ -401,7 +411,7 @@
       ...mapActions([
         'popoverAlert', 'addFreeUseProductActions', 'FreeUseProductNormalsActions', 'AddNewCountryActions', 'getCountryActions'
       ]),
-      saveProduct () {
+      saveProduct() {
         let data = {
           sort: this.form.sort,
           status: this.isStatus,
@@ -418,27 +428,30 @@
           isSetTop: this.isSetTop,
           // normalStores:'',//试用库存
           tip: this.form.trip,
-          freeUseDays:this.tryTime
+          freeUseDays: this.tryTime,
+          filter_S_promotionAward:this.promotionAward
           // startDate:,
           //endDate:'',
         }
         if (this.typeTrial == 3) {
+//        this.isTypeTrial=true
           data.startDate = this.value6[0]
           data.endDate = this.value6[1]
-          if(this.everyNum){
-            this.activeNum=true
-            data.dayLimitCount=this.everyNum
-          }else{
-            this.activeNum=false
+          if (this.everyNum) {
+            this.activeNum = true
+            data.dayLimitCount = this.everyNum
+          } else {
+            this.activeNum = false
+
           }
           data.dailyStartDate = this.value9
           data.isOverSeasProduct = this.isOutCountry
           data.countryId = this.value8
-        }
-        else{
+        } else {
+//         this.isTypeTrial=false
           this.$message({
-            message:'商品大图不可为空',
-            type:'warning'
+            message: '商品大图不可为空',
+            type: 'warning'
           })
           return
         }
@@ -461,7 +474,7 @@
           data.productName = this.CouponWithGoodsResult.productName
           data.productId = this.upDataSaleGoodsResult.item.productId
           data.id = this.upDataSaleGoodsResult.item.id
-          data.buyCount=this.upDataSaleGoodsResult.item.buyCount
+          data.buyCount = this.upDataSaleGoodsResult.item.buyCount
           if (this.FreeUseProductNormalsResult.item.length > 0) {
             data.salePrices = /*JSON.stringify(this.BondMoney)*/this.BondMoney.toString()
             data.normalIds = this.changePriceApp(this.FreeUseProductNormalsResult.item, 10)
@@ -473,7 +486,7 @@
           }
         }
         // alert(data.normalStores)
-        if (this.upDataSaleGoodsResult.type == 'add' && this.getProductNormalsResult.length > 0) {
+        if (this.upDataSaleGoodsResult.type == "add" && this.getProductNormalsResult.length > 0) {
           for (let i = 0; i < data.normalStores.split(',').length; i++) {
             if (data.normalStores.split(',')[i] > this.getProductNormalsResult[i].store || data.normalStores.split(',')[i] === '' || data.normalStores.split(',')[i] < 0) {
               this.changeNum = false
@@ -482,13 +495,13 @@
               this.changeNum = true
             }
           }
-        } else if (this.upDataSaleGoodsResult.type == 'add' && this.getProductNormalsResult.length == 0) {
+        } else if (this.upDataSaleGoodsResult.type == "add" && this.getProductNormalsResult.length == 0) {
           if (Number(data.normalStores) > Number(this.CouponWithGoodsResult.price) || data.normalStores === '' || Number(data.normalStores) < 0) {
             this.changeNum = false
           } else {
             this.changeNum = true
           }
-        } else if (this.upDataSaleGoodsResult.type == 'updata' && this.FreeUseProductNormalsResult.item.length > 0) {
+        } else if (this.upDataSaleGoodsResult.type == "updata" && this.FreeUseProductNormalsResult.item.length > 0) {
           for (let i = 0; i < data.normalStores.split(',').length; i++) {
             console.log(data.normalStores.split(',')[i], this.FreeUseProductNormalsResult.item[i].basicStore, this.UpdataGoodsStore[i])
             if (data.normalStores.split(',')[i] > (this.FreeUseProductNormalsResult.item[i].basicStore + this.UpdataGoodsStore[i]) || data.normalStores.split(',')[i] === '' || data.normalStores.split(',')[i] < 0) {
@@ -515,16 +528,16 @@
           })
         }
       },
-      upSuccessfirst (response, file, fileList) {
+      upSuccessfirst(response, file, fileList) {
         this.dialogImageUrl = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
       },
-      upSuccessfirst2 (response, file, fileList) {
+      upSuccessfirst2(response, file, fileList) {
         this.dialogImageUrl2 = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
       },
-      addCountry () {
+      addCountry() {
         this.popoverAlert('addCountry')
       },
-      changePriceApp (arr, key) {
+      changePriceApp(arr, key) {
         let newArr = []
         arr.forEach((val, index) => {
           if (key == 1) {
@@ -547,10 +560,10 @@
         })
         return /*JSON.stringify(newArr)*/newArr.toString()
       },
-      changePromise (val) {
+      changePromise(val) {
         // alert(val)
         let arr = []
-        if (this.upDataSaleGoodsResult.type == 'add') {
+        if (this.upDataSaleGoodsResult.type == "add") {
           let oInput = $('.GetsalePrices input')
           for (let i = 0; i < oInput.length; i++) {
             oInput[i].value = val
@@ -562,21 +575,21 @@
           this.BondMoney = arr
         }
       },
-   changeRng(e){
-    console.log(e)
-    let obj={
-      togetherProductIds:this.CouponWithGoodsResult.togetherProductIds,
-      productType:this.CouponWithGoodsResult.productType,
-      productIds:this.CouponWithGoodsResult.productIds,
-      marketPrice:this.CouponWithGoodsResult.marketPrice,
-      price:this.CouponWithGoodsResult.price,
-      productName:e,
-      costPriceView:this.CouponWithGoodsResult.costPriceView,//成本价
-      salePriceView:this.CouponWithGoodsResult.salePriceView,//销售价
-      image:this.CouponWithGoodsResult.image//主图
-    }
-    this.$store.commit('Coupon_With_Goods',obj)
-  }
+      changeRng(e) {
+        console.log(e)
+        let obj = {
+          togetherProductIds: this.CouponWithGoodsResult.togetherProductIds,
+          productType: this.CouponWithGoodsResult.productType,
+          productIds: this.CouponWithGoodsResult.productIds,
+          marketPrice: this.CouponWithGoodsResult.marketPrice,
+          price: this.CouponWithGoodsResult.price,
+          productName: e,
+          costPriceView: this.CouponWithGoodsResult.costPriceView,//成本价
+          salePriceView: this.CouponWithGoodsResult.salePriceView,//销售价
+          image: this.CouponWithGoodsResult.image//主图
+        }
+        this.$store.commit('Coupon_With_Goods', obj)
+      }
 
     }
   }
