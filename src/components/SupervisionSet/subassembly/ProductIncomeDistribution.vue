@@ -6,39 +6,39 @@
     <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
       <el-tab-pane label="普通产品" name="first">
         <div class="first">
-          <p><label>白领购买收益:</label>
+          <p><label>会员购买收益:</label>
             <el-input v-model="isWhite" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>金领购买收益:</label>
+          <p><label>VIP购买收益:</label>
             <el-input v-model="isGolen" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>粉领购买收益:</label>
+          <p><label>店主购买收益:</label>
             <el-input v-model="isPink" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>白领分享收益:</label>
+          <p><label>会员分享收益:</label>
             <el-input v-model="isWhiteShare" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>金领分享收益:</label>
+          <p><label>VIP分享收益:</label>
             <el-input v-model="isGolenShare" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>粉领分享收益:</label>
+          <p><label>店主分享收益:</label>
             <el-input v-model="isPinkShare" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>督导收益:</label>
+          <p><label>经理收益:</label>
             <el-input v-model="isSupervisor" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>高级督导收益:</label>
+          <p><label>总监收益:</label>
             <el-input v-model="isSoHighSupervisor" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>高级督导收益(高层次):</label>
+          <p><label>总监收益(高层次):</label>
             <el-input v-model="isHighSupervisor" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>联创收益:</label>
+         <!-- <p><label>联创收益:</label>
             <el-input v-model="isSoWithCreate" placeholder="请输入内容" size="small"></el-input>
           </p>
           <p><label>联创收益(高层次):</label>
             <el-input v-model="isWithCreate" placeholder="请输入内容" size="small"></el-input>
-          </p>
+          </p>-->
           <p><label>城市合伙人收益:</label>
             <el-input v-model="isCityPartner" placeholder="请输入内容" size="small"></el-input>
           </p>
@@ -65,26 +65,29 @@
       </el-tab-pane>
       <el-tab-pane label="特卖产品" name="second">
         <div class="second">
-          <p><label>粉领特卖收益:</label>
+          <p><label>店主特卖收益:</label>
             <el-input v-model="isPlusCommission" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>督导特卖收益:</label>
+          <p><label>经理特卖收益:</label>
             <el-input v-model="isSuperPlusCommission	" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>高级督导特卖收益:</label>
+          <p><label>总监特卖收益:</label>
             <el-input v-model="isHighSupervisorPlusMore" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>高级督导特卖收益(高层次):</label>
+          <p><label>总监特卖收益(高层次):</label>
             <el-input v-model="isHighSupervisorPlus" placeholder="请输入内容" size="small"></el-input>
           </p>
-          <p><label>联创特卖收益:</label>
+         <!-- <p><label>联创特卖收益:</label>
             <el-input v-model="isSoWithCreatePlus" placeholder="请输入内容" size="small"></el-input>
           </p>
           <p><label>联创特卖收益(高层次):</label>
             <el-input v-model="isWithCreatePlus" placeholder="请输入内容" size="small"></el-input>
-          </p>
+          </p>-->
           <p><label>特卖产品利润提成比例:</label>
             <el-input v-model="isPlusCommissionRate" placeholder="请输入内容" size="small"></el-input>
+          </p>
+          <p><label>管理费用比例:</label>
+            <el-input v-model="managementCost" placeholder="请输入内容" size="small"></el-input>
           </p>
         </div>
       </el-tab-pane>
@@ -129,7 +132,8 @@
         isHighSupervisorPlus: '',
         isSoWithCreatePlus: '',
         isWithCreatePlus: '',
-        isPlusCommissionRate: ''
+        isPlusCommissionRate: '',
+        managementCost:''
 
       }
     },
@@ -151,8 +155,8 @@
           this.isSupervisor = newVal.supervisorScore
           this.isSoHighSupervisor = newVal.highSupervisorScore
           this.isHighSupervisor = newVal.highSupervisorMoreScore//
-          this.isSoWithCreate = newVal.starSupervisorScore
-          this.isWithCreate = newVal.starSupervisorMoreScore
+//          this.isSoWithCreate = newVal.starSupervisorScore
+//          this.isWithCreate = newVal.starSupervisorMoreScore
           this.isCityPartner = newVal.cityPartnerCommission
           this.isDreamPartner = newVal.productDreamPartnerCommission
           this.isWealthPartner = newVal.productWealthPartnerCommission
@@ -168,9 +172,10 @@
           this.isSuperPlusCommission = newVal.supervisorPlusCommissionRate
           this.isHighSupervisorPlusMore = newVal.highSupervisorPlusCommissionRate
           this.isHighSupervisorPlus = newVal.highSupervisorPlusMoreCommissionRate
-          this.isSoWithCreatePlus = newVal.starSupervisorPlusCommissionRate
-          this.isWithCreatePlus = newVal.starSupervisorPlusMoreCommissionRate
+//          this.isSoWithCreatePlus = newVal.starSupervisorPlusCommissionRate
+//          this.isWithCreatePlus = newVal.starSupervisorPlusMoreCommissionRate
           this.isPlusCommissionRate = newVal.plusCommissionRate
+          this.managementCost = newVal.managementCost
 
         },
         deep: true
@@ -228,9 +233,10 @@
             supervisorPlusCommissionRate: this.isSuperPlusCommission,
             highSupervisorPlusCommissionRate: this.isHighSupervisorPlusMore,
             highSupervisorPlusMoreCommissionRate: this.isHighSupervisorPlus,
-            starSupervisorPlusCommissionRate : this.isSoWithCreatePlus,
-            starSupervisorPlusMoreCommissionRate: this.isWithCreatePlus,
-            plusCommissionRate: this.isPlusCommissionRate
+//            starSupervisorPlusCommissionRate : this.isSoWithCreatePlus,
+//            starSupervisorPlusMoreCommissionRate: this.isWithCreatePlus,
+            plusCommissionRate: this.isPlusCommissionRate,
+            managementCost: this.managementCost
           }
           this.setProductCommissionInfoActions(data)
         }

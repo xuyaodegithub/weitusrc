@@ -1,16 +1,16 @@
 <template>
   <div id="newGift1">
     <el-form ref="form" :model="form" label-width="100px">
-      <el-form-item label="开通督导价格:">
+      <el-form-item label="开通经理价格:">
         <el-input v-model="isPrice" size="small" ></el-input>
       </el-form-item>
       <el-form-item label="收益设置:">
        <div class="priceSet" style="padding: 20px 0;">
-         <p><label>明星督导:</label> <el-input v-model="isMoreStar" size="small" ></el-input></p>
-         <p><label>明星督导:</label> <el-input v-model="isStar" size="small" ></el-input></p>
-         <p><label>高级督导:</label> <el-input v-model="isSoHighPrice" size="small" ></el-input></p>
-         <p><label>高级督导:</label> <el-input v-model="isHighPrice" size="small" ></el-input></p>
-         <p><label>督导:</label> <el-input v-model="isDuDao" size="small" ></el-input></p>
+         <!--<p><label>明星督导:</label> <el-input v-model="isMoreStar" size="small" ></el-input></p>-->
+         <!--<p><label>明星督导:</label> <el-input v-model="isStar" size="small" ></el-input></p>-->
+         <p><label>总监:</label> <el-input v-model="isSoHighPrice" size="small" ></el-input></p>
+         <p><label>总监:</label> <el-input v-model="isHighPrice" size="small" ></el-input></p>
+         <p><label>经理:</label> <el-input v-model="isDuDao" size="small" ></el-input></p>
          <!--<p><label>自己:</label> <el-input v-model="isPrice" size="small" ></el-input></p>-->
        </div>
       </el-form-item>

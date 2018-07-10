@@ -117,7 +117,7 @@ this.CouponActiveListActions(data)
    'popoverAlert','YHQwhichActions','CouponActiveListActions','deleteCouponActiveActions'
     ]),
     linkTo(index,row){
-      this.$store.commit('activeIdchange','外部链接(非APP和非公众号内部使用)： https://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id+'<br>内部链接(APP和公众号内部使用)： https://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id)
+      this.$store.commit('activeIdchange','外部链接(非APP和非公众号内部使用)： https://ol-site.olquan.cn/weixin/auth?view=https://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id+'<br>内部链接(APP和公众号内部使用)： https://ol-h5-preview.olquan.cn/coupon/getcoupon/id/'+row.id)
       this.popoverAlert('VactiveDress')
     },
     bianji(index,row){

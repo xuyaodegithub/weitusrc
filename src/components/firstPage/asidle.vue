@@ -13,6 +13,7 @@
           <el-menu-item index="1-3">运费模板</el-menu-item>
           <el-menu-item index="1-4">发现列表管理</el-menu-item>
           <el-menu-item index="1-5">发现账号管理</el-menu-item>
+          <el-menu-item index="1-6">经理购买记录</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="2">

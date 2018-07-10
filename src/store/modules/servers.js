@@ -17,7 +17,7 @@
 import qs from 'qs';
 import api from '../fetch/api'
 import axios from 'axios'
- axios.defaults.baseURL ='http://test-admin.olquan.cn'
+ // axios.defaults.baseURL ='http://test-admin.olquan.cn'
 axios.defaults.timeout = 10000;//10秒还未得到请求答复，就报超时错误
 //axios.default.headers={'X-Custom-Header': 'foobar'}//全局设置请求头
 import { Message } from 'element-ui';
@@ -124,7 +124,7 @@ const servers={
         oneStoreScore:'',oneWhiteScore:'',plusCommissionRate:'',productCommissionScale:'',productDreamPartnerCommission:'',
         productWealthPartnerCommission:'',selfGoldenScore:'',selfStoreScore:'',selfWhiteScore:'',starSupervisorMoreScore:'',
         starSupervisorPlusCommissionRate:'',starSupervisorPlusMoreCommissionRate:'',starSupervisorScore:'',storePlusCommissionRate:'',
-        supervisorPlusCommissionRate:'',supervisorScore:''
+        supervisorPlusCommissionRate:'',supervisorScore:'',managementCost:''
       },
 
 
@@ -163,6 +163,14 @@ const servers={
         filter_S_title:'',
         filter_S_accountName:''
       },
+      //申请列表
+      applySupervisorListMM:{
+        accountNo:'',
+        endTime:'',
+        startTime:'',
+        page:'',
+        rows:''
+      }
 
     },
     page:{
@@ -200,7 +208,9 @@ const servers={
       //发现列表
       findMsgListResult:{result:{}},
       //根据id获取发现信息
-      findOnlyIdResult: ''
+      findOnlyIdResult: '',
+      //申请列表
+      applySupervisorList:[]
     }
   },
   mutations:{
@@ -367,6 +377,7 @@ const servers={
         state.editor.setProductCommissionInfoMM.storePlusCommissionRate=data.storePlusCommissionRate
         state.editor.setProductCommissionInfoMM.supervisorPlusCommissionRate=data.supervisorPlusCommissionRate
         state.editor.setProductCommissionInfoMM.supervisorScore=data.supervisorScore
+        state.editor.setProductCommissionInfoMM.managementCost=data.managementCost
     },
 
 
@@ -418,6 +429,17 @@ const servers={
     GET_FIND_ONLY_ID(state, res) {
       state.page.findOnlyIdResult = res.data
     },
+    //申请列表
+    SET_APPLY_SUPERVISOR(state,data){
+      state.editor.applySupervisorListMM.page=data.page
+      state.editor.applySupervisorListMM.rows=data.rows
+      state.editor.applySupervisorListMM.startTime=data.startTime
+      state.editor.applySupervisorListMM.endTime=data.endTime
+      state.editor.applySupervisorListMM.accountNo=data.accountNo
+    },
+    GET_APPLY_SUPERVISOR(state,res){
+         state.page.applySupervisorList=res.data.result
+        },
 
   },
   getters:{
@@ -475,12 +497,16 @@ const servers={
     //根据id获取发现信息
     findOnlyIdResult: state => {
       return state.page.findOnlyIdResult
+    },
+    //申请列表
+    applySupervisorList: state => {
+      return state.page.applySupervisorList
     }
   },
   actions:{
     //get获取封装
     GoodsMsgGet ({dispatch, state, commit, rootState},funUrl) {
-     // axios.defaults.baseURL =rootState.editor.axiosUrl;
+     axios.defaults.baseURL =rootState.editor.axiosUrl;
       axios({
         method: 'get',
         url:funUrl[0],
@@ -502,7 +528,7 @@ const servers={
     },
     //post获取封装
     GoodsMsgPost ({dispatch, state, commit, rootState},funUrl) {
-      //axios.defaults.baseURL =rootState.editor.axiosUrl;
+      axios.defaults.baseURL =rootState.editor.axiosUrl;
       axios({
         method: 'post',
         url:funUrl[0],
@@ -876,7 +902,11 @@ const servers={
         }
       })
     },
-
+    //申请列表
+    applySupervisorListActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_APPLY_SUPERVISOR', data)
+      dispatch('GoodsMsgGet', ['/admin/memberInvite/applySupervisorList', 'GET_APPLY_SUPERVISOR', 'applySupervisorListMM'])
+    },
   }
 }
 

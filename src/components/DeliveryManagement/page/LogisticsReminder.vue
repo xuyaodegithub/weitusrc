@@ -192,7 +192,7 @@
         let arr=Object.keys(this.tableData[0])
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel');
-          const tHeader = ['name', 'resource', 'temprice', 'ranking', 'save','save','ranking'];
+          const tHeader = ['姓名', 'resource', 'temprice', 'ranking', 'save','save','ranking'];
           const filterVal =['name', 'resource', 'temprice', 'ranking', 'save','save','ranking'];
           const list = this.tableData;
           const data = this.formatJson(filterVal,list);

@@ -156,7 +156,7 @@
 //            this.dialogImageUrl.push(val.linkUrl)
 //          })
           this.dialogImageUrl=res.data.result.fileDtos
-          this.isLength=res.data.result.fileDtos.length
+          this.isLength=res.data.result.fileDtos ? res.data.result.fileDtos.length : 0
           this.isClass = res.data.result.fileDtos[0].type
           this.dialogImageUrl2 = res.data.result.fileDtos
         })

@@ -108,7 +108,7 @@ export default {
      // oInput.setAttribute('id','copyText')
      // oInput.onload=function() {
      // alert( '活动地址：http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
-      this.$store.commit('activeIdchange','外部链接(非APP和非公众号内部使用)：https://ol-site.olquan.cn/weixin/auth?view=http://ol-h5-preview.olquan.cn/activity/newact?id='+row.id+'<br>内部链接(APP和公众号内部使用)：https://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
+      this.$store.commit('activeIdchange','外部链接(非APP和非公众号内部使用)：https://ol-site.olquan.cn/weixin/auth?view=https://ol-h5-preview.olquan.cn/activity/newact?id='+row.id+'<br>内部链接(APP和公众号内部使用)：https://ol-h5-preview.olquan.cn/activity/newact?id='+row.id)
       this.popoverAlert('VactiveDress')
      /* let Url = document.getElementsByClassName("CopyText")[index];//这里填订单号ID
         Url.select(); // 选择对象

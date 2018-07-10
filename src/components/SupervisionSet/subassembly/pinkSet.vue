@@ -1,10 +1,10 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
-      <router-link to="index">首页</router-link> &gt; 开通及续费粉领设置
+      <router-link to="index">首页</router-link> &gt; 开通及续费店主设置
     </p>
     <el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
-      <el-tab-pane label="开通粉领页面设置" name="first">
+      <el-tab-pane label="开通店主页面设置" name="first">
         <v-first></v-first>
       </el-tab-pane>
       <el-tab-pane label="礼包设置" name="second">
