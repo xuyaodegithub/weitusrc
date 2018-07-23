@@ -169,7 +169,13 @@ const servers={
         endTime:'',
         startTime:'',
         page:'',
-        rows:''
+        rows:'',
+        filter_I_sendStatus:''
+      },
+      //申请导入
+      sendImportMM:{
+        ids:'',
+        sendStatus:''
       }
 
     },
@@ -436,10 +442,16 @@ const servers={
       state.editor.applySupervisorListMM.startTime=data.startTime
       state.editor.applySupervisorListMM.endTime=data.endTime
       state.editor.applySupervisorListMM.accountNo=data.accountNo
+      state.editor.applySupervisorListMM.filter_I_sendStatus=data.filter_I_sendStatus
     },
     GET_APPLY_SUPERVISOR(state,res){
          state.page.applySupervisorList=res.data.result
         },
+    //申请导入
+    SET_SEND_IMPORT(state,data){
+      state.editor.sendImportMM.ids=data.ids
+      state.editor.sendImportMM.sendStatus=data.sendStatus
+    }
 
   },
   getters:{
@@ -557,6 +569,11 @@ const servers={
             type: 'warning'
           });
         })
+    },
+    //特卖排序
+    plusProductSortSetActions({dispatch, state, commit, rootState}, data){
+      commit('PLUS_PRODUCT_PUSH',data)
+      dispatch('GoodsMsgPost',['/admin/plus/product/updateSort','','productNewMM'])
     },
     //特卖置顶
     ProductDoStickActions({dispatch, state, commit, rootState},data){
@@ -906,6 +923,29 @@ const servers={
     applySupervisorListActions({commit, dispatch, state, rootState}, data) {
       commit('SET_APPLY_SUPERVISOR', data)
       dispatch('GoodsMsgGet', ['/admin/memberInvite/applySupervisorList', 'GET_APPLY_SUPERVISOR', 'applySupervisorListMM'])
+    },
+    //申请导入
+    sendImportActions({commit, dispatch, state, rootState}, data) {
+      commit('SET_SEND_IMPORT', data)
+      api.deletePpApi(rootState.editor.axiosUrl + '/admin/memberInvite/sendImport', qs.stringify(state.editor.sendImportMM)).then(res => {
+        console.log(res)
+        if (res.code === 0) {
+          Message({
+            showClose: true,
+            message: '导入成功',
+            type: 'success'
+          });
+          dispatch('applySupervisorListActions',state.editor.applySupervisorListMM)
+        }
+      }).catch(
+        (error) => {
+          Message({
+            showClose: true,
+            message: '操作失败',
+            type: 'warning'
+          });
+        }
+      )
     },
   }
 }

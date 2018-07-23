@@ -1,15 +1,9 @@
 <template>
   <div id="smalltitle">
     <div class="seach-list">
-      <el-button type="danger" icon="el-icon-delete" plain @click="toggleSelection(multipleSelection)" size="small"
-                 style="width: 100px;float: right;margin-right: 40px">批量删除
-      </el-button>
-      <el-button type="warning" icon="el-icon-sort" plain @click="ToAdoblemore(multipleSelection,1)" size="small"
-                 style="width: 100px;float: right;margin-right: 40px">批量上架
-      </el-button>
-      <el-button type="warning" icon="el-icon-sort" plain @click="ToAdoblemore(multipleSelection,2)" size="small"
-                 style="width: 100px;float: right;margin-right: 40px">批量下架
-      </el-button>
+      <el-button  type="danger" icon="el-icon-delete" plain @click="toggleSelection(multipleSelection)" size="small" style="width: 100px;float: right;margin-right: 40px">批量删除</el-button>
+      <el-button  type="warning" icon="el-icon-sort" plain @click="ToAdoblemore(multipleSelection,1)" size="small" style="width: 100px;float: right;margin-right: 40px">批量上架</el-button>
+      <el-button  type="warning" icon="el-icon-sort" plain @click="ToAdoblemore(multipleSelection,2)" size="small" style="width: 100px;float: right;margin-right: 40px">批量下架</el-button>
       <el-table
         v-loading="loading"
         :data="plusProductListResult.rows"
@@ -28,25 +22,18 @@
           :label="item.name"
           :key="index"
           :width="item.width"
-          :show-overflow-tooltip="item.which!='sort' && item.which!='isStick'">
+          :show-overflow-tooltip ="item.which!='sort' && item.which!='isStick'">
           <template slot-scope="scope">
-            <span style="margin-left: 10px" v-if="item.which==='price'"><el-button plain size="mini"
-                                                                                   @click="wactch(scope.$index,scope.row)">查看</el-button></span>
-            <span style="margin-left: 10px"
-                  v-else-if="item.which==='isRecommend'">{{scope.row[item.which] == '0' ? '否' : '是'}}</span>
-            <span style="margin-left: 10px"
-                  v-else-if="item.which==='status'">{{scope.row[item.which] == '1' ? '上架' : '下架'}}</span>
+            <span style="margin-left: 10px" v-if="item.which==='price'"><el-button plain size="mini" @click="wactch(scope.$index,scope.row)">查看</el-button></span>
+            <span style="margin-left: 10px" v-else-if="item.which==='isRecommend'">{{scope.row[item.which]=='0' ? '否' : '是'}}</span>
+            <span style="margin-left: 10px" v-else-if="item.which==='status'">{{scope.row[item.which]=='1' ? '上架' : '下架'}}</span>
             <span style="margin-left: 10px" v-else-if="item.which==='sort'">
-                  <el-input placeholder="请输入佣金" :value="scope.row.sort" size="mini" style="width: 90%;"
-                            @blur="changeSort($event,scope.row)" @change="changeValue"></el-input>
+                  <el-input placeholder="请输入" :value="scope.row.sort" size="mini" style="width: 90%;" @blur="changeSort($event,scope.row)" @change="changeValue"></el-input>
             </span>
             <span style="margin-left: 10px" v-else-if="item.which==='isStick'">
-                 <el-button plain size="mini"
-                            @click="ToSetUp(scope.$index,scope.row)">{{scope.row[item.which] == 0 ? '置顶' : '取消置顶'}}</el-button>
+                 <el-button plain size="mini" @click="ToSetUp(scope.$index,scope.row)">{{scope.row[item.which]==0 ? '置顶' : '取消置顶'}}</el-button>
             </span>
-            <span style="margin-left: 10px" v-else-if="item.which==='indexImage'"><img :src="scope.row[item.which]"
-                                                                                       alt=""
-                                                                                       style="height: 72px;width: 72px;"></span>
+            <span style="margin-left: 10px" v-else-if="item.which==='indexImage'"><img :src="scope.row[item.which]" alt="" style="height: 72px;width: 72px;"></span>
             <span style="margin-left: 10px" v-else>{{scope.row[item.which]}}</span>
           </template>
         </el-table-column>
@@ -56,8 +43,7 @@
               size="mini"
               type="success"
               icon="el-icon-search"
-              @click="watchShare(scope.row)" plain>查看分享
-            </el-button>
+              @click="watchShare(scope.row)" plain>查看分享</el-button>
             <el-button
               size="mini"
               type="warning"
@@ -67,14 +53,12 @@
               size="mini"
               type="primary"
               icon="el-icon-edit"
-              @click="upData(scope.row)" plain>修改
-            </el-button>
+              @click="upData(scope.row)" plain>修改</el-button>
             <el-button
               size="mini"
               type="danger"
               icon="el-icon-delete"
-              @click="deleteProduct(scope.row.id)" plain>删除
-            </el-button>
+              @click="deleteProduct(scope.row.id)" plain>删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -90,6 +74,21 @@
         :total="plusProductListResult.total">
       </el-pagination>
     </div>
+    <!--<transition name="slide-fade">-->
+    <!--<div class="demo incomingHistory" v-if="showOrClose">-->
+    <!--<div class="popover-head">-->
+    <!--<span class="title">审核确定</span><i @click=closed() class="el-icon-close"></i>-->
+    <!--</div>-->
+    <!--<div class="popover-main">-->
+
+    <!--<el-button-->
+    <!--style="width:80px;margin-left:150px;"-->
+    <!--size="small"-->
+    <!--type="primary"-->
+    <!--@click="" plain>确认审核</el-button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</transition>-->
   </div>
 
 </template>
@@ -97,39 +96,38 @@
 <script>
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
-
   export default {
-    props: ['msg'],
+    props:["msg"],
     name: 'seachSaleGoods',
     data () {
       return {
-        showOrClose: false,
-        currentPage5: 1,
-        value1: 10,
-        MsgSort: false,
-        multipleSelection: [],
-        dataList: [
+        showOrClose:false,
+        currentPage5:1,
+        value1:10,
+        MsgSort:false,
+        multipleSelection:[],
+        dataList:[
           {
-            name: '产品名称', width: '190', which: 'productName'
-          }, {
-            name: '产品大图', width: '90', which: 'indexImage'
-          }, {
-            name: '价格', width: '90', which: 'price'
-          }, {
-            name: '排序', width: '90', which: 'sort'
-          }, /*{
-            name: '是否推荐', width: '90', which: 'isRecommend'
-          },*/ {
-            name: '置顶', width: '90', which: 'isStick'
-          }, {
-            name: '状态', width: '90', which: 'status'
-          }, {
-            name: '特卖时间', width: '120', which: 'startDate'
+            name:'产品名称', width:'250', which:'productName'
+          },{
+            name:'产品大图', width:'90', which:'indexImage'
+          },{
+            name:'价格', width:'70', which:'price'
+          },{
+            name:'排序', width:'90', which:'sort'
+          }/*,{
+            name:'是否推荐', width:'70', which:'isRecommend'
+          }*/,{
+            name:'置顶', width:'90', which:'isStick'
+          },{
+            name:'状态', width:'70', which:'status'
+          },{
+            name:'特卖时间', width:'100', which:'startDate'
           }
         ],
-        Liststyle: {
-          height: '50px',
-          padding: '6px 0'
+        Liststyle:{
+          height:'50px',
+          padding:'6px 0'
         }
       }
     },
@@ -137,82 +135,82 @@
 
       msg: {
         handler (curVal, oldVal) {
-          this.currentPage5 = 1
-          this.value1 = 10
+          this.currentPage5=1
+          this.value1=10
         },
         deep: true
       }
     },
-    computed: {
+    computed:{
       ...mapGetters([
-        'loading', 'plusProductListResult'
+        'loading','plusProductListResult'
       ])
     },
-    mounted () {
-      let obj = {
-        filter_S_productName: this.input,
+    mounted(){
+      let obj={
+        filter_S_productName:this.input,
         //filter_I_isRecommend:this.upGoods,//推荐首页
-        filter_S_productName_contains: this.input,
-        sortField: 'sort',
-        page: 1,
-        rows: 10,
-        sortOrder: 'asc'
+        filter_S_productName_contains:this.input,
+        sortField:'sort',
+        page:1,
+        rows:10,
+        sortOrder:'asc'
       }
       this.plusProductListActions(obj)
     },
-    activated () {
+    activated(){
 
     },
     methods: {
       ...mapActions([
-        'popoverAlert', 'plusProductListActions', 'deleteProductSave', 'plusProductSaveActions', 'batchdeleteProductSave', 'ProductDoStickActions', 'plusDoAuditActions'
+        'plusProductSortSetActions','popoverAlert','plusProductListActions','deleteProductSave','plusProductSaveActions','batchdeleteProductSave','ProductDoStickActions','plusDoAuditActions'
       ]),
-      handleSizeChange (val) {
-        console.log(`每页 ${val} 条`)
-        this.msg.rows = val
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        this.msg.rows=val
         this.plusProductListActions(this.msg)
       },
-      handleCurrentChange (val) {
-        console.log(`当前页: ${val}`)
-        this.msg.page = val
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.msg.page=val
         this.plusProductListActions(this.msg)
       },
-      wactch (key, row) {
-        this.popoverAlert(['WatchPrice', row])
+      wactch(key,row){
+        this.popoverAlert(['WatchPrice',row])
       },
-      deleteProduct (id) {
+      deleteProduct(id){
         this.$confirm('确定要删除该产品么？, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let data = {
-            id: id
+          let data={
+            id:id
           }
           this.deleteProductSave(data)
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          })
-        })
+          });
+        });
       },
-      upData (item) {
-        let data = {
-          type: 'updata',
-          item: item
+      upData(item){
+        let data={
+          type:'updata',
+          item:item
         }
-        this.$emit('to-change', 'NewSaleGoods')
-        this.$store.commit('UPDATA_SALEGOODS', data)
+        this.$emit('to-change','NewSaleGoods')
+        this.$store.commit('UPDATA_SALEGOODS',data)
       },
-      changeSort (e, row) {
+      changeSort(e,row){
         //console.log(e.target.value,row.id)
-        let data = {
-          id: row.id,
-          sort: e.target.value,
-          startDate: row.startDate,
-          isStick:row.isStick,
-          plusDate:row.plusDate
+        let data={
+          id:row.id,
+          sort:e.target.value,
+//          startDate:row.startDate,
+//          isStick:row.isStick,
+//          plusDate:row.plusDate
 //        desc:row.desc,//描述
 //        image:row.image,//产品主图链接
 //        indexImage:row.indexImage,//大图
@@ -240,28 +238,24 @@
 //      }else{
 //        data.commission=this.form.namePrice
 //      }
-        if (this.MsgSort) {
-          this.plusProductSaveActions(data)
-//          this.$message({
-//            message:'操作成功',
-//            type:'success'
-//          })
-          this.MsgSort = false
+        if(this.MsgSort){
+          this.plusProductSortSetActions(data)
+          this.MsgSort=false
         }
       },
-      changeValue (e) {
-        this.MsgSort = true
+      changeValue(e){
+        this.MsgSort=true
       },
 //      focusSort(e){
 //        this.MsgSort=e.target.value
 //      },
-      handleSelectionChange (val) {
-        this.multipleSelection = val
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
       },
-      toggleSelection (data) {
-        if (data.length > 0) {
-          let str = []
-          data.forEach((val, index) => {
+      toggleSelection(data) {
+        if(data.length>0){
+          let str=[]
+          data.forEach((val,index) => {
             str.push(val.id)
           })
           this.$confirm('确定要删除这些产品么？, 是否继续?', '提示', {
@@ -269,46 +263,46 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            let obj = {
-              ids: str.join(',')
+            let obj={
+              ids:str.join(',')
             }
             this.batchdeleteProductSave(obj)
           }).catch(() => {
             this.$message({
               type: 'info',
               message: '已取消删除'
-            })
-          })
-        } else {
+            });
+          });
+        }else{
           this.$message({
-            message: '请选择产品',
-            type: 'warning'
+            message:'请选择产品',
+            type:'warning'
           })
         }
       },
-      watchShare (row) {
-        this.$store.commit('activeIdchange', 'https://ol-site.olquan.cn/weixin/auth?view=https://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.productId + '?isShare=1')
+      watchShare(row){
+        this.$store.commit('activeIdchange','https://ol-site.olquan.cn/weixin/auth?view=https://ol-h5-preview.olquan.cn/demo/iscroll/id/'+row.productId+'?isShare=1&type=9')
         this.popoverAlert('VactiveDress')
       },
-      ToSetUp (index, row) {
-        let data = {
-          id: row.id
+      ToSetUp(index,row){
+        let data={
+          id:row.id
         }
         this.ProductDoStickActions(data)
       },
-      ToAdoblemore (data, key) {
-        if (data.length > 0) {
-          let str = []
-          data.forEach((val, index) => {
+      ToAdoblemore(data,key){
+        if(data.length>0){
+          let str=[]
+          data.forEach((val,index) => {
             str.push(val.id)
           })
-          let obj = {
-            ids: str.toString()
+          let obj={
+            ids:str.toString()
           }
-          if (key == 1) {
-            obj.status = 1
-          } else {
-            obj.status = 2
+          if(key==1){
+            obj.status=1
+          }else{
+            obj.status=2
           }
           this.$confirm('确定要批量修改这些产品上下架状态么？, 是否继续?', '提示', {
             confirmButtonText: '确定',
@@ -320,12 +314,12 @@
             this.$message({
               type: 'info',
               message: '已取消操作'
-            })
-          })
-        } else {
+            });
+          });
+        }else{
           this.$message({
-            message: '请选择产品',
-            type: 'warning'
+            message:'请选择产品',
+            type:'warning'
           })
         }
       },
@@ -346,23 +340,71 @@
 </script>
 
 <style scoped>
-  #smalltitle .el-button--mini, #smalltitle .el-button--mini.is-round {
-    margin: 0;
-    padding: 5px;
+  #smalltitle .el-button--mini,#smalltitle .el-button--mini.is-round{
+    margin:0;
+    padding:5px;
     font-size: 12px;
   }
-
-  .block {
+  .block{
     text-align: right;
     margin-top: 20px;
-    margin-right: 40px;
+    margin-right:40px;
   }
-
-  #smalltitle {
+  #smalltitle{
     margin-top: 20px;
   }
-
-  .el-table th > div.cell, .el-table .cell, .el-table {
+  .el-table th>div.cell,.el-table .cell,.el-table{
     font-size: 12px;
+  }
+  .demo{
+    width: 400px;
+    height: 220px;
+    background: #F0FAFF;
+    margin-left: -100px;
+    margin-top: -220px;
+    border-radius: 5px;
+    border: 1px solid #90CCE8;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    overflow: hidden;
+    color: #333333;
+    position: fixed;
+    left:46%;
+    top:60%;
+    z-index: 999;
+  }
+  .popover-head{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: #F0FAFF;
+    font-size: 14px;
+    border-bottom: 1px solid #C5E2F0;
+  }
+  .popover-head i{
+    float: right;
+    color: #A1C1E2;
+    font-size: 12px;
+    margin-top: 13px;
+    margin-right: 12px;
+    cursor: pointer;
+  }
+  .popover-head .title{
+    margin-left: 15px;
+    font-weight: bold;
+  }
+  .popover-main{
+    padding: 20px 12.5px;
+    width: calc(100% - 25px);
+  }
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
   }
 </style>

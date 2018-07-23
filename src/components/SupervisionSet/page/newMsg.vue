@@ -71,6 +71,7 @@
                   style="width: 400px;"></el-input>
         <el-button size="mini" type="success" @click="alertAddGoods(1)">关联试用商品</el-button>
         <el-button size="mini" type="success" @click="alertAddGoods(2)">关联特卖商品</el-button>
+        <el-button size="mini" type="success" @click="alertAddGoods(3)">关联活动</el-button>
       </el-form-item>
     </el-form>
     <el-button type="primary" plain size="small" style="margin:50px 100px 50px;" @click="addMsg()">确认提交</el-button>
@@ -209,9 +210,11 @@
         if (key === 1) {
           this.$store.commit('changeRadios', '试用商品')
           this.popoverAlert(['vAddGoods', 'find'])
-        } else {
+        } else if(key===2){
           this.$store.commit('changeRadios', '专享商品')
           this.popoverAlert(['vAddGoods', 'find'])
+        }else{
+          this.popoverAlert(['addActive',''])
         }
       },
       deleteImg(val,key) {

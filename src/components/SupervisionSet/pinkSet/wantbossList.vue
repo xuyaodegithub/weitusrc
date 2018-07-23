@@ -27,6 +27,7 @@
             <span v-else-if="item.which==='status' && scope.row[item.which]===0" style="margin-left: 10px">待审核</span>
             <span v-else-if="item.which==='status' && scope.row[item.which]===1" style="margin-left: 10px">已审核</span>
             <span v-else-if="item.which==='status' && scope.row[item.which]===2" style="margin-left: 10px">已拒绝</span>
+            <span v-else-if="item.which==='sendStatus'" style="margin-left: 10px"> {{scope.row[item.which]===1 ? '已发货' : '未发货'}}</span>
             <span style="margin-left: 10px" v-else>{{scope.row[item.which]}}</span>
           </template>
         </el-table-column>
@@ -93,6 +94,14 @@
             name:'价格', width:'200', which:'price'
           }*/, {
             name: '审核状态', width: '200', which: 'status'
+          }, {
+            name: '收货人姓名', width: '200', which: 'realName'
+          }, {
+            name: '手机号', width: '200', which: 'mobile'
+          }, {
+            name: '收货地址', width: '200', which: 'address'
+          }, {
+            name: '发货状态', width: '200', which: 'sendStatus'
           }
         ],
       }

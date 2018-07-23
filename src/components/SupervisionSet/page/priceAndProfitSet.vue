@@ -11,7 +11,7 @@
          <p><label>总监:</label> <el-input v-model="isSoHighPrice" size="small" ></el-input></p>
          <p><label>总监:</label> <el-input v-model="isHighPrice" size="small" ></el-input></p>
          <p><label>经理:</label> <el-input v-model="isDuDao" size="small" ></el-input></p>
-         <!--<p><label>自己:</label> <el-input v-model="isPrice" size="small" ></el-input></p>-->
+         <p><label>管理费用比例:</label> <el-input v-model="managementCost" size="small" ></el-input></p>
        </div>
       </el-form-item>
       <el-form-item>
@@ -34,7 +34,8 @@
       isSoHighPrice:'',
       isDuDao:'',
       form:{},
-      isMoreStar:''
+      isMoreStar:'',
+      managementCost:''
     }
   },
   computed:{
@@ -56,6 +57,7 @@
           this.isHighPrice=this.commissionInfoResult.highSupervisorCommission
           this.isSoHighPrice=this.commissionInfoResult.highSupervisorMoreCommission
           this.isDuDao=this.commissionInfoResult.supervisorCommission
+          this.managementCost=this.commissionInfoResult.managementCost
           //this.dialogImageUrl=this.commissionInfoResult.shareLogo
         },
         deep: true
@@ -79,7 +81,8 @@
         supervisorCommission:this.isDuDao,
         type:2,
         starMoreCommission:this.isMoreStar,
-        starCommission:this.isStar
+        starCommission:this.isStar,
+        managementCost:this.managementCost
       }
       this.setCommissionActions(data)
     },
@@ -98,7 +101,7 @@
     padding-left:15px;
     .priceSet label{
       display: inline-block;
-      width:70px;
+      width:100px;
       text-align: right;margin-right: 10px;
     }
   .el-input{

@@ -30,8 +30,8 @@
         <el-menu-item-group>
           <el-menu-item index="3-0">特卖商品管理</el-menu-item>
           <el-menu-item index="3-8">试用商品管理</el-menu-item>
-          <el-menu-item index="3-10">督导设置</el-menu-item>
-          <el-menu-item index="3-11">粉领设置</el-menu-item>
+          <el-menu-item index="3-10">经理设置</el-menu-item>
+          <el-menu-item index="3-11">店主设置</el-menu-item>
           <el-menu-item index="3-12">明星督导统计</el-menu-item>
           <el-menu-item index="3-13">产品收益配置</el-menu-item>
           <el-menu-item index="3-9">试用广告设置</el-menu-item>

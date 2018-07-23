@@ -1,7 +1,7 @@
 <template>
   <div id="newGift1">
     <el-form ref="form" :model="form" label-width="100px">
-      <el-form-item label="粉领价格:">
+      <el-form-item label="店主价格:">
         <el-input v-model="isPrice" size="small"></el-input>
       </el-form-item>
       <el-form-item label="收益设置:">
@@ -24,6 +24,9 @@
           </p>
           <p><label>经理:</label>
             <el-input v-model="isDuDao" size="small"></el-input>
+          </p>
+          <p><label>管理费用比例:</label>
+            <el-input v-model="managementCost" size="small"></el-input>
           </p>
           <p><label>店主:</label>
             <el-input v-model="isPink" size="small"></el-input>
@@ -81,7 +84,8 @@
         isOwnType: '',
         isNoPType: '',
         isPink: '',
-        isMe: ''
+        isMe: '',
+        managementCost:''
       }
     },
     computed: {
@@ -108,6 +112,7 @@
           this.isType=this.commissionInfoResult.storeCommissionType
           this.isMe=this.commissionInfoResult.selfCommission
           this.isOwnType=this.commissionInfoResult.selfCommissionType
+          this.managementCost=this.commissionInfoResult.managementCost
 
         },
         deep: true
@@ -137,6 +142,7 @@
           selfCommissionType:this.isOwnType,
           storeCommission:this.isPink,
           storeCommissionType:this.isType,
+          managementCost:this.managementCost,
         }
         this.setCommissionActions(data)
       },
@@ -155,7 +161,7 @@
     padding-left: 15px;
     .priceSet label {
       display: inline-block;
-      width: 80px;
+      width: 100px;
       text-align: right;
       margin-right: 10px;
     }

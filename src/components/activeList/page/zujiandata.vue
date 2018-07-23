@@ -107,8 +107,23 @@
           </el-button>
           <i class="el-icon-refresh cu" style="font-size: 18px;color:#409EFF;margin-left: 8px" @click="changeOr()"></i>
         </p>
-        <p><label>商品边距:</label>
+       <!-- <p><label>商品边距:</label>
           <el-input v-model="marginPruct" placeholder="请输入内容" size="mini" @blur="change3(marginPruct)"></el-input>
+        </p>-->
+        <p style="display: flex"><label style="display: inline-block;width: 80px;text-align: right;" v-if="commodityResult.contents.length>0">分类banner图:</label>
+          <!--<el-input v-model="marginPruct" placeholder="请输入内容" size="mini" @blur="change3(marginPruct)"></el-input>-->
+          <img :src="commodityResult.contents[num] ?  commodityResult.contents[num].classBannerImg.image : ''" alt="" style="width: 68px;height: 68px;border: none;"  v-if="commodityResult.contents.length>0">
+          <el-upload
+            v-if="commodityResult.contents.length>0"
+            class="upload-demo"
+            action="/apis/admin/buildblocks/uploadImage"
+            :show-file-list="false"
+            name="img"
+            :on-success="upSuccessfirstClass">
+            <div style="margin: 10px 0 0px 10px;">
+              <el-button size="mini" type="success" plain>点击上传</el-button>
+            </div>
+          </el-upload>
         </p>
         <el-button
           style="padding: 6px 0px;margin: 0 10px 0 0;"
@@ -133,12 +148,11 @@
           :height="250"
           fixed
           :data="classDataListResult"
-          tooltip-effect="light"
-          style="width: 567px">
+          tooltip-effect="light">
           <el-table-column
             prop="productName"
+            width="280"
             label="产品名称"
-            width="115"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
@@ -148,13 +162,13 @@
           </el-table-column>
           <el-table-column
             prop="store"
-            label="库存"
-            width="90">
+            width="90"
+            label="库存">
           </el-table-column>
           <el-table-column
             prop="sellerName"
             label="供应商"
-            width="145"
+            width="175"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" width="100">
@@ -192,6 +206,7 @@
     name: 'huodong',
     data() {
       return {
+        classImg:'',
         DetailOrOther: true,
         openOrclose: true,
         value: '请选择活动',
@@ -383,8 +398,21 @@
         }
         console.log(that.commodityResult.contents[that.num])
       },
-      upErre() {
-
+      upSuccessfirstClass(response, file, fileList) {
+        let obj = {}
+        let oImg = new Image()
+        oImg.src = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
+        let that = this
+        oImg.onload = function () {
+          console.log('宽:' + oImg.width + ',' + '高:' + oImg.height)
+          obj.width = oImg.width
+          obj.height = oImg.height
+          obj.classMore = 'classBanner'
+          obj.image = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
+//          that.commodityResult.contents[that.num].classBannerImg=obj
+          that.$set(that.commodityResult.contents[that.num],'classBannerImg',obj)
+        }
+        console.log(that.commodityResult.contents[that.num])
       },
       addimg() {
         let oDiv = document.getElementsByClassName('el-upload--picture-card')[0]
@@ -480,7 +508,8 @@
             title: this.input1,
             contentId: '3',
             trOrFa: false,
-            dataList: []
+            dataList: [],
+            classBannerImg:{}
           }
           this.commodityResult.contents.push(obj)
         }
@@ -648,7 +677,7 @@
           this.addType(17)
           this.popoverAlert('VclassSell')
         } else if (key === 19) {
-          this.input = 'https://ol-h5-preview.olquan.cn/try/moretry'
+          this.input = 'https://ol-h5-preview.olquan.cn/try/newCenter'
           this.addType(1)
         } else if (key === 20) {
           this.$store.commit('changeRadios', '普通商品')
@@ -698,7 +727,7 @@
           this.input = 'https://ol-site.olquan.cn/weixin/member/coffersRecharge'
           this.addType(12)
         } else if (key === 33) {
-          this.input = 'https://ol-h5.olquan.cn/index/pinkIndex'
+          this.input = 'https://ol-h5-preview.olquan.cn/index/pinkIndex'
           this.addType(20)
         } else if (key === 31) {
           this.input = '#'
