@@ -42,6 +42,7 @@ import supervisionIndex from '@/components/SupervisionSet/subassembly/supervisio
 import pinkIndexSet from '@/components/SupervisionSet/subassembly/pinkSet.vue'
 import starStatistics from '@/components/SupervisionSet/subassembly/starStatistics.vue'
 import ProductIncomeDistribution from '@/components/SupervisionSet/subassembly/ProductIncomeDistribution.vue'
+import findToWatch from '@/components/SupervisionSet/subassembly/findToWatch.vue'
 
 import Yemian from '@/components/firstPage/yemian.vue'
 import Toindex from '@/components/commodity/subassembly/toindex.vue'
@@ -69,6 +70,7 @@ export default new Router({
           { path: '1-4', name:"FindMsg", component:FindMsg },
           { path: '1-5', name:"Find", component:Find },
           { path: '1-6', name:"boss", component:boss },
+          { path: '1-7', name:"findToWatch", component:findToWatch },
           { path: '2-1', name:"SaleAfter", component:SaleAfter },
           { path: '2-2', name:"SaleAfterQuality", component:SaleAfterQuality },
           { path: '2-3', name:"SaleAfterSet", component:SaleAfterSet },

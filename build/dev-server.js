@@ -1,37 +1,37 @@
 'use strict'
-require('./check-versions')()
+require('./check-versions')()// 检查 Node 和 npm 版本
 
-const config = require('../config')
+const config = require('../config')// 获取 config/index.js 的默认配置
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 
-const opn = require('opn')
-const path = require('path')
-const express = require('express')
-const webpack = require('webpack')
-const proxyMiddleware = require('http-proxy-middleware')
-const webpackConfig = (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'production')
+const opn = require('opn')// 一个可以强制打开浏览器并跳转到指定 url 的插件
+const path = require('path')// 使用 NodeJS 自带的文件路径工具
+const express = require('express')// 使用 express
+const webpack = require('webpack')// 使用 webpack
+const proxyMiddleware = require('http-proxy-middleware')// 使用 proxyTable
+const webpackConfig = (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'production')// 使用 dev 环境的 webpack 配置
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
 
 // default port where dev server listens for incoming traffic
-const port = process.env.PORT || config.dev.port
+const port = process.env.PORT || config.dev.port//如果没有指定运行端口，使用 config.dev.port 作为运行端口
 // automatically open browser, if not set will be false
-const autoOpenBrowser = !!config.dev.autoOpenBrowser
+const autoOpenBrowser = !!config.dev.autoOpenBrowser//运行后是否自动打开游览器
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
-const proxyTable = config.dev.proxyTable
+const proxyTable = config.dev.proxyTable/* 使用 config.dev.proxyTable 的配置作为 proxyTable 的代理配置 */
 
-const app = express()
-const compiler = webpack(webpackConfig)
+const app = express()//使用 express 启动一个服务
+const compiler = webpack(webpackConfig)//// 启动 webpack 进行编译
 
-const devMiddleware = require('webpack-dev-middleware')(compiler, {
+const devMiddleware = require('webpack-dev-middleware')(compiler, {//启动 webpack-dev-middleware，将 编译后的文件暂存到内存中
   publicPath: webpackConfig.output.publicPath,
   quiet: true
 })
 
-const hotMiddleware = require('webpack-hot-middleware')(compiler, {
+const hotMiddleware = require('webpack-hot-middleware')(compiler, {//启动 webpack-hot-middleware，也就是我们常说的 Hot-reload
   log: false,
   heartbeat: 2000
 })
@@ -50,7 +50,7 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 app.use(hotMiddleware)
 
 // proxy api requests
-Object.keys(proxyTable).forEach(function (context) {
+Object.keys(proxyTable).forEach(function (context) {//// 将 proxyTable 中的请求配置挂在到启动的 express 服务上
   let options = proxyTable[context]
   if (typeof options === 'string') {
     options = { target: options }
@@ -59,13 +59,13 @@ Object.keys(proxyTable).forEach(function (context) {
 })
 
 // handle fallback for HTML5 history API
-app.use(require('connect-history-api-fallback')())
+app.use(require('connect-history-api-fallback')())// 使用 connect-history-api-fallback 匹配资源，如果不匹配就可以重定向到指定地址
 
 // serve webpack bundle output
 app.use(devMiddleware)
 
 // serve pure static assets
-const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)// 拼接 static 文件夹的静态资源路径
 app.use(staticPath, express.static('./static'))
 
 const uri = 'http://localhost:' + port
@@ -92,7 +92,7 @@ devMiddleware.waitUntilValid(() => {
     var uri = 'http://localhost:' + port
     console.log('> Listening at ' + uri + '\n')
     // when env is testing, don't need open it
-    if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
+    if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {// 如果不是测试环境，自动打开浏览器并跳到我们的开发地址
       opn(uri)
     }
     server = app.listen(port)

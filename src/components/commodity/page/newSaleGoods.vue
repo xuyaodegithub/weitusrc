@@ -5,10 +5,12 @@
     <!--</div>-->
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="产品名称:">
+        <!--<p style="width: auto;display: inline-block;text-indent: 10px">{{CouponWithGoodsResult.productName}}</p>-->
+        <el-input placeholder="请输入内容" size="small" :value="CouponWithGoodsResult.productName"
+                  style="width: 40%;display: inline-block;text-indent: 10px" @change="changeRng"></el-input>
         <!--<el-input v-model="CouponWithGoodsResult.productName" size="small" disabled></el-input>-->
-        <el-input placeholder="请输入内容" size="small" :value="CouponWithGoodsResult.productName" style="width: 40%;display: inline-block;text-indent: 10px"  @change="changeRng"></el-input>
-        <el-button type="success" size="mini" round style="margin-left: 15px;"
-                   @click="popoverAlert(['VchoseGoods','one'])" v-if="upDataSaleGoodsResult.type==='add'">选择产品
+        <el-button type="success" size="mini" round style="margin-left: 15px;" v-if="upDataSaleGoodsResult.type==='add'"
+                   @click="popoverAlert(['VchoseGoods','one'])">选择产品
         </el-button>
       </el-form-item>
       <el-form-item label="产品信息:">
@@ -55,8 +57,12 @@
       <!--</el-form-item>-->
       <el-form-item label="特卖时间:">
         <el-col :span="11">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width:200px;"
-                          size="small"></el-date-picker>
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width:200px;" size="small"
+                          :picker-options="{
+            disabledDate:disData
+           }">
+
+          </el-date-picker>
         </el-col>
       </el-form-item>
       <el-form-item label="销售时间:">
@@ -95,16 +101,17 @@
           <el-radio :label=0 style="width: auto;">下架</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="排序:">
+      <el-form-item label="排序:" required>
         <el-input v-model="form.sort" size="small" style="width: 250px;"></el-input>
+        <span style="font-size: 12px;color: orange;margin-left: 10px;">（带 * 的为必填项）</span>
       </el-form-item>
-      <el-form-item label="大图:">
+      <el-form-item label="大图:" required>
         <div style="display: flex;">
           <img :src="dialogImageUrl" alt="" style="height: 78px;width: 78px;" class="valign" v-if="dialogImageUrl">
           <el-button size="mini" plain @click="upLoad()" style="height: 30px;margin: 25px 0 0 10px;">上传图片</el-button>
         </div>
         <el-upload
-          action="apis/admin/buildblocks/uploadImage"
+          action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
           name="img"
           :multiple=true
           :show-file-list=false
@@ -130,15 +137,16 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { mapActions } from 'vuex'
+  import {mapGetters} from 'vuex'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'newGoods',
-    data () {
+    data() {
       return {
         oDiv: '',
         backTitle: 'SeachList',
+        imgShow: false,
         isStatus: '',
         priceListUpdata: [],
         salePriceViewPush: [],
@@ -176,7 +184,7 @@
         dialogImageUrl: '',
         dialogVisible: false,
         isSetTop: '',
-        value8: 1,
+        value8: 3,
         timeList: [{label: '1天', id: 1}, {label: '2天', id: 2}, {label: '3天', id: 3}]
       }
     },
@@ -184,7 +192,7 @@
       ...mapGetters([
         'CouponWithGoodsResult', 'getProductNormalsResult', 'upDataSaleGoodsResult', 'PproductgetByIdResult'
       ]),
-      priceList () {
+      priceList() {
         console.log(this.getProductNormalsResult)
         // console.log(this.getProductNormalsResult)
         // if(this.upDataSaleGoodsResult.type==='add') {
@@ -197,7 +205,7 @@
             return [{
               normalStr: '无规格',
               salePriceView: this.upDataSaleGoodsResult.item.price,
-              costPriceView: this.upDataSaleGoodsResult.item.costPrice,
+              costPriceView: this.upDataSaleGoodsResult.item.costPriceView,
               marketPriceView: this.upDataSaleGoodsResult.item.marketPrice
             }]
           } else {
@@ -218,7 +226,7 @@
     },
     watch: {
       PproductgetByIdResult: {
-        handler (newVal, oldVal) {
+        handler(newVal, oldVal) {
           let that = this
           console.log(newVal.title + ',' + oldVal.title)
           if (newVal.title == oldVal.title) {
@@ -234,7 +242,7 @@
         deep: true
       },
       getProductNormalsResult: {
-        handler (newVal, oldVal) {
+        handler(newVal, oldVal) {
           let that = this
           //console.log(newVal.title+','+oldVal.title)
           if (this.upDataSaleGoodsResult.type === 'add' && newVal.length > 0) {
@@ -249,7 +257,7 @@
         deep: true
       },
     },
-    activated () {
+    activated() {
 //    alert(1)
       //this.dialogImageUrl=''
       if (this.upDataSaleGoodsResult.type === 'add') {
@@ -275,7 +283,7 @@
         this.dialogImageUrl = ''
         this.isAudio = ''
         this.isStatus = 1
-        this.value8 = 1
+        this.value8 = 3
       } else {
         let obj = {
           togetherProductIds: '',
@@ -289,7 +297,7 @@
           image: this.upDataSaleGoodsResult.item.image//主图
         }
         this.$store.commit('Coupon_With_Goods', obj)
-        console.log(1111)
+        // console.log(1111)
         this.form.sort = this.upDataSaleGoodsResult.item.sort
         this.form.date = this.upDataSaleGoodsResult.item.startDate
         this.form.desc = this.upDataSaleGoodsResult.item.desc
@@ -306,14 +314,14 @@
       }
 
     },
-    mounted () {
+    mounted() {
       this.oDiv = document.getElementsByClassName('el-upload--picture-card')[0]
     },
     methods: {
       ...mapActions([
         'popoverAlert', 'plusProductSaveActions', 'PproductgetByIdActions'
       ]),
-      saveProduct () {
+      saveProduct() {
         //console.log(this.CouponWithGoodsResult.marketPriceView)
         let data = {
           // id:'',//特卖id
@@ -323,7 +331,7 @@
           // costPrices:'',//成本价集合
           desc: this.form.desc,//描述
           image: this.CouponWithGoodsResult.image,//产品主图链接
-          indexImage: this.dialogImageUrl,//大图
+          // indexImage:this.dialogImageUrl,//大图
           isRecommend: 1,//是否推荐
           // marketPrice:this.CouponWithGoodsResult.marketPriceView,//原价
           //normalIds:'',//产品库产品上的规格id集合
@@ -339,6 +347,12 @@
           status: this.isStatus,
           isStick: this.isSetTop,//是否置顶
           plusDate: this.value8//销售时间
+        }
+        if (this.dialogImageUrl) {
+          data.indexImage = this.dialogImageUrl
+          this.imgShow = true
+        } else {
+          this.imgShow = false
         }
         if (this.upDataSaleGoodsResult.type === 'add') {
           data.productName = this.CouponWithGoodsResult.productName//产品名称
@@ -357,12 +371,13 @@
             data.costPrices = this.changePriceApp(this.getProductNormalsResult, 4)
             data.normalStrs = this.changePriceApp(this.getProductNormalsResult, 6)
             data.marketePrices = this.changePriceApp(this.getProductNormalsResult, 10)//市场价
+            data.costPrice = this.CouponWithGoodsResult.costPriceView
 
           } else {
             data.commission = this.form.namePrice
             data.price = this.activePrice
             data.marketPrice = this.CouponWithGoodsResult.marketPriceView//市场价
-
+            data.costPrice = this.CouponWithGoodsResult.costPriceView
           }
         } else {
           data.productName = this.CouponWithGoodsResult.productName,//产品名称
@@ -382,16 +397,26 @@
             data.normalIds = this.changePriceApp(this.PproductgetByIdResult.item, 7)
             // data.salePrices=this.changePriceApp(this.PproductgetByIdResult.item,3)
             data.costPrices = this.changePriceApp(this.PproductgetByIdResult.item, 4)
+            data.costPrice = this.upDataSaleGoodsResult.item.costPrice
             data.normalStrs = this.changePriceApp(this.PproductgetByIdResult.item, 6)
             data.marketePrices = this.changePriceApp(this.PproductgetByIdResult.item, 10)
           } else {
             data.commission = this.form.namePrice
             data.price = this.activePrice
             data.marketPrice = this.upDataSaleGoodsResult.item.marketPrice
+            data.costPrice = this.upDataSaleGoodsResult.item.costPrice
           }
         }
-        this.plusProductSaveActions(data)
-        this.$emit('to-change', this.backTitle)
+        if (this.imgShow) {
+          this.plusProductSaveActions(data)
+          this.$emit('to-change', this.backTitle)
+        } else {
+          this.$message({
+            message: '特卖大图不可不传',
+            type: 'warning'
+          })
+        }
+
 //      this.$message({
 //        message:'操作成功',
 //        type:'success'
@@ -418,20 +443,20 @@
 //      this.plusProductSaveActions(data)
 //      this.$emit('to-change',this.backTitle)
 //    },
-      handleRemove (file, fileList) {
-        console.log(file, fileList)
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
       },
-      handlePictureCardPreview (file) {
-        this.dialogImageUrl = file.url
-        this.dialogVisible = true
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
       },
-      upSuccessfirst (response, file, fileList) {
-        this.dialogImageUrl = 'http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
+      upSuccessfirst(response, file, fileList) {
+        this.dialogImageUrl = 'https://ol-quan2017.oss-cn-shanghai.aliyuncs.com/' + response.result
       },
-      upLoad () {
+      upLoad() {
         this.oDiv.click()
       },
-      dateformat (data) {
+      dateformat(data) {
         if (data) {
           let year = data.getFullYear()
           let month = data.getMonth() + 1
@@ -443,7 +468,7 @@
           return year + '-' + month + '-' + day
         }
       },
-      changePriceApp (arr, key) {
+      changePriceApp(arr, key) {
         let newArr = []
         arr.forEach((val, index) => {
           if (key == 1) {
@@ -466,20 +491,23 @@
         })
         return newArr.join(',')
       },
-      changeRng(e){
+      changeRng(e) {
         console.log(e)
-        let obj={
-          togetherProductIds:this.CouponWithGoodsResult.togetherProductIds,
-          productType:this.CouponWithGoodsResult.productType,
-          productIds:this.CouponWithGoodsResult.productIds,
-          marketPrice:this.CouponWithGoodsResult.marketPrice,
-          price:this.CouponWithGoodsResult.price,
-          productName:e,
-          costPriceView:this.CouponWithGoodsResult.costPriceView,//成本价
-          salePriceView:this.CouponWithGoodsResult.salePriceView,//销售价
-          image:this.CouponWithGoodsResult.image//主图
+        let obj = {
+          togetherProductIds: this.CouponWithGoodsResult.togetherProductIds,
+          productType: this.CouponWithGoodsResult.productType,
+          productIds: this.CouponWithGoodsResult.productIds,
+          marketPrice: this.CouponWithGoodsResult.marketPrice,
+          price: this.CouponWithGoodsResult.price,
+          productName: e,
+          costPriceView: this.CouponWithGoodsResult.costPriceView,//成本价
+          salePriceView: this.CouponWithGoodsResult.salePriceView,//销售价
+          image: this.CouponWithGoodsResult.image//主图
         }
-        this.$store.commit('Coupon_With_Goods',obj)
+        this.$store.commit('Coupon_With_Goods', obj)
+      },
+      disData(time) {
+        return time.getTime() < Date.now() - 24 * 3600 * 1000
       }
 
     }

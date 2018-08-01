@@ -3,18 +3,16 @@
     <div class="popover-head">
       <span class="title">活动链接</span><i v-on:click="popoverAlert()" class="el-icon-close"></i>
     </div>
-    <div class="popover-main"  v-html="activeIdResult">
-      <!--<p>-->
-       <!--{{this.$store.state.result.activeId}}-->
-      <!--</p>-->
+    <div class="popover-main" v-html="activeIdResult">
+      <!--<p>{{this.$store.state.result.activeId}}</p>-->
     </div>
   </div>
 </template>
 
 <style scoped>
   .demo{
-    width: 500px;
-    height: 120px;
+    /*width: 500px;*/
+    /*height: 120px;*/
     background: #F0FAFF;
     margin-left: -300px;
     margin-top: -220px;
@@ -46,8 +44,9 @@
   }
   .popover-main{
     padding: 20px 12.5px;
-    padding-bottom: 0px;
+    padding-bottom: 15px;
     width: calc(100% - 25px);
+    line-height: 24px;
   }
   .popover-main .el-input{
     width:200px;
@@ -57,22 +56,6 @@
   }
   .popover-main label{
     margin-right:10px;
-  }
-  .popover-main .el-checkbox-group{
-    display: inline-block;
-    width:86%;
-  }
-  .el-checkbox+.el-checkbox:last-child{
-    margin-top: 10px;
-  }
-  .demo > p:last-child{
-    text-align: center;
-  }
-  .el-button{
-    width: 100px;
-  }
-  .el-checkbox+.el-checkbox:nth-child(4){
-    margin-left: 0;
   }
 </style>
 <script>

@@ -1,7 +1,7 @@
 <template>
   <div class="seach-list" id="SaleNewone">
     <el-button type="success" round size="mini" icon="el-icon-plus"
-               style="margin-top: -45px;float: right;margin-right: 50px;" @click="putMsg()">新增文章
+               style="margin-top: -17px;float: right;margin-right: 50px;" @click="putMsg()">新增发布
     </el-button>
     <el-table
       v-loading="loading"

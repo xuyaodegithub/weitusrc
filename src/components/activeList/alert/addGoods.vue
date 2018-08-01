@@ -42,7 +42,7 @@
             :value="item.label">
           </el-option>
         </el-select>
-        <el-select v-model="table1" placeholder="请选择" size="mini" style="width: 160px;" @change="changeradioJFC(table1)" v-if="radiosResult==='积分试用商品' || radiosResult==='试用商品'" disabled>
+      <el-select v-model="table1" placeholder="请选择" size="mini" style="width: 160px;" @change="changeradioJFC(table1)" v-if="radiosResult==='积分试用商品' || radiosResult==='试用商品'" disabled>
           <el-option
             v-for="item in arrResult"
             :key="item.value"
@@ -97,15 +97,15 @@
           </el-table-column>
         </el-table>
       </div>
-      <div v-else-if="radiosResult==='拼团商品'">
-        <Vpintuan></Vpintuan>
-      </div>
-      <div v-else-if="radiosResult==='专享商品'">
-        <Vjifen></Vjifen>
-      </div>
-      <div v-else-if="radiosResult==='试用商品'">
-        <Vmore></Vmore>
-      </div>
+    <div v-else-if="radiosResult==='拼团商品'">
+      <Vpintuan></Vpintuan>
+    </div>
+    <div v-else-if="radiosResult==='专享商品'">
+      <Vjifen></Vjifen>
+    </div>
+    <div v-else-if="radiosResult==='试用商品'">
+      <Vmore></Vmore>
+    </div>
     </div>
     <div v-else>
       <!--<VclassListpintuan v-if="radio2==='拼团商品'"></VclassListpintuan>-->
@@ -219,12 +219,12 @@
     width: calc(100% - 25px);
     display: flex;
     flex-wrap: wrap;
-    label{
-      width:60px;
-      display: inline-block;
-      text-align: right;
-      margin-right:10px;
-    }
+       label{
+             width:60px;
+             display: inline-block;
+             text-align: right;
+             margin-right:10px;
+       }
   }
   .popover-main p{
     margin-right: 10px;
@@ -261,9 +261,9 @@
   p .el-radio+.el-radio{
     margin-left: 0;
   }
-  /* p .el-radio-group{
-     width:160px;
-   }*/
+ /* p .el-radio-group{
+    width:160px;
+  }*/
 </style>
 <script>
   import { mapActions } from 'vuex'
@@ -322,7 +322,7 @@
     },
     computed:{
       ...mapGetters([
-        'radiosResult','ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult',
+       'radiosResult','ImgnumKeyResult','addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult',
         'plusProductListResult'
       ]),
       objNum:function(){
@@ -357,12 +357,76 @@
         let keynum=0
         if(rows.length>0){
           for(let i=0;i<rows.length;i++){
-            if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(rows[i])) === -1){
+            let obj={}
+            obj.productName=rows[i].productName
+            obj.productId=rows[i].productId
+            obj.image=rows[i].image
+            obj.type=2
+            obj.productType=1
+            obj.productId=rows[i].id
+            obj.marketPriceView=rows[i].marketPriceView
+            obj.salePriceView=rows[i].salePriceView
+            if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(obj)) === -1){
+               /* obj.type=21
+                obj.productType=9
+                obj.marketPriceView=rows[i].marketPrice
+                obj.salePriceView=rows[i].price
+                obj.commission=rows[i].commission*/
+//                obj.productId=rows[i].id
+//              }else{
+               /* obj.type=2
+                obj.productType=4
+//                obj.marketPriceView=rows[i].marketPrice
+                obj.salePriceView=rows[i].price*/
+//                obj.commission=rows[i].commission
+//                obj.productId=rows[i].id
+//              }
+              this.commodityResult.contents[this.addDataNumResult].dataList.push(obj)
+            }else{
+              keynum+=1
+            }
+          }
+            if(keynum>0){
+              this.$message({
+                message:'重复商品已过滤',
+                type:'success'
+              })
+            }else{
+              this.$message({
+                message:'添加成功',
+                type:'success'
+              })
+            }
+            this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.addDataNumResult].dataList)
+        }else{
+          this.$message({
+            message: '请先选择商品',
+            type: 'warning'
+          });
+        }
+      },
+      addGoodsclass(rows){
+        let keynum=0
+        let obj={}
+        obj.productName=rows.productName
+        obj.productId=rows.productId
+        obj.image=rows.image
+        obj.type=2
+        obj.productType=1
+        obj.productId=rows.id
+        obj.marketPriceView=rows.marketPriceView
+        obj.salePriceView=rows.salePriceView
+            if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(obj)) === -1){
               // if(this.commodityResult.contents[this.addDataNumResult].dataList.indexOf(rows[i]) === -1){
-              let obj=rows[i]
-//              if(this.radio2==='普通商品'){
-              obj.type=1
-              obj.productId=rows[i].id
+//              let obj={}
+//              obj.productName=rows.productName
+//              obj.productId=rows.productId
+//              obj.image=rows.image
+//              obj.type=2
+//              obj.productType=1
+//              obj.productId=rows.id
+//              obj.marketPriceView=rows.marketPriceView
+//              obj.salePriceView=rows.salePriceView
 //              }else if(this.radio2==='拼团商品'){
 //                obj.type=11
 //                obj.together=rows[i].id
@@ -375,7 +439,7 @@
             }else{
               keynum+=1
             }
-          }
+//          }
           if(keynum>0){
             this.$message({
               message:'重复商品已过滤',
@@ -388,48 +452,6 @@
             })
           }
           this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.addDataNumResult].dataList)
-        }else{
-          this.$message({
-            message: '请先选择商品',
-            type: 'warning'
-          });
-        }
-      },
-      addGoodsclass(rows){
-        let keynum=0
-//        if(rows.length>0){
-//          for(let i=0;i<rows.length;i++){
-        if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(rows)) === -1){
-          // if(this.commodityResult.contents[this.addDataNumResult].dataList.indexOf(rows[i]) === -1){
-          let obj=rows
-//              if(this.radio2==='普通商品'){
-          obj.type=1
-          obj.productId=rows.id
-//              }else if(this.radio2==='拼团商品'){
-//                obj.type=11
-//                obj.together=rows[i].id
-//              }else if(this.radio2==='积分试用商品'){
-//                obj.type=8
-//              }else if(this.radio2==='更多试用商品'){
-//                obj.type=4
-//              }
-          this.commodityResult.contents[this.addDataNumResult].dataList.push(obj)
-        }else{
-          keynum+=1
-        }
-//          }
-        if(keynum>0){
-          this.$message({
-            message:'重复商品已过滤',
-            type:'success'
-          })
-        }else{
-          this.$message({
-            message:'添加成功',
-            type:'success'
-          })
-        }
-        this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.addDataNumResult].dataList)
 //        }else{
 //          this.$message({
 //            message: '请先选择商品',
@@ -492,6 +514,7 @@
         }else if(this.radio2==='专享商品'){
           this.plusProductListActions(data)
         }else /*if(this.radio2==='试用商品' || this.radio2==='更多试用商品' )*/{
+          data.filter_I_type=1
           //this.scoreBuyListActions(data)
           this.freeUseListActions(data)
         }/*else{
@@ -506,7 +529,7 @@
         this.seachDataTwo()
       },
       handleCurrentChange(val) {
-        // console.log(`当前页: ${val}`);
+       // console.log(`当前页: ${val}`);
         this.currentPage4=val
         this.seachData()
         this.seachDataTwo()
@@ -539,37 +562,37 @@
            })
            this.radio2=''
          }*/
-        /* let key=0
-         if (this.commodityResult.contents) {
-           this.commodityResult.contents.forEach(function(val,index){
-             if(val.id===row.id){
-               key+=1
-             }
-           })
-           if(key===0){
-             console.log(row)
-             let obj=row
-            /!* if(!obj.image){
-               obj.image='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/23c31d63de867f568af9d1b8a3d193573b456a41'
-             }*!/
-            // obj.productId=''
-             obj.type=''
-             obj.typeId=''
-             obj.width=''
-             obj.height=''
-             obj.isTrue=false
-             this.commodityResult.contents.push(obj)
-             this.$message({
-               message:'商品添加成功',
-               type:'success'
-             })
-           }else{
-             this.$message({
-               message:'商品已存在',
-               type:'warning'
-             })
-           }
-         }*/
+       /* let key=0
+        if (this.commodityResult.contents) {
+          this.commodityResult.contents.forEach(function(val,index){
+            if(val.id===row.id){
+              key+=1
+            }
+          })
+          if(key===0){
+            console.log(row)
+            let obj=row
+           /!* if(!obj.image){
+              obj.image='http://ol-quan2017.oss-cn-shanghai.aliyuncs.com/23c31d63de867f568af9d1b8a3d193573b456a41'
+            }*!/
+           // obj.productId=''
+            obj.type=''
+            obj.typeId=''
+            obj.width=''
+            obj.height=''
+            obj.isTrue=false
+            this.commodityResult.contents.push(obj)
+            this.$message({
+              message:'商品添加成功',
+              type:'success'
+            })
+          }else{
+            this.$message({
+              message:'商品已存在',
+              type:'warning'
+            })
+          }
+        }*/
       },
       changeradioJFC(key){
         this.$store.commit('changeRadios',key)

@@ -449,11 +449,14 @@
           data.countryId = this.value8
         } else {
 //         this.isTypeTrial=false
-          this.$message({
-            message: '商品大图不可为空',
-            type: 'warning'
-          })
-          return
+          data.filter_S_promotionAward=this.promotionAward
+          if(!data.indexImage){
+            this.$message({
+              message: '商品大图不可为空',
+              type: 'warning'
+            })
+            return
+          }
         }
         if (this.upDataSaleGoodsResult.type === 'add') {
           data.productName = this.CouponWithGoodsResult.productName

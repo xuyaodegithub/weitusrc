@@ -117,7 +117,16 @@
             obj.modelSampleCode = 'catlist1'
             obj.marginData=''
             obj.contents = []
-            arr.push(obj)
+//            console.log(this.addCommodityResult)
+//            arr.push(obj)
+            if(JSON.stringify(that.addCommodityResult).indexOf(JSON.stringify('产品列表')) === -1){
+              arr.push(obj)
+            }else{
+              that.$message({
+                message:'产品列表只能一个',
+                type:'warning'
+              })
+            }
           }
           if(item=='轮播图'){
             let obj={}

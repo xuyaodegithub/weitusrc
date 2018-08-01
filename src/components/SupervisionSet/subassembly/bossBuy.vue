@@ -6,9 +6,10 @@
     <div class="topseach">
       <label>账号:</label>
       <el-input v-model="isName" placeholder="请输入账号" size="mini"></el-input>
-      <label style="margin-right: 15px;">购买时间:</label>
+      <label>购买时间:</label>
       <!--<el-input v-model="isTime" placeholder="请输入账号" size="mini"></el-input>-->
       <el-date-picker
+        style="width: 220px;"
         v-model="isTime"
         type="daterange"
         range-separator="至"
@@ -24,12 +25,21 @@
         <el-radio :label="1" style="width: auto;">已发货</el-radio>
         <el-radio :label="0" style="width: auto;">未发货</el-radio>
       </el-radio-group>
-      <el-button type="primary" style="width:100px;margin-left: 50px;" round size="mini" icon="el-icon-search"
+      <label>审核状态:</label>
+      <el-radio-group v-model="isAduio"><!--:disabled="classWh === '1'"-->
+        <el-radio :label="3" style="width: auto;">全部</el-radio>
+        <el-radio :label="2" style="width: auto;">已拒绝</el-radio>
+        <el-radio :label="1" style="width: auto;">已审核</el-radio>
+        <el-radio :label="0" style="width: auto;">待审核</el-radio>
+      </el-radio-group>
+      <el-button type="primary" style="width:100px;margin-left: 30px;" round size="mini" icon="el-icon-search"
                  @click="seachGoodsList()">筛选
       </el-button>
       <!--<el-button v-if="activeName2==='third'"  type="success" icon="el-icon-printer" round @click="seachList()" size="mini" style="width: 100px;margin:0 20px;">批量发货</el-button>-->
-      <el-button  type="warning" icon="el-icon-download" round @click="export2Excel()" size="mini" style="width: 100px;">导出</el-button >
-      <el-button  type="warning" icon="el-icon-upload2" round @click="pullMore()" size="mini" style="width: 100px;">导入</el-button >
+      <div style="text-align: right;margin-right: 50px;margin-top: 10px;">
+        <el-button  type="warning" icon="el-icon-download" round @click="export2Excel()" size="mini" style="width: 100px;">导出</el-button >
+        <el-button  type="warning" icon="el-icon-upload2" round @click="pullMore()" size="mini" style="width: 100px;">导入</el-button >
+      </div>
     </div>
     <el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
       <!--<el-tab-pane label="购买记录" name="first">-->
@@ -66,6 +76,7 @@
       activeName2:'third',
       isName:'',
       isStatus:2,
+      isAduio:3,
       isTime:[],
       seachMsg:{
         page:1,
@@ -118,7 +129,8 @@
         startTime:this.isTime ? this.isTime[0] : '',
         page:1,
         rows:10,
-        filter_I_sendStatus:this.isStatus===2 ? '' : this.isStatus
+        filter_I_sendStatus:this.isStatus===2 ? '' : this.isStatus,
+        filter_I_status:this.isAduio===3 ? '' : this.isAduio
       }
       this.applySupervisorListActions(this.seachMsg)
     },
@@ -137,6 +149,15 @@
         }else{
           const tHeader = ['ID','账号', '昵称', '申请时间', '上级总监','审核状态','收货人姓名','手机号','收货地址','发货状态'];
           const filterVal =['id','accountNo', 'nickName',  'createTime','inviteMemberName','status','realName','mobile','address','sendStatus'];
+         for(let i=0;i<this.applySupervisorList.rows.length;i++){
+           if(this.applySupervisorList.rows[i].status===0){
+             this.applySupervisorList.rows[i].status='待审核'
+           }else if(this.applySupervisorList.rows[i].status===1){
+             this.applySupervisorList.rows[i].status='已审核'
+           }else{
+             this.applySupervisorList.rows[i].status='已拒绝'
+           }
+         }
           const list = this.applySupervisorList.rows;
           const data = this.formatJson(filterVal,list);
           export_json_to_excel(tHeader, data, '列表excel');
@@ -191,7 +212,7 @@
         this.errorDialog = true
         this.errorMsg = '请导入正确信息'
       } else {
-        console.log(typeof data)
+//        console.log(typeof data)
         let ids=[]
         let status=[]
         Array.prototype.slice.call(data).forEach( (val,index) => {
@@ -239,12 +260,12 @@
     }
     margin-bottom: 20px;
     .el-radio+.el-radio{
-      margin-left:10px;
+      margin-left:5px;
     }
+
   }
   .el-input{
     width:150px;
-    margin: 0 15px;
   }
 
 

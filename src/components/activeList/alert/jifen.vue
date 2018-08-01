@@ -131,7 +131,33 @@
   export default {
     data() {
       return {
+        input:'',
+        classGoods:1,
+        input1:'',
+        input2:'',
+        currentPage4:1,
+        value:10,
+        multipleSelection:[],
+        radio2:'普通商品',
+        options: [{
+          value: '1',
+          label: '普通商品'
+        }, {
+          value: '2',
+          label: '拼团商品'
+        }, {
+          value: '3',
+          label: '积分试用商品'
+        }, {
+          value: '4',
+          label: '更多试用商品'
+        }],
+        upGoods:1,
+        table1:[
+          {
 
+          }
+        ]
       };
     },
     created(){

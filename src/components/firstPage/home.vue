@@ -14,7 +14,7 @@
           background-color="#303242"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-submenu index="8">
+          <el-submenu index="8" style="margin-right: 80px;">
             <template slot="title">
               <img src="../../../static/slogo.png" alt="" class="valign">欢迎：<span id="myown">heheheh</span>
             </template>
@@ -102,7 +102,7 @@ header{
   width:100%;background:#303242 ;
 }
 header .header-t{
-  width:1274px;
+  width:100%;
   margin-left:40px;
   display: flex;
   justify-content:space-between;

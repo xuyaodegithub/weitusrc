@@ -273,10 +273,11 @@ export default {
     margin-top: 30px;
     display: flex;
     padding:0 40px;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
   }
     #bianji .left{
       width:300px;
+      margin-right: 45px;
     }
   #bianji .left > p:first-child{
     display: flex;
@@ -318,8 +319,9 @@ width: 12%;
 
   #bianji .right{
     /*margin-left: 100px;*/
-    flex:0.9;
+    /*flex:0.9;*/
     height:100%;
+    min-width:700px;
     /*padding-right:40px;*/
   }
   #bianji .right > label{

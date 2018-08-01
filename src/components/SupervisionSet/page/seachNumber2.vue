@@ -1,5 +1,10 @@
 <template>
   <div class="seach-list" id="SaleNewone">
+    <!--<label>会员账号:</label>-->
+    <!--<el-input v-model="isName" placeholder="请输入" size="mini"></el-input>-->
+    <!--<el-button type="primary" style="width:100px;margin-left: 50px;" round size="mini" icon="el-icon-search"-->
+               <!--@click="seachGoodsList()">筛选-->
+    <!--</el-button>-->
     <el-table
       v-loading="loading"
       :data="findMsgResult.result.rows"
@@ -8,36 +13,23 @@
       tooltip-effect="light"
       :cell-style="{'height': '50px','padding': '6px 0'}"
       :header-cell-style="{'color':'#000000','fontWeight':'600'}">
-      <!-- <el-table-column
-         type="selection"
-         width="30">
-       </el-table-column>-->
+       <!--<el-table-column-->
+         <!--type="selection"-->
+         <!--width="30">-->
+       <!--</el-table-column>-->
       <el-table-column
         v-for="(item,index) in dataList"
         :label="item.title"
         :key="index"
         show-overflow-tooltip>
         <template slot-scope="scope">
-          <span style="margin-left: 10px" v-if="item.which==='isHeader'">
-            <img :src="scope.row[item.which]" alt="" style="height: 78px;width: 78px;">
-          </span>
-          <span v-else-if="item.which==='status'">
-            {{scope.row[item.which] === 0 ? '未禁用' : '已禁用'}}
-          </span>
-          <span v-else-if="item.which==='logo'">
-           <img :src="scope.row[item.which]" alt="" style="display: block;width: 75px;height: 75px;">
-          </span>
+          <span v-if="item.which==='logo'"><img :src="scope.row[item.which]" alt="" style="width: 76px;height: 76px;display: block;"></span>
+          <span v-else-if="item.which==='status'">{{scope.row[item.which]===0 ? '未禁用' : '已禁用'}}</span>
           <span v-else>{{scope.row[item.which]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" :min-width="550">
+      <el-table-column label="操作" width="450">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            icon="el-icon-edit"
-            @click="updata(scope.row)" plain>编辑
-          </el-button>
           <el-button
             size="mini"
             type="warning"
@@ -46,15 +38,15 @@
           </el-button>
           <el-button
             size="mini"
-            type="success"
-            icon="el-icon-upload2"
-            @click="putMsg(scope.row)" plain>发布发现
+            type="danger"
+            icon="el-icon-delete"
+            @click="deleteA(scope.row)" plain>删除
           </el-button>
           <el-button
             size="mini"
             type="info"
             icon="el-icon-zoom-in"
-            @click="toList(scope.row)" plain>查看文章列表
+            @click="toList(scope.row)" plain>查看文章
           </el-button>
         </template>
       </el-table-column>
@@ -79,25 +71,24 @@
   import { mapActions } from 'vuex'
 
   export default {
-    props: ['msg','msgData'],
     name: 'seachNumber',
     data () {
       return {
+        isName:'',
         currentPage5:1,
         rows:10,
         dataList: [
           {title: '账号昵称', width: '120', which: 'name'},
           {title: '头像', width: '120', which: 'logo'},
-          {title: '帐号说明', width: '230', which: 'desc'},
+//          {title: '姓名', width: '230', which: 'desc'},
           {title: '发现数量', width: '90', which: 'totalFindCount'},
-          {title: '是否禁用', width: '100', which: 'status'},
-//          {title:'账号昵称',width:'100',which:'isN'},
+          {title:'是否禁用',width:'100',which:'status'},
         ],
       }
     },
     computed: {
       ...mapGetters([
-        'loading','findMsgResult'
+        'loading','findMsgResult','findMsgListResult'
       ]),
 
     },
@@ -119,36 +110,39 @@
 //        deep: true
       //     },
     },
-    activated () {
-
-    },
     mounted () {
-      this.getSeachList()
+//      this.getSeachList()
     },
     methods: {
       ...mapActions([
-        'popoverAlert','findAccountActions','findAccountSaveActions'
+        'popoverAlert','findAccountActions','findAccountSaveActions','findMsgListActions','huiyuandeleteActions'
       ]),
       handleSizeChange (val) {
 //        console.log(`每页 ${val} 条`)
-        this.msg.rows=val
-        this.findAccountActions(this.msg)
+        this.rows=val
+        this.getSeachList()
+      },
+      deleteA(val){
+        this.$confirm('确定要删除该条文章么？, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let data={
+            id:val.id
+          }
+          this.huiyuandeleteActions(data)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       handleCurrentChange (val) {
 //        console.log(`当前页: ${val}`)
-        this.msg.page=val
-        this.findAccountActions(this.msg)
-
-      },
-      updata(item){
-        let data={
-          type:'updata',
-          title:'vNew',
-          data:item,
-          which:1,
-          numnew:'first'
-        }
-        this.$emit('to-change',data)
+        this.currentPage5=val
+        this.getSeachList()
       },
       changeStatus(item){
           let data={
@@ -157,33 +151,23 @@
           }
         this.findAccountSaveActions(data)
       },
-      putMsg(item){
-        let data={
-          title:'vNewmsg',
-          data:item,
-          type:'add',
-          which:1,
-          id:item.id
-        }
-        this.$emit('to-change',data)
-      },
-      toList(item){
-        let data={
-          title:'vListmsg',
-          data:item,
-          id:item.id,
-          which:1
-        }
-        this.$emit('to-change',data)
-      },
       getSeachList(){
         let data={
           page:this.currentPage5,
           rows:this.rows,
-          filter_I_type:1
+          filter_I_type:2
         }
         this.findAccountActions(data)
-      }
+      },
+      toList(item){
+        let data={
+          filter_L_accountId:item.id,
+          page:1,
+          rows:10
+        }
+        this.findMsgListActions(data)
+        this.popoverAlert('vOwnFind')
+      },
     }
   }
 </script>

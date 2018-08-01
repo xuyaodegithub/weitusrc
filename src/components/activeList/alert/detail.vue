@@ -51,26 +51,31 @@
           <ul>
             <!--<li v-for="(itemsSon,index) in addCommodityResult[addCommodityResult.length-1].contents" style="width: auto;line-height: 40px;background: #409EFF;margin-right: 10px;border: 1px solid #333;">{{itemsSon.title}}</li>-->
               <li
+                ref="classFB"
                 class="cu"
                 v-for="(itemsSon,key) in addCommodityResult[addCommodityResult.length-1].contents"
-                type="primary"
-                plain
                 :key="key"
-                size="mini"
                 style="margin: 0;padding: 6px;font-weight: 600;color: #999999;"
                 :class="{background : keyNum===key}"
                 @click="changeKey(key)"
               >{{itemsSon.title}}</li>
           </ul>
+          <div class="cent">
+            <ul class="init">
+              <li v-for='item in addCommodityResult[addCommodityResult.length-1].contents[keyindex].dataList'>
+                <img :src="item.image" alt="">
+              </li>
+            </ul>
+          </div>
         </div>
         <!--分类产品-->
-        <div class="cent"  v-if="addCommodityResult[addCommodityResult.length-1].contents.length>0 && addCommodityResult[addCommodityResult.length-1].modelSampleCode==='catlist1'">
+        <!--<div class="cent"  v-if="addCommodityResult[addCommodityResult.length-1].contents.length>0 && addCommodityResult[addCommodityResult.length-1].modelSampleCode==='catlist1'">
           <ul class="init">
             <li v-for='item in addCommodityResult[addCommodityResult.length-1].contents[keyindex].dataList'>
               <img :src="item.image" alt="">
             </li>
           </ul>
-        </div>
+        </div>-->
 			</div>
     <div class="footer_v">
       <p></p>
@@ -115,7 +120,7 @@
 
 		},
 		created: function() {
-
+      window.addEventListener('scroll',this.onpage)
 		},
 		updated(){
 			//console.log(this.backColorResult);
@@ -172,12 +177,17 @@
       changeKey(key){
         this.keyindex=key
         this.keyNum=key
+        window.scrollTo(0,100)
       },
       detail(url){
        window.open(url)
         let data=1515493081168-60000
         //alert(data)
         //alert(new Date(data).toLocaleString())
+      },
+      onpage(){
+        let page=this.$refs.classFB[0]
+        console.log(page.offsetTop)
       }
 
 		}
@@ -287,7 +297,7 @@
 	}
 	.list-top{
 		width: 100%;
-		ul{
+		& > ul{
 			width:100%;
 		   	white-space:nowrap;
 		    overflow: auto;

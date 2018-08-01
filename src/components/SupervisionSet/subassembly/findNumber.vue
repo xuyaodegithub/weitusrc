@@ -1,16 +1,20 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
-      <router-link to="index">首页</router-link> &gt; 发现账号管理
+      <!--<router-link to="index">首页</router-link> &gt; 发现账号管理-->
+      <!--<el-button type="success" round size="mini" icon="el-icon-plus"-->
+                 <!--style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods('third')"-->
+                 <!--v-if="title=='vSeach'">新增会员账号-->
+      <!--</el-button>-->
       <el-button type="success" round size="mini" icon="el-icon-plus"
-                 style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods()"
-                 v-if="title=='vSeach'">新增账号
+                 style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods('first')"
+                 v-if="title=='vSeach'">新增平台账号
       </el-button>
       <!--<el-button type="success" round size="mini" icon="el-icon-plus"
                  style="margin-top: 10px;float: right;margin-right: 50px;" @click="putMsg()"
                  v-else-if="title=='vNewmsg'">新增文章
       </el-button>-->
-      <el-button type="success" size="mini" round style="margin-top: 10px;float: right;margin-right: 180px;"
+      <el-button type="success" size="mini" round style="position: absolute;right:180px;top: 85px;z-index:100;"
                  icon="el-icon-back"
                  @click="goBack()" v-else>返回
       </el-button>
@@ -23,13 +27,18 @@
       </el-button>
     </div>
     <div class="content">
-      <keep-alive>
-        <component :is="title" v-on:to-change="changeTitle" :msg="seachMsg" :msgData="msgData"></component>
-      </keep-alive>
+      <el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
+        <el-tab-pane label="平台账号" name="first">
+          <keep-alive>
+            <component :is="title" v-on:to-change="changeTitle" :msg="seachMsg" :msgData="msgData"></component>
+          </keep-alive>
+        </el-tab-pane>
+        <!--<el-tab-pane label="会员账号" name="third">-->
+          <!--<vSeach2></vSeach2>-->
+        <!--</el-tab-pane>-->
+      </el-tabs>
+
     </div>
-    <!--<div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>-->
-      <!--<v-popover></v-popover>-->
-    <!--</div>-->
   </div>
 
 </template>
@@ -39,37 +48,53 @@
   import {mapActions} from 'vuex'
   import vNew from '../page/newNumber.vue'
   import vSeach from '../page/seachNumber.vue'
+  import vSeach2 from '../page/seachNumber2.vue'
   import vNewmsg from '../page/newMsg.vue'
   import vListmsg from '../page/seachMsg.vue'
-//  import vPopover from '../../popover/popover.vue'
+  import vPopover from '../../popover/popover.vue'
 
   export default {
     name: 'findNumber',
     data() {
       return {
+        activeName2:'first',
         title: 'vSeach',
         isName: '',
+        classFF:'',
+        trueOrFalse:false,
         seachMsg: {
           accountName: '',
           page: 1,
-          rows: 10
+          rows: 10,
+          filter_I_type:1
         },
         msgData: {
           type: '',
           item: '',
           id: '',
-          which: ''
+          which: '',
+          numnew:''
         }
       }
     },
     watch: {
-//    seachWhicheResult2(curVal,oldVal){
-//      if(curVal===1){
-//        this.statusOkOrNo=0
-//      }else{
-//        this.statusOkOrNo=1
-//      }
-//    }
+      activeName2(curVal,oldVal){
+        let data={
+          page:1,
+          rows:10,
+          filter_I_type:1
+        }
+        if(curVal==='first'){
+          this.classFF = 'first'
+        }
+      if(curVal==='first' && this.trueOrFalse){
+        this.findAccountActions(data)
+      }else if(curVal==='third' && this.trueOrFalse){
+        data.filter_I_type=2
+        this.findAccountActions(data)
+      }
+        this.trueOrFalse=false
+    }
     },
     computed: {
       ...mapGetters([
@@ -77,7 +102,7 @@
       ])
     },
     components: {
-      vNew, vSeach, vNewmsg, vListmsg
+      vNew, vSeach, vNewmsg, vListmsg, vPopover,vSeach2
     },
     mounted() {
 
@@ -88,7 +113,10 @@
       ]),
       seachGoodsList() {
 //        let data = {
-          this.seachMsg.accountName=this.isName,
+          this.seachMsg.accountName=this.isName
+          this.seachMsg.page=1
+          this.seachMsg.rows=10
+//          this.seachMsg.filter_I_type=''
 //          page: this.page,
 //          rows: this.rows
 //        }
@@ -98,33 +126,56 @@
         this.msgData.type = data.type
         this.msgData.item = data.data
         this.msgData.which = data.which
+//        this.classFF = data.classFF
         if (data.id) {
           this.msgData.id = data.id
         }
+        if(data.numnew){
+          this.msgData.numnew = data.numnew
+        }
         this.title = data.title
       },
-      addGoods() {
+      addGoods(val) {
+        this.trueOrFalse=true
         this.title = 'vNew'
         this.msgData.type = 'add'
         this.msgData.item = {}
         this.msgData.which = 1
+        this.activeName2='first'
+        this.classFF=val
+        if(val){
+          this.msgData.numnew = val
+//          this.activeName2=val
+        }
       },
       goBack() {
+        this.trueOrFalse=true
+        if(this.msgData.which === 1 && this.classFF === 'third'){
+          this.activeName2='third'
+        }else{
+          this.activeName2='first'
+        }
         if (this.msgData.which === 1) {
           this.title = 'vSeach'
         } else if (this.msgData.which === 2) {
           this.title = 'vListmsg'
           this.msgData.which = 1
         }
-      },
-      putMsg(item) {
-        /* let data={
-           title:'vNewmsg',
-           data:item,
-           type:'add'
-         }
-         this.$emit('to-change',data)*/
 
+      },
+      handleClick(tab, event) {
+        this.isName=''
+        this.seachMsg.accountName=''
+        let data={
+            page:1,
+            rows:10,
+        }
+        if(tab.name==='first'){
+            data.filter_I_type=1
+        }else{
+          data.filter_I_type=2
+        }
+        this.findAccountActions(data)
       },
 
     }

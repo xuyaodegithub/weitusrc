@@ -112,7 +112,9 @@
         </p>-->
         <p style="display: flex"><label style="display: inline-block;width: 80px;text-align: right;" v-if="commodityResult.contents.length>0">分类banner图:</label>
           <!--<el-input v-model="marginPruct" placeholder="请输入内容" size="mini" @blur="change3(marginPruct)"></el-input>-->
-          <img :src="commodityResult.contents[num] ?  commodityResult.contents[num].classBannerImg.image : ''" alt="" style="width: 68px;height: 68px;border: none;"  v-if="commodityResult.contents.length>0">
+          <img :src="commodityResult.contents[num].classBannerImg ?  commodityResult.contents[num].classBannerImg.image : ''" alt="" style="width: 68px;height: 68px;border: none;"  v-if="commodityResult.contents.length>0">
+          <i class="el-icon-close cu" style="float: right;font-size: 14px;color:red;"
+             @click="CloseImg()"></i>
           <el-upload
             v-if="commodityResult.contents.length>0"
             class="upload-demo"
@@ -122,6 +124,7 @@
             :on-success="upSuccessfirstClass">
             <div style="margin: 10px 0 0px 10px;">
               <el-button size="mini" type="success" plain>点击上传</el-button>
+              <!--<span style="font-size: 12px;color: orange;">（必传）</span>-->
             </div>
           </el-upload>
         </p>
@@ -803,7 +806,9 @@
             })
           }
         }
-
+      },
+      CloseImg(){
+          this.commodityResult.contents[this.addDataNumResult].classBannerImg={}
       }
     }
   }

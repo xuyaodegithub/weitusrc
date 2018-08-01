@@ -12,7 +12,7 @@
       </el-popover>
         <i class="el-icon-question" v-popover:popover4></i>
     </div>
-    <p><i></i>退货地址管理<el-button type="success" round size="mini">+新增退货地址</el-button></p>
+    <p><i></i>退货地址管理<el-button type="success" round size="mini" @mouseleave.native="phone=13250808856">+新增退货地址</el-button></p>
     <div class="chalist">
       <div class="adress">
         <p>退货收件人：拼多多-袋鼠售后</p>
@@ -21,7 +21,7 @@
         <p>所在地区：福建宁德福鼎市</p>
         <p>详细地址：鼎融国际广场2栋8楼（鼎义电商）</p>
         <p>
-          <span><i class="el-icon-circle-check-outline"></i>默认地址</span>
+          <span  @mouseover="toshow" ><i class="el-icon-circle-check-outline"></i>默认地址</span>
           <span><i class="el-icon-edit-outline"></i>编辑</span>
           <span><i class="el-icon-delete"></i>删除</span>
         </p>
@@ -52,6 +52,10 @@
       ...mapActions([
         'popoverAlert'
       ]),
+      toshow(){
+//        alert(1)
+       this.phone='13333333333'
+      }
     }
   }
 </script>

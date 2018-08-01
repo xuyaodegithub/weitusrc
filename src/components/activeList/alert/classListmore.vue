@@ -4,6 +4,7 @@
       v-loading="loading"
       :height="250"
       ref="multipleTable"
+      @row-click="addGoodsclass"
       :data="freeUseListResult.rows"
       tooltip-effect="light"
       style="width: 100%"
@@ -45,21 +46,21 @@
           <span>{{ scope.row.limitCount }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+    <el-table-column
         label="每天库存量"
         show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{ scope.row.dayLimitCount }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+    <el-table-column
         label="每人限购数量"
         show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{ scope.row.memberLimitCount }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+    <el-table-column
         label="审核状态"
         show-overflow-tooltip>
         <template slot-scope="scope">
@@ -113,12 +114,12 @@
     width: calc(100% - 25px);
     display: flex;
     flex-wrap: wrap;
-    label{
-      width:60px;
-      display: inline-block;
-      text-align: right;
-      margin-right:10px;
-    }
+       label{
+             width:60px;
+             display: inline-block;
+             text-align: right;
+             margin-right:10px;
+       }
   }
   .popover-main p{
     margin-right: 10px;
@@ -155,9 +156,9 @@
   p .el-radio+.el-radio{
     margin-left: 0;
   }
-  /* p .el-radio-group{
-     width:160px;
-   }*/
+ /* p .el-radio-group{
+    width:160px;
+  }*/
 </style>
 <script>
   import { mapActions } from 'vuex'
@@ -206,7 +207,7 @@
     },
     computed:{
       ...mapGetters([
-        'addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult','radiosResult'
+       'addDataNumResult','commodityResult','getDataListResulr','loading','productlistResult','freeUseListResult','scoreBuyListResult','radiosResult'
       ]),
     },
     methods: {
@@ -217,41 +218,64 @@
         let keynum=0
         if(rows.length>0){
           for(let i=0;i<rows.length;i++){
-            if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(rows[i])) === -1){
-              // if(this.commodityResult.contents[this.addDataNumResult].dataList.indexOf(rows[i]) === -1){
-              let obj=rows[i]
-//              if(this.radio2==='普通商品'){
-//                obj.type=1
-//              }else if(this.radio2==='拼团商品'){
-//                obj.type=11
-//              }else if(this.radio2==='积分试用商品'){
-//                obj.type=8
-//              }else if(this.radio2==='更多试用商品'){
-              obj.type=4
-//              }
+            let obj={}
+            obj.productName=rows[i].productName
+            obj.productId=rows[i].productId
+            obj.image=rows[i].image
+            obj.type=2
+            obj.productType=4
+            obj.salePriceView=rows[i].price
+            if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(obj)) === -1){
               this.commodityResult.contents[this.addDataNumResult].dataList.push(obj)
             }else{
               keynum+=1
             }
           }
-          if(keynum>0){
-            this.$message({
-              message:'重复商品已过滤',
-              type:'success'
-            })
-          }else{
-            this.$message({
-              message:'添加成功',
-              type:'success'
-            })
-          }
-          this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.addDataNumResult].dataList)
+            if(keynum>0){
+              this.$message({
+                message:'重复商品已过滤',
+                type:'success'
+              })
+            }else{
+              this.$message({
+                message:'添加成功',
+                type:'success'
+              })
+            }
+            this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.addDataNumResult].dataList)
         }else{
           this.$message({
             message: '请先选择商品',
             type: 'warning'
           });
         }
+      },
+      addGoodsclass(rows){
+        let keynum=0
+        let obj={}
+        obj.productId=rows.productId
+        obj.productName=rows.productName
+        obj.image=rows.image
+        obj.type=2
+        obj.productType=4
+        obj.salePriceView=rows.price
+        if(JSON.stringify(this.commodityResult.contents[this.addDataNumResult].dataList).indexOf(JSON.stringify(obj)) === -1){
+          this.commodityResult.contents[this.addDataNumResult].dataList.push(obj)
+        }else{
+          keynum+=1
+        }
+        if(keynum>0){
+          this.$message({
+            message:'重复商品已过滤',
+            type:'success'
+          })
+        }else{
+          this.$message({
+            message:'添加成功',
+            type:'success'
+          })
+        }
+        this.$store.commit('GET_CLASS_DATA_LIST',this.commodityResult.contents[this.addDataNumResult].dataList)
       },
       toggleSelection(rows) {
         if (rows) {
