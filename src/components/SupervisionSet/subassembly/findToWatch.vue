@@ -92,7 +92,7 @@
         <div class="main">
           <el-carousel :autoplay="false" height="460px" v-if="isClass===1">
             <el-carousel-item v-for="(item,index) in dialogImageUrl" :key="index">
-              <img :src="item.linkUrl" alt="" style="display:block;width: 100%;height: 100%;">
+              <img :src="item.linkUrl" alt="" style="display:block;height: 100%;margin: 0 auto;">
             </el-carousel-item>
           </el-carousel>
           <div v-else-if="isClass===2">

@@ -1,11 +1,11 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
-      <!--<router-link to="index">首页</router-link> &gt; 发现账号管理-->
-      <!--<el-button type="success" round size="mini" icon="el-icon-plus"-->
-                 <!--style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods('third')"-->
-                 <!--v-if="title=='vSeach'">新增会员账号-->
-      <!--</el-button>-->
+      <router-link to="index">首页</router-link> &gt; 发现账号管理
+      <el-button type="success" round size="mini" icon="el-icon-plus"
+                 style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods('third')"
+                 v-if="title=='vSeach'">新增会员账号
+      </el-button>
       <el-button type="success" round size="mini" icon="el-icon-plus"
                  style="margin-top: 10px;float: right;margin-right: 50px;" @click="addGoods('first')"
                  v-if="title=='vSeach'">新增平台账号
@@ -33,9 +33,9 @@
             <component :is="title" v-on:to-change="changeTitle" :msg="seachMsg" :msgData="msgData"></component>
           </keep-alive>
         </el-tab-pane>
-        <!--<el-tab-pane label="会员账号" name="third">-->
-          <!--<vSeach2></vSeach2>-->
-        <!--</el-tab-pane>-->
+        <el-tab-pane label="会员账号" name="third">
+          <vSeach2></vSeach2>
+        </el-tab-pane>
       </el-tabs>
 
     </div>

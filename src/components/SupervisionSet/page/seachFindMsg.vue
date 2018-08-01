@@ -16,7 +16,6 @@
         v-for="(item,index) in dataList"
         :label="item.title"
         :key="index"
-        :width="item.width"
         show-overflow-tooltip>
         <template slot-scope="scope">
           <!--<span style="margin-left: 10px" v-if="item.which==='isHeader'">-->
@@ -33,7 +32,7 @@
           <span v-else>{{scope.row[item.which]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" :min-width="350">
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"
