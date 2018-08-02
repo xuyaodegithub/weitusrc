@@ -1,7 +1,7 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
-      <!--<router-link to="index">首页</router-link> &gt; 经理购买记录-->
+      <router-link to="index">首页</router-link> &gt; 发现审核
     </p>
     <div class="topseach">
       <label>昵称:</label>
@@ -168,7 +168,7 @@
   components:{
     vFirst,vSecond
   },
-    mounted(){
+    activated(){
       this.getdataFindList()
     },
   methods: {
@@ -238,6 +238,7 @@
 //          filter_S_title:'',
           filter_S_accountName:this.isName,
         filter_I_isAudit:this.isStatus === 3 ? '': this.isStatus,
+        teID:22
         }
         this.findMsgListActions(data)
     },

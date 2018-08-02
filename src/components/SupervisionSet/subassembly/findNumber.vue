@@ -14,7 +14,7 @@
                  style="margin-top: 10px;float: right;margin-right: 50px;" @click="putMsg()"
                  v-else-if="title=='vNewmsg'">新增文章
       </el-button>-->
-      <el-button type="success" size="mini" round style="position: absolute;right:180px;top: 85px;z-index:100;"
+      <el-button type="success" size="mini" round style="position: absolute;right:180px;top: 120px;z-index:100;"
                  icon="el-icon-back"
                  @click="goBack()" v-else>返回
       </el-button>

@@ -118,7 +118,7 @@
     activated () {
 
     },
-    mounted () {
+    activated () {
       this.findMsgListActions(this.msg)
     },
     methods: {

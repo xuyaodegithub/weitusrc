@@ -1,7 +1,7 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
-      <!--<router-link to="index">首页</router-link> &gt; 经理购买记录-->
+      <router-link to="index">首页</router-link> &gt; 经理购买记录
     </p>
     <div class="topseach">
       <label>账号:</label>

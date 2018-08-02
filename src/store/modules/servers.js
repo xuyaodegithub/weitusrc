@@ -420,6 +420,9 @@ const servers={
       if(data.filter_L_accountId){
         state.editor.findTotalListMM.filter_L_accountId = data.filter_L_accountId
       }
+      if(data.teID){
+        state.editor.findTotalListMM.filter_L_accountId = ''
+      }
       state.editor.findTotalListMM.page = data.page
       state.editor.findTotalListMM.rows = data.rows
       state.editor.findTotalListMM.filter_S_title = data.filter_S_title
@@ -548,6 +551,7 @@ const servers={
     //get获取封装
     GoodsMsgGet ({dispatch, state, commit, rootState},funUrl) {
      axios.defaults.baseURL =rootState.editor.axiosUrl;
+     commit('changeloading')
       axios({
         method: 'get',
         url:funUrl[0],
@@ -555,7 +559,7 @@ const servers={
         params: state.editor[funUrl[2]]
       }).then(function(res){
         //console.log(res)
-         // context.commit('changeloading')
+        commit('changeloading')
          if(res.data.length>0){
            commit(funUrl[1],res)
           }else{
@@ -563,7 +567,7 @@ const servers={
          }
         })
         .catch(function(err){
-        // context.commit('changeloading')
+        commit('changeloading')
           //console.log(err)
         })
     },
