@@ -1,7 +1,7 @@
 <template>
   <div id="smalltitle">
     <p id="toindex">
-      <router-link to="index">首页</router-link> &gt; 发现审核
+      <!--<router-link to="index">首页</router-link> &gt; 经理购买记录-->
     </p>
     <div class="topseach">
       <label>昵称:</label>
@@ -23,7 +23,7 @@
         v-loading="loading"
         :data="findMsgListResult.result.rows"
         @selection-change="handleSelectionChange"
-        style="width: 100%"
+        style="width: 100%;margin-top: 20px;"
         ref="multipleTable"
         tooltip-effect="light"
         :cell-style="{'height':'50px','padding':'6px 0'}"
@@ -90,21 +90,29 @@
           <span class="title">发现详情</span><i v-on:click="closeAlert" class="el-icon-close"></i>
         </div>
         <div class="main">
-          <el-carousel :autoplay="false" height="460px" v-if="isClass===1">
-            <el-carousel-item v-for="(item,index) in dialogImageUrl" :key="index">
-              <img :src="item.linkUrl" alt="" style="display:block;height: 100%;margin: 0 auto;">
-            </el-carousel-item>
-          </el-carousel>
+          <!--<el-carousel :autoplay="false" height="460px" v-if="isClass===1">-->
+          <!--<el-carousel-item v-for="(item,index) in dialogImageUrl" :key="index">-->
+          <!--<img :src="item.linkUrl" alt="" style="display:block;height: 100%;margin: 0 auto;">-->
+          <!--</el-carousel-item>-->
+          <!--</el-carousel>-->
+          <div v-if="isClass===1" style="display: flex;flex-wrap: wrap;padding:15px;">
+            <div  v-for="(item,index) in dialogImageUrl" :key="index" style="width: 160px;height: 160px;margin-right: 10px;">
+              <img :src="item.linkUrl" alt="" style="display: block;width: 100%;height: 100%;">
+            </div>
+          </div>
           <div v-else-if="isClass===2">
-            <video id="playVideo" :src="dialogImageUrl[0].linkUrl"  controls  @click="toplay()" ref="video" class="cu" width="800" height="460">
+            <video id="playVideo" :src="dialogImageUrl[0].linkUrl"  controls  @click="toplay()" ref="video" class="cu" width="800" height="510">
               <source :src="dialogImageUrl[0].linkUrl" type="video/mp4">
               <source :src="dialogImageUrl[0].linkUrl" type="video/ogg">
               <source :src="dialogImageUrl[0].linkUrl" type="video/webm">
-              您的浏览器不支持 video 标签。
+              您的浏览器不支持 video 标签。请换成新版游览器
             </video>
           </div>
+          <div style="line-height: 460px;font-size: 24px;color: orange;text-align: center" v-else-if="isClass===3">
+            数据加载中...
+          </div>
           <div v-else style="line-height: 460px;font-size: 24px;color: orange;text-align: center">
-              此篇发现文章不包含图片或视频
+            此篇发现文章不包含图片或视频
           </div>
         </div>
       </div>
@@ -118,40 +126,33 @@
   import { mapActions } from 'vuex'
   import vFirst from '../pinkSet/bossList.vue'
   import vSecond from '../pinkSet/wantbossList.vue'
- // import vFirst from '../page/first.vue'
+  // import vFirst from '../page/first.vue'
   var  XLSX= require('xlsx')
   export default {
-  name: 'findWatch',
-  data () {
-    return {
-      isClass:'',
-      isShow:false,
-      dialogImageUrl:[],
-      isName:'',
-      msg:false,
-      isStatus:3,
-      currentPage5:1,
-      rows:10,
-      multipleSelection:[],
-      dataList:[
-        {isTitle:'昵称',width:'150',which:'accountName'},
-        {isTitle:'标题',width:'120',which:'title'},
-        {isTitle:'状态',width:'80',which:'isAudit'},
-        {isTitle:'内容',width:'250',which:'content'},
-        {isTitle:'图片或视频',width:'90',which:'isImg'},
-        {isTitle:'产品名',width:'250',which:'productName'},
+    name: 'findWatch',
+    data () {
+      return {
+        isClass:3,
+        isShow:false,
+        dialogImageUrl:[],
+        isName:'',
+        msg:false,
+        isStatus:3,
+        currentPage5:1,
+        rows:10,
+        multipleSelection:[],
+        dataList:[
+          {isTitle:'昵称',width:'150',which:'accountName'},
+          {isTitle:'标题',width:'120',which:'title'},
+          {isTitle:'状态',width:'80',which:'isAudit'},
+          {isTitle:'内容',width:'250',which:'content'},
+          {isTitle:'图片或视频',width:'90',which:'isImg'},
+          {isTitle:'产品名',width:'250',which:'productName'},
 
-      ],
-      dataResult:[
-        {isName:'小胖',isTitle:'小胖专用',isStatus:0,isContent:'此处省略三百字',isImg:'https://img14.360buyimg.com/n5/jfs/t19396/175/95617801/216799/65279e9d/5a5c7622N31780b66.jpg',isProductName:'小胖专用牙刷216358563'},
-        {isName:'小鲜肉',isTitle:'小鲜肉专用',isStatus:1,isContent:'此处省略三百字',isImg:'https://img14.360buyimg.com/n5/jfs/t19396/175/95617801/216799/65279e9d/5a5c7622N31780b66.jpg',isProductName:'小鲜肉专用牙刷216358563'},
-        {isName:'丫头娜娜',isTitle:'丫头娜娜专用',isStatus:2,isContent:'此处省略三百字',isImg:'https://img14.360buyimg.com/n5/jfs/t19396/175/95617801/216799/65279e9d/5a5c7622N31780b66.jpg',isProductName:'丫头娜娜专用牙刷216358563'},
-        {isName:'糊糊',isTitle:'糊糊专用',isStatus:0,isContent:'此处省略三百字',isImg:'https://img14.360buyimg.com/n5/jfs/t19396/175/95617801/216799/65279e9d/5a5c7622N31780b66.jpg',isProductName:'糊糊专用牙刷216358563'},
-        {isName:'蚂蚁',isTitle:'蚂蚁专用',isStatus:1,isContent:'此处省略三百字',isImg:'https://img14.360buyimg.com/n5/jfs/t19396/175/95617801/216799/65279e9d/5a5c7622N31780b66.jpg',isProductName:'蚂蚁专用牙刷216358563'},
-      ]
-    }
-  },
-  watch:{
+        ],
+      }
+    },
+    watch:{
 //    seachWhicheResult2(curVal,oldVal){
 //      if(curVal===1){
 //        this.statusOkOrNo=0
@@ -159,29 +160,31 @@
 //        this.statusOkOrNo=1
 //      }
 //    }
-  },
-  computed:{
-    ...mapGetters([
-     'popoverAlive','loading','findMsgListResult'
-    ])
-  },
-  components:{
-    vFirst,vSecond
-  },
-    activated(){
+    },
+    computed:{
+      ...mapGetters([
+        'popoverAlive','loading','findMsgListResult'
+      ])
+    },
+    components:{
+      vFirst,vSecond
+    },
+    mounted(){
       this.getdataFindList()
     },
-  methods: {
-    ...mapActions([
-'popoverAlert','findMsgListActions','findSaveMsgActions','deleteOnlyIdActions'
-    ]),
-    seachGoodsList(){
+    methods: {
+      ...mapActions([
+        'popoverAlert','findMsgListActions','findSaveMsgActions','deleteOnlyIdActions'
+      ]),
+      seachGoodsList(){
+        this.currentPage5=1
+        this.rows=10
         this.getdataFindList()
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
-    allToallow(val,key){
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      allToallow(val,key){
         this.$confirm('此篇发现文章是否符合？', '提示', {
           distinguishCancelAndClose:true,
           confirmButtonText: '通过',
@@ -191,7 +194,7 @@
             id:val[0].id,
             isAudit:1
           }
-        this.findSaveMsgActions(data)
+          this.findSaveMsgActions(data)
         }).catch(action => {
           console.log(action)
           if(action==='cancel'){
@@ -202,73 +205,81 @@
             this.findSaveMsgActions(data)
           }
         });
-    },
-    allDelete(val){
-      this.$confirm('确定要删除该篇文章么？, 是否继续?', '提示', {
-        distinguishCancelAndClose: true,//区分取消和关闭
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let data={
-          id:val.join(',')
-        }
-      this.deleteOnlyIdActions(data)
-      }).catch((action) => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+      },
+      allDelete(val){
+        this.$confirm('确定要删除该篇文章么？, 是否继续?', '提示', {
+          distinguishCancelAndClose: true,//区分取消和关闭
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let data={
+            id:val.join(',')
+          }
+          this.deleteOnlyIdActions(data)
+        }).catch((action) => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
-      });
-    },
-    handleSizeChange (val) {
+      },
+      handleSizeChange (val) {
 //        console.log(`每页 ${val} 条`)
-      this.rows=val
-      this.getdataFindList()
-    },
-    handleCurrentChange (val) {
+        this.rows=val
+        this.getdataFindList()
+      },
+      handleCurrentChange (val) {
 //        console.log(`当前页: ${val}`)
-      this.currentPage5=val
-      this.getdataFindList()
-    },
-    getdataFindList(){
-      let  data= {
+        this.currentPage5=val
+        this.getdataFindList()
+      },
+      getdataFindList(){
+        let  data= {
           page:this.currentPage5,
           rows:this.rows,
 //          filter_S_title:'',
           filter_S_accountName:this.isName,
-        filter_I_isAudit:this.isStatus === 3 ? '': this.isStatus,
-        teID:22
+          filter_I_isAudit:this.isStatus === 3 ? '': this.isStatus,
         }
         this.findMsgListActions(data)
-    },
-    toDetial(val){
-      this.isShow=true
-      this.$http.get(this.$store.state.editor.axiosUrl+'/admin/find/getById', {
-        params: {id: val.id}
-      }).then(res => {
-        this.dialogImageUrl=res.data.result.fileDtos
+      },
+      toDetial(val){
+        this.isShow=true
+        this.$http.get(this.$store.state.editor.axiosUrl+'/admin/find/getById', {
+          params: {id: val.id}
+        }).then(res => {
+          if(res.data.code===0){
+            console.log(1111)
+            this.dialogImageUrl=res.data.result.fileDtos
 //        this.isLength=res.data.result.fileDtos ? res.data.result.fileDtos.length : 0
-        this.isClass = res.data.result.fileDtos.length>0 ? res.data.result.fileDtos[0].type : ''
+            this.isClass = res.data.result.fileDtos.length>0 ? res.data.result.fileDtos[0].type : ''
 //        this.dialogImageUrl2 = res.data.result.fileDtos
-      })
-    },
-    toplay(){
-      if(this.msg){
-        this.$refs.video.pause()
-        this.msg=false
-      }else{
-        this.$refs.video.play()
-        this.msg=true
+          }else{
+            this.$message({
+              message:'请求错误',
+              type:'error'
+            })
+          }
+
+        })
+      },
+      toplay(){
+        if(this.msg){
+          this.$refs.video.pause()
+          this.msg=false
+        }else{
+          this.$refs.video.play()
+          this.msg=true
+        }
+      },
+      closeAlert(){
+        this.isShow=false
+        this.dialogImageUrl=[]
+        this.isClass=3
       }
-    },
-    closeAlert(){
-      this.isShow=false
-      this.dialogImageUrl=[]
-      this.isClass=''
     }
   }
-}
 </script>
 
 <style scoped lang="scss">
@@ -284,7 +295,7 @@
     margin-bottom: 15px;
   }
   .topseach{
-   & > label{
+    & > label{
       margin: 0 15px;
       color: #E6A23C;
       margin-right: 0;
@@ -298,28 +309,28 @@
     width:150px;
     margin: 0 15px;
   }
-.block{
-  text-align: right;
-  margin-right: 150px;
-}
-.detialAlert{
-  position: fixed;
-  top:50%;
-  left:50%;
-  z-index:100;
-  .demo{
-    margin-top: -250px;
-    margin-left: -400px;
-    width:800px;
-    height:500px;
-    background: #F0FAFF;
-    border-radius: 5px;
-    border: 1px solid #90CCE8;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    overflow: hidden;
-    color: #333333;
+  .block{
+    text-align: right;
+    margin-right: 150px;
   }
-}
+  .detialAlert{
+    position: fixed;
+    top:50%;
+    left:50%;
+    z-index:100;
+    .demo{
+      margin-top: -250px;
+      margin-left: -400px;
+      width:800px;
+      height:550px;
+      background: #F0FAFF;
+      border-radius: 5px;
+      border: 1px solid #90CCE8;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      overflow: hidden;
+      color: #333333;
+    }
+  }
   .popover-head{
     width: 100%;
     height: 40px;

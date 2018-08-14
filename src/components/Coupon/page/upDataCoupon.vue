@@ -38,9 +38,9 @@
       <el-button type="success" round size="mini" style="width:100px" @click="popoverAlert('VchoseGoods')" :disabled="YHQonlyResult.Which==='second'">浏览</el-button>
     </p>
     <p><label style="vertical-align: top">券总数量:</label><el-input type="text" v-model="input1" placeholder="请输入数量" size="small"></el-input>
-    <span style="color:#999999; margin-left: 10px">已领{{YHQonlyResult.item.receivedNum}}</span>
+      <span style="color:#999999; margin-left: 10px">已领{{YHQonlyResult.item.receivedNum}}</span>
     </p>
-    <p><label>每个ID限领数量:</label><el-input type="text" v-model="value" placeholder="请输入数量" size="small" :disabled="YHQonlyResult.Which==='second'"></el-input>
+    <p><label>每个ID限领数量:</label><el-input type="text" v-model="value" placeholder="请输入数量" size="small"></el-input><!--:disabled="YHQonlyResult.Which==='second'"-->
       <!--<el-select v-model="value" placeholder="请选择" size="small" disabled>
         <el-option
           v-for="item in options"
@@ -83,7 +83,7 @@
       </el-checkbox-group>
     </p>
     <p>
-    <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">提交修改</el-button></p>
+      <el-button type="primary" size="small" plain style="margin-top: 10px" @click="upload()">提交修改</el-button></p>
   </div>
 
 </template>
@@ -91,147 +91,148 @@
 <script>
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
-export default {
-  name: 'UpdataYHQ',
-  data () {
-    return {
-      input:'',
-      input0:'',
-      value:'',
-      input1:'',
-      input2:'',
-      input3:'',
-      updata2:'',
-      updata10:'',
-      updataTwo:[],
-      updataThree:[],
-      radio:'',
-      radio2:'',
-      autoTime:'',
-      id:'',
-      options:[
-        {
-          value: '1',
-          label: '1张'
-        }, {
-          value: '2',
-          label: '2张'
-        }, {
-          value: '3',
-          label: '3张'
-        }, {
-          value: '4',
-          label: '5张'
-        }, {
-          value: '5',
-          label: '不限'
-        }
-      ]
-    }
-  },
-  activated(){
-   this.dateformat()
-    console.log(this.input0)
-  },
-  computed:{
-    ...mapGetters([
-        'pickerOptions2','YHQonlyResult','CouponWithGoodsResult'
-    ])
-  },
-  methods: {
-    ...mapActions([
-    'popoverAlert','YHQonlyActions','createCouponActions'
-    ]),
-    upload(){
-      let obj={
-        id:this.YHQonlyResult.item.id,
-        num:this.input1,
-        itemson:'update',
-        Which:this.YHQonlyResult.Which,
-        isAudit:this.updata2
+  export default {
+    name: 'UpdataYHQ',
+    data () {
+      return {
+        input:'',
+        input0:'',
+        value:'',
+        input1:'',
+        input2:'',
+        input3:'',
+        updata2:'',
+        updata10:'',
+        updataTwo:[],
+        updataThree:[],
+        radio:'',
+        radio2:'',
+        autoTime:'',
+        id:'',
+        options:[
+          {
+            value: '1',
+            label: '1张'
+          }, {
+            value: '2',
+            label: '2张'
+          }, {
+            value: '3',
+            label: '3张'
+          }, {
+            value: '4',
+            label: '5张'
+          }, {
+            value: '5',
+            label: '不限'
+          }
+        ]
       }
-      console.log(this.YHQonlyResult.Which)
-      if(this.YHQonlyResult.Which==='first'){
-        obj.title=this.input
+    },
+    activated(){
+      this.dateformat()
+      console.log(this.input0)
+    },
+    computed:{
+      ...mapGetters([
+        'pickerOptions2','YHQonlyResult','CouponWithGoodsResult'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        'popoverAlert','YHQonlyActions','createCouponActions'
+      ]),
+      upload(){
+        let obj={
+          id:this.YHQonlyResult.item.id,
+          num:this.input1,
+          itemson:'update',
+          Which:this.YHQonlyResult.Which,
+          isAudit:this.updata2,
+          limitReceived:this.value
+
+        }
+        console.log(this.YHQonlyResult.Which)
+        if(this.YHQonlyResult.Which==='first'){
+          obj.title=this.input
 //        obj.endTime=this.input0[1].getTime()
 //        obj.startTime=this.input0[0].getTime()
-        obj.validType=this.radio2
-        obj.expireRemind=this.updataThree.join(',')
-        obj.limitLevel=this.updataTwo.join(',')
-        obj.limitReceived=this.value
-        obj.price=this.input2*100
-        obj.type=this.radio
-        obj.productIds=this.CouponWithGoodsResult.productIds
-        obj.togetherProductIds=this.CouponWithGoodsResult.togetherProductIds ? this.CouponWithGoodsResult.togetherProductIds : '0'
-        obj.productType=this.CouponWithGoodsResult.productType
-        obj.isPublic=this.updata10
-        if(this.radio2==1){
-          obj.endTime=this.input0[1].getTime()
-          obj.startTime=this.input0[0].getTime()
-        }else{
-          obj.validPeriodDays=this.autoTime
+          obj.validType=this.radio2
+          obj.expireRemind=this.updataThree.join(',')
+          obj.limitLevel=this.updataTwo.join(',')
+          obj.price=this.input2*100
+          obj.type=this.radio
+          obj.productIds=this.CouponWithGoodsResult.productIds
+          obj.togetherProductIds=this.CouponWithGoodsResult.togetherProductIds ? this.CouponWithGoodsResult.togetherProductIds : '0'
+          obj.productType=this.CouponWithGoodsResult.productType
+          obj.isPublic=this.updata10
+          if(this.radio2==1){
+            obj.endTime=this.input0[1].getTime()
+            obj.startTime=this.input0[0].getTime()
+          }else{
+            obj.validPeriodDays=this.autoTime
+          }
+          // obj.itemson='create'
         }
-       // obj.itemson='create'
-      }
-      console.log(obj)
-      if(this.input1<this.YHQonlyResult.item.receivedNum){
-        this.$message({
-          message:'修改总数量不可少于已领数量',
-          type:'warning'
-        })
-      }else{
-        this.createCouponActions(obj)
-        this.YHQonlyActions({title:'VseachCoupon',item:''})
-      }
-    },
-    dateformat() {
-      this.input=this.YHQonlyResult.item.title;
-      this.input1=this.YHQonlyResult.item.num;
-      this.value=this.YHQonlyResult.item.limitReceived
-      this.updata2=this.YHQonlyResult.item.isAudit;
-      this.updataThree=String(this.YHQonlyResult.item.expireRemind).split(',');
-      this.updataTwo=this.YHQonlyResult.item.limitLevel.split(',');
-      this.input0=[new Date(this.YHQonlyResult.item.startTime),new Date(this.YHQonlyResult.item.endTime)];
-      this.input2=this.YHQonlyResult.item.price/100;
-      this.input3=this.YHQonlyResult.item.productName;
-      this.radio=1
-      this.id=this.YHQonlyResult.item.id;
-      this.updata10=this.YHQonlyResult.item.isPublic;
-      this.radio2=this.YHQonlyResult.item.validType;
-      this.autoTime=this.YHQonlyResult.item.validPeriodDays;
-      console.log(this.updataThree)
-    },
+        console.log(obj)
+        if(this.input1<this.YHQonlyResult.item.receivedNum){
+          this.$message({
+            message:'修改总数量不可少于已领数量',
+            type:'warning'
+          })
+        }else{
+          this.createCouponActions(obj)
+          this.YHQonlyActions({title:'VseachCoupon',item:''})
+        }
+      },
+      dateformat() {
+        this.input=this.YHQonlyResult.item.title;
+        this.input1=this.YHQonlyResult.item.num;
+        this.value=this.YHQonlyResult.item.limitReceived
+        this.updata2=this.YHQonlyResult.item.isAudit;
+        this.updataThree=String(this.YHQonlyResult.item.expireRemind).split(',');
+        this.updataTwo=this.YHQonlyResult.item.limitLevel.split(',');
+        this.input0=[new Date(this.YHQonlyResult.item.startTime),new Date(this.YHQonlyResult.item.endTime)];
+        this.input2=this.YHQonlyResult.item.price/100;
+        this.input3=this.YHQonlyResult.item.productName;
+        this.radio=1
+        this.id=this.YHQonlyResult.item.id;
+        this.updata10=this.YHQonlyResult.item.isPublic;
+        this.radio2=this.YHQonlyResult.item.validType;
+        this.autoTime=this.YHQonlyResult.item.validPeriodDays;
+        console.log(this.updataThree)
+      },
+    }
   }
-}
 </script>
 
 <style scoped>
   #newActive{
     margin-top: 30px;
   }
-#newActive > p .el-input{
-  width:200px;
-}
-#newActive p{
-  margin-bottom:20px;
-}
-#newActive .upload-demo{
-  display:block;
-  margin-left: 115px;
-  margin-top: 15px;
-  width:400px;
-}
+  #newActive > p .el-input{
+    width:200px;
+  }
+  #newActive p{
+    margin-bottom:20px;
+  }
+  #newActive .upload-demo{
+    display:block;
+    margin-left: 115px;
+    margin-top: 15px;
+    width:400px;
+  }
   #newActive p > label{
     width:100px;
     display: inline-block;
     text-align: right;
     margin-right: 15px;
   }
- .tep label{
-   margin-right: 30px;
- }
+  .tep label{
+    margin-right: 30px;
+  }
   .el-radio+.el-radio{
-    margin-left:0;
+    margin-left:10px;
   }
   #newActive p:last-child{
     margin-left:100px;
@@ -243,6 +244,6 @@ export default {
     display: inline-block;
   }
   .el-checkbox+.el-checkbox{
-    margin-left: 0;
+    margin-left: 10px;
   }
 </style>

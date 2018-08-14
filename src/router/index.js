@@ -52,6 +52,7 @@ import ServiceData from '@/components/CustomerService/subassembly/ServiceData.vu
 import ServiceTools from '@/components/CustomerService/subassembly/ServiceTools.vue'
 import NewsSet from '@/components/CustomerService/subassembly/NewsSet.vue'
 import RecordSeach from '@/components/CustomerService/subassembly/RecordSeach.vue'
+import indexchange from '@/components/otherPage/subassembly/indexchange.vue'
 
 Vue.use(Router)
 
@@ -71,6 +72,7 @@ export default new Router({
           { path: '1-5', name:"Find", component:Find },
           { path: '1-6', name:"boss", component:boss },
           { path: '1-7', name:"findToWatch", component:findToWatch },
+          { path: '1-8', name:"indexchange", component:indexchange },
           { path: '2-1', name:"SaleAfter", component:SaleAfter },
           { path: '2-2', name:"SaleAfterQuality", component:SaleAfterQuality },
           { path: '2-3', name:"SaleAfterSet", component:SaleAfterSet },

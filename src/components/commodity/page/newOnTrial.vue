@@ -72,16 +72,12 @@
         <el-input v-model="tryTime" size="small"></el-input>
         <span style="font-size: 12px;color: orange;margin-left: 10px;">（试用周期，关系到退款时间）</span>
       </el-form-item>
-      <el-form-item label="推广奖励:" required>
-        <el-input v-model="promotionAward" size="small"></el-input>
-        <span style="font-size: 12px;color: orange;margin-left: 10px;">（单位元）</span>
-      </el-form-item>
       <el-form-item label="试用类型:" required>
         <el-radio-group v-model="typeTrial"><!--:disabled="classWh === '1'"-->
           <el-radio :label=1 style="width: auto;">普通试用</el-radio>
           <!--<el-radio :label=2 style="width: auto;">新品首发</el-radio>-->
           <el-radio :label=3 style="width: auto;">整点抢</el-radio>
-          <!--<el-radio :label=4 style="width: auto;">试海外</el-radio>-->
+          <el-radio :label=4 style="width: auto;">付邮试</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="添加场次:" v-if="typeTrial==3">
@@ -168,6 +164,10 @@
           <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
         </el-upload>
       </el-form-item>
+      <el-form-item label="推广奖励:" required v-if="typeTrial!==3">
+        <el-input v-model="promotionAward" size="small"></el-input>
+        <span style="font-size: 12px;color: orange;margin-left: 10px;">（单位元）</span>
+      </el-form-item>
       <el-form-item label="排序:" required>
         <el-input v-model="form.sort" size="small"></el-input>
         <span style="font-size: 12px;color: orange;margin-left: 10px;">（带 * 的为必填项）</span>
@@ -178,11 +178,21 @@
           <el-radio :label=0 style="width: auto;">否</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="审核状态:">
+      <el-form-item label="上下架状态:">
         <el-radio-group v-model="isStatus"><!--:disabled="classWh === '1'"-->
           <el-radio :label=1 style="width: auto;">上架</el-radio>
           <el-radio :label=0 style="width: auto;">下架</el-radio>
         </el-radio-group>
+      </el-form-item>
+      <el-form-item label="上架时间:" v-if="isStatus===1 && typeTrial!==3">
+        <el-date-picker
+          size="mini"
+          v-model="isUpTime"
+          type="datetime"
+          format="yyyy-MM-dd HH:mm:ss"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          placeholder="选择日期时间">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" plain @click="saveProduct()" size="small" v-if="upDataSaleGoodsResult.type==='add'">
@@ -259,6 +269,7 @@
         isAudio: '',
         dialogImageUrl: '',
         dialogImageUrl2: '',
+        isUpTime:''
       }
     },
     computed: {
@@ -358,7 +369,8 @@
         this.isSetTop = 1
         this.isStatus = 1
         this.tryTime = '',
-        this.promotionAward=''
+          this.promotionAward=''
+        this.isUpTime=''
       } else {
         let obj = {
           togetherProductIds: '',
@@ -393,6 +405,7 @@
         this.isOutCountry = this.upDataSaleGoodsResult.item.isOverSeasProduct
         this.tryTime = this.upDataSaleGoodsResult.item.freeUseDays
         this.promotionAward=this.upDataSaleGoodsResult.item.promotionAward
+        this.isUpTime=this.upDataSaleGoodsResult.item.startDate
         let data = {
           freeUseProductId: this.upDataSaleGoodsResult.item.id,
           type: 1
@@ -429,7 +442,7 @@
           // normalStores:'',//试用库存
           tip: this.form.trip,
           freeUseDays: this.tryTime,
-          filter_S_promotionAward:this.promotionAward
+//          filter_S_promotionAward:this.promotionAward
           // startDate:,
           //endDate:'',
         }
@@ -449,6 +462,7 @@
           data.countryId = this.value8
         } else {
 //         this.isTypeTrial=false
+          data.startDate = this.isUpTime
           data.filter_S_promotionAward=this.promotionAward
           if(!data.indexImage){
             this.$message({

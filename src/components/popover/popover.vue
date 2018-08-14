@@ -39,6 +39,7 @@
   import addActive from '../SupervisionSet/page/addActive.vue'
   import addYhqActive from './addYhqActive.vue'
   import vOwnFind from './ownFind.vue'
+  import vAddLun from './addLunData.vue'
   export default {
     data() {
       return {
@@ -47,7 +48,8 @@
     },
     components:{
      vBalance,vAddSubass,vAddGoods,Vdetail,VaddBackground,VactiveDress,VclassSell,VactiveLianJian,
-      VchoseGoods,VwithYHQ,VChoseGoodsStore,WatchPrice,OnTrialwatchPrice,addCountry,addActive,addYhqActive,vOwnFind
+      VchoseGoods,VwithYHQ,VChoseGoodsStore,WatchPrice,OnTrialwatchPrice,addCountry,addActive,addYhqActive,vOwnFind,
+      vAddLun
 
     },
     methods: {

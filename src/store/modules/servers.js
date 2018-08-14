@@ -186,6 +186,24 @@ const servers={
       //会员列表
       accountNoMM:{
         page:'',rows:'',filter_S_accountNo:''
+      },
+      //轮播图列表
+      indexListLunMM:{
+        filter_I_linkType:'',
+        filter_I_type:'',
+        page:'',
+        rows:'',
+        sortField:''
+      },
+      //新增/修改轮播图
+      addAndUpdataListMM:{
+        id:'',
+        image:'',
+        linkType:'',
+        name:'',
+        sort:'',
+        type:'',
+        url:''
       }
     },
     page:{
@@ -225,7 +243,9 @@ const servers={
       //申请列表
       applySupervisorList:[],
       //会员列表
-      accountNoListResult:[]
+      accountNoListResult:[],
+      //轮播图列表
+      indexListLunResult:[]
     }
   },
   mutations:{
@@ -480,6 +500,27 @@ const servers={
     },
     GET_ACCOUNT_NO(state,res) {
       state.page.accountNoListResult=res.data
+    },
+    //轮播图列表
+    SET_INDEX_LIST_LUN(state,data){
+      state.editor.indexListLunMM.filter_I_type=data.filter_I_type
+      state.editor.indexListLunMM.filter_I_linkType=data.filter_I_linkType
+      state.editor.indexListLunMM.page=data.page
+      state.editor.indexListLunMM.rows=data.rows
+      state.editor.indexListLunMM.sortField=data.sortField
+    },
+    GET_INDEX_LIST_LUN(state,res){
+      state.page.indexListLunResult=res.data
+    },
+    //新增修改
+    SET_ADDANDUPDATA_LIST(state,data){
+      state.editor.addAndUpdataListMM.id=data.id
+      state.editor.addAndUpdataListMM.sort=data.sort
+      state.editor.addAndUpdataListMM.type=data.type
+      state.editor.addAndUpdataListMM.name=data.name
+      state.editor.addAndUpdataListMM.url=data.url
+      state.editor.addAndUpdataListMM.image=data.image
+      state.editor.addAndUpdataListMM.linkType=data.linkType
     }
   },
   getters:{
@@ -545,6 +586,10 @@ const servers={
     //会员列表
     accountNoListResult:state =>{
       return state.page.accountNoListResult
+    },
+    //轮播图列表
+    indexListLunResult:state =>{
+      return state.page.indexListLunResult
     }
   },
   actions:{
@@ -872,7 +917,33 @@ const servers={
       )
     },
 
+//各种后续操作封装
+    savePostAsk ({dispatch, state, commit, rootState},funUrl) {
+      axios.defaults.baseURL =rootState.editor.axiosUrl;
+      axios({
+        method: 'post',
+        url:funUrl[0],
+        dataType: 'JSON',
+        data: qs.stringify(state.editor[funUrl[2]])
+      }).then(function(res){
+        if(res.data==='success'){
+          Message({
+            message:'操作成功',
+            type:'success'
+          })
+          dispatch(funUrl[3],state.editor[funUrl[4]])
+        }else{
+          Message({
+            message:'操作失败',
+            type:'error'
+          })
+        }
+      })
+        .catch(function(err){
 
+
+        })
+    },
     //get封装
     findMsgGet ({dispatch, state, commit, rootState},funUrl) {
       axios.defaults.baseURL =rootState.editor.axiosUrl;
@@ -1010,6 +1081,22 @@ const servers={
         }
       )
     },
+    //轮播图列表
+    indexListLunActions({commit, dispatch, state, rootState},data){
+      commit('SET_INDEX_LIST_LUN',data)
+      dispatch('GoodsMsgGet',['/admin/index/list','GET_INDEX_LIST_LUN','indexListLunMM'])
+
+    },
+    //删除轮播图
+    deleteindexLunActions({commit, dispatch, state, rootState},data){
+      commit('SET_FIND_ONLY_ID',data)
+      dispatch('savePostAsk',['/admin/index/delete','','findOnlyIdMM','indexListLunActions','indexListLunMM'])
+    },
+    //新增修改
+    addOrUpdataActions({commit, dispatch, state, rootState},data){
+      commit('SET_ADDANDUPDATA_LIST',data)
+      dispatch('savePostAsk',['/admin/index/save','','addAndUpdataListMM','indexListLunActions','indexListLunMM'])
+    }
   }
 }
 
