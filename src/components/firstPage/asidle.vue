@@ -2,7 +2,7 @@
   <!--<div style="height: 500px;overflow: hidden">-->
   <div style="position: relative;" class="activeHover">
     <div class="fuCen"></div>
-	<el-aside width='210px' style="background-color: rgb(244, 245, 249);height: 600px;overflow: auto;overflow-x: hidden;padding-bottom: 35px;">
+	<el-aside width='210px' style="" @scroll.native="addTT">
     <el-menu :default-openeds="[]"  background-color="#f4f5f9"  @open="handleOpen"
       @close="handleClose" router unique-opened	>
       <el-submenu index="1">
@@ -57,7 +57,7 @@
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="5">
-        <template slot="title"><i class="el-icon-service"></i>OL客服<i class="el-icon-red te" v-if="alltrue"></i></template>
+        <template slot="title"><i class="el-icon-service"></i>OL客服<i class="el-icon-red te" v-if="alltrue" ref="hehe"></i></template>
         <el-menu-item-group>
           <el-menu-item index="5-1">聊天记录查询</el-menu-item>
           <el-menu-item index="5-2">在线状态<i class="el-icon-red te" v-if="istrue"></i></el-menu-item>
@@ -124,7 +124,18 @@ export default {
   		alltrue:true
   	}
   },
+  mounted(){
+    console.log(document.documentElement.clientWidth)
+    document.addEventListener('click',function(event){
+      console.log(event.clientX+' , '+event.clientY);
+      console.log(event.pageX+' , '+event.pageY);
+      console.log("Screen coordinates "+event.screenX+' , '+event.screenY);
+    },false);
+  },
    methods: {
+     addTT(){
+//       console.log(this.$refs.hehe.scrollTop)
+     },
       handleOpen(key, keyPath) {
 
       },
@@ -135,7 +146,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .el-aside i.el-icon-red.te{
 	width: 10px;height: 10px;border-radius: 50%;background: red;margin:-14px 0 0 3px;
 }
@@ -156,4 +167,21 @@ padding:0;
   .activeHover:hover .fuCen{
     width:9px;
   }
+  .el-aside{
+    background-color: rgb(244, 245, 249);overflow: auto;overflow-x: hidden;padding-bottom: 40px;
+  }
+  @media screen and (max-width:1518px){
+    .el-aside{
+      height:680px;
+    }
+    .fuCen{
+      height:680px;
+    }
+  }
+  @media screen and (max-width:1366px){
+    .el-aside{
+      height:600px;
+    }
+  }
+
 </style>

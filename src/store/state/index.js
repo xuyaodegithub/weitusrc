@@ -5,6 +5,8 @@ const  editor = {//定义入参
   //域名
   axiosUrl:'http://test-admin-h5.olquan.cn',//测试
   //axiosUrl:'/apis',//'http://ol-h5-admin.olquan.cn',//正式
+  axiosQian:'http://ol-h5.olquan.cn',//测试
+  // axiosQian:'https://ol-h5-preview.olquan.cn',//正式
   //品牌管理、根据id获取
   getByIdMM:{
     id:null
@@ -497,7 +499,8 @@ const result = { //接收请求后的数据
     costPriceView:'',
     salePriceView:'',
     marketPriceView:'',
-    image:''
+    image:'',
+    toUrl:''
   },
 //供应商优惠券列表
   StoreYHQListResult:[],

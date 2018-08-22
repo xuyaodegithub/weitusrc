@@ -16,10 +16,14 @@
 * */
 import qs from 'qs';
 import api from '../fetch/api'
+import ask from '../fetch/axiosStop'
 import axios from 'axios'
- // axios.defaults.baseURL ='http://test-admin.olquan.cn'
+// axios.defaults.baseURL ='http://test-admin-h5.olquan.cn';
 axios.defaults.timeout = 10000;//10秒还未得到请求答复，就报超时错误
-//axios.default.headers={'X-Custom-Header': 'foobar'}//全局设置请求头
+//axios.default.headers={'X-Custom-Header': 'foobar'}//全局设置请求头//表示跨域请求时是否需要使用凭证默认false
+//axios全局默认值
+// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 import { Message } from 'element-ui';
 const servers={
   state:{
@@ -595,8 +599,8 @@ const servers={
   actions:{
     //get获取封装
     GoodsMsgGet ({dispatch, state, commit, rootState},funUrl) {
-     axios.defaults.baseURL =rootState.editor.axiosUrl;
-     commit('changeloading')
+      axios.defaults.baseURL =rootState.editor.axiosUrl;
+      commit('changeloading')
       axios({
         method: 'get',
         url:funUrl[0],
@@ -1096,6 +1100,9 @@ const servers={
     addOrUpdataActions({commit, dispatch, state, rootState},data){
       commit('SET_ADDANDUPDATA_LIST',data)
       dispatch('savePostAsk',['/admin/index/save','','addAndUpdataListMM','indexListLunActions','indexListLunMM'])
+    },
+    toask(){
+      ask(['/admin/index/list',{page:1,rows:30}])
     }
   }
 }

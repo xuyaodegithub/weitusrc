@@ -11,6 +11,7 @@ import axios from 'axios'
 import './assets/font/iconfont.css'
 import './assets/public/public.css'//公共样式css
 import echarts from 'echarts'
+//ref属性使用，如果在v-for中使用则是个数组，如果单独在元素或组件上使用，只单独指向元素或组件
 // import vueQuillEditor from 'vue-quill-editor'////////富文本编辑器附带上传图片插件
 // import 'quill/dist/quill.core.css'
 // import 'quill/dist/quill.snow.css'

@@ -1,9 +1,6 @@
 <template>
   <div id="indexchange">
-    <p id="toindex">
-      <router-link to="index">首页</router-link> &gt; 首页管理
-    </p>
-    <div class="header">
+    <div class="header" v-if="isTitle==='vSeach'">
       <label>类型:</label>
       <el-select v-model="value" placeholder="请选择" size="mini">
         <el-option
@@ -23,61 +20,17 @@
         </el-option>
       </el-select>
       <el-button type="primary" style="width:100px;margin-left: 10px;" round size="mini" icon="el-icon-search" @click="seachGoodsList()">搜索</el-button>
-      <el-button type="success" round size="mini" icon="el-icon-plus" style="margin-top: 10px;float:right;margin-right: 80px;" @click="addGoods()">新增数据</el-button>
     </div>
-    <div class="content">
-      <el-table
-        v-loading="loading"
-        :data="indexListLunResult.rows"
-        style="width: 100%"
-        ref="multipleTable"
-        tooltip-effect="light"
-        :cell-style="{height:'50px',padding:'6px 0'}"
-        :header-cell-style="{'color':'#000000','fontWeight':'600'}">
-        <!--<el-table-column-->
-          <!--type="selection"-->
-          <!--width="30">-->
-        <!--</el-table-column>-->
-        <el-table-column
-          v-for="(item,index) in dataList"
-          :label="item.title"
-          :key="index"
-          :width="item.width"
-          :show-overflow-tooltip ="item.which!='sort' && item.which!='isRecommend' && item.which!='image'">
-          <template slot-scope="scope">
-          <span style="margin-left: 10px" v-if="item.which==='image'">
-            <img :src="scope.row[item.which]" alt="" style="width: 78px;height: 78px;display: inline-block;">
-          </span>
-          <span style="margin-left: 10px" v-else-if="item.which==='type'">{{scope.row[item.which] === 4 ? '店主特权轮播图' : '试用中心轮播图' }}</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 3">无</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 2">升级店主</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 10">特卖</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 13">试用中心</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 15">特卖详情</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 16">精品详情</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 17">整点抢详情</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='isRecommend'">{{scope.row[item.which] === 0 ? '否' : '是' }}</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='index'">{{scope.$index+1}}</span>
-          <span style="margin-left: 10px" v-else>{{scope.row[item.which]}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" :width="200">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              icon="el-icon-edit"
-              @click="upData(scope.row)" plain>修改</el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              icon="el-icon-delete"
-              @click="deleteProduct(scope.row)" plain>删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+    <div>
+      <el-button type="success" round size="mini" icon="el-icon-back" v-if="isTitle!=='vSeach'" style="float:right;margin-right: 80px;" @click="goback()">返回</el-button>
+      <el-button type="success" round size="mini" icon="el-icon-plus" style="margin-top: -50px;float:right;margin-right: 80px;" @click="addGoods()" v-else>新增数据</el-button>
     </div>
-    <div class="block">
+      <div class="content">
+        <keep-alive>
+          <component :is="isTitle" :msg="item" v-on:toParese="changeTitle"></component>
+        </keep-alive>
+    </div>
+    <div class="block" v-if="isTitle==='vSeach'">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -88,17 +41,11 @@
         :total="indexListLunResult.total">
       </el-pagination>
     </div>
-    <!--<transition name="slide-fade">
+    <transition name="slide-fade">
       <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>
         <v-popover></v-popover>
       </div>
-    </transition>-->
-    <!--<el-row :gutter="10">-->
-      <!--<el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple"></div></el-col>-->
-      <!--<el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple-light"></div></el-col>-->
-      <!--<el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple"></div></el-col>-->
-      <!--<el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple-light"></div></el-col>-->
-    <!--</el-row>-->
+    </transition>
   </div>
 
 </template>
@@ -107,12 +54,23 @@
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
   import vPopover from '../../popover/popover.vue'
+  import  vSeach from '../page/seachLindex.vue'
+  import  vNew from '../page/newLindex.vue'
   export default {
   name: 'indexchange',
   data () {
     return {
       currentPage5:1,
       rows:10,
+      isTitle:'vSeach',
+      item:{
+        val:{},
+        type:'',
+        linkType:'',
+        page:1,
+        rows:10,
+        addOrup:''
+      },
       options: [
         {value: '', label: '全部'},
         {value: '4', label: '店主特权轮播图'},
@@ -121,24 +79,13 @@
       options2: [
         {value: '', label: '全部'},
         {value: '3', label: '无'},
-        {value: '2', label: '升级店主'},
+        {value: '9', label: '活动'},
         {value: '10', label: '特卖 '},
         {value: '13', label: '试用中心'},
         {value: '15', label: '特卖详情'},
         {value: '16', label: '精品详情'},
         {value: '17', label: '整点抢商品详情'}
         ],
-      dataList:[
-        {title:'序号',width:'60',which:'index'},
-        {title:'类型',width:'140',which:'type'},
-        {title:'图片',width:'110',which:'image'},
-        {title:'跳转链接',width:'',which:'url'},
-        {title:'跳转类型',width:'100',which:'linkType'},
-        {title:'排序',width:'60',which:'sort'},
-        {title:'名称',width:'170',which:'name'},
-//        {title:'价格',width:'',which:'price'},
-        {title:'是否推荐至首页(品牌)',width:'170',which:'isRecommend'}
-      ],
       value: '',
       value2: ''
     }
@@ -158,7 +105,7 @@
     ])
   },
   components:{
-    vPopover
+    vPopover,vSeach,vNew
   },
     mounted(){
       this.getListSome()
@@ -168,32 +115,16 @@
 'popoverAlert','indexListLunActions','deleteindexLunActions','addOrUpdataActions'
     ]),
     seachGoodsList(){
+      this.item.type=this.value
+      this.item.linkType=this.value2
       this.rows=10
       this.currentPage5=1
       this.getListSome()
     },
     addGoods(){
-      this.popoverAlert(['vAddLun',1])
-    },
-    upData(val){
-      this.popoverAlert(['vAddLun',val])
-    },
-    deleteProduct(val){
-      this.$confirm('确定要删除该产品么？, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let data={
-          id:val.id
-        }
-        this.deleteindexLunActions(data)
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
+      this.isTitle='vNew'
+      this.item.addOrup='add'
+      this.item.val={}
     },
     getListSome(){
       let data={
@@ -204,6 +135,14 @@
         sortField:'sort'
       }
       this.indexListLunActions(data)
+    },
+    goback(){
+      this.isTitle='vSeach'
+    },
+    changeTitle(val){
+      this.isTitle=val.title
+      this.item.addOrup=val.type
+      this.item.val=val.item
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

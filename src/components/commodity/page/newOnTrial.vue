@@ -77,7 +77,7 @@
           <el-radio :label=1 style="width: auto;">普通试用</el-radio>
           <!--<el-radio :label=2 style="width: auto;">新品首发</el-radio>-->
           <el-radio :label=3 style="width: auto;">整点抢</el-radio>
-          <el-radio :label=4 style="width: auto;">付邮试</el-radio>
+          <el-radio :label=5 style="width: auto;">付邮试</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="添加场次:" v-if="typeTrial==3">
@@ -369,7 +369,7 @@
         this.isSetTop = 1
         this.isStatus = 1
         this.tryTime = '',
-          this.promotionAward=''
+        this.promotionAward=''
         this.isUpTime=''
       } else {
         let obj = {
@@ -405,7 +405,8 @@
         this.isOutCountry = this.upDataSaleGoodsResult.item.isOverSeasProduct
         this.tryTime = this.upDataSaleGoodsResult.item.freeUseDays
         this.promotionAward=this.upDataSaleGoodsResult.item.promotionAward
-        this.isUpTime=this.upDataSaleGoodsResult.item.startDate
+        this.isUpTime=this.changeTime(new Date(this.upDataSaleGoodsResult.item.startTime))
+        console.log(this.isUpTime)
         let data = {
           freeUseProductId: this.upDataSaleGoodsResult.item.id,
           type: 1
@@ -463,6 +464,7 @@
         } else {
 //         this.isTypeTrial=false
           data.startDate = this.isUpTime
+          console.log(data.startDate)
           data.filter_S_promotionAward=this.promotionAward
           if(!data.indexImage){
             this.$message({
@@ -606,6 +608,36 @@
           image: this.CouponWithGoodsResult.image//主图
         }
         this.$store.commit('Coupon_With_Goods', obj)
+      },
+      changeTime(val){
+        let data=val
+        let year=data.getFullYear()
+        let month=data.getMonth()+1
+        let day= data.getDate()
+        let hour= data.getHours()
+        let min=data.getMinutes()
+        let sec=data.getSeconds()
+        if(month.length<2){
+          month='0'+month
+        }
+        //console.log(year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec)
+        // return year+'-'+month+'-'+day+' '+hour+':'+min+':'+sec
+        if(month<10){
+          month='0'+month
+        }
+        if(day<10){
+          day='0'+day
+        }
+        if(hour<10){
+          hour='0'+hour
+        }
+        if(min<10){
+          min='0'+min
+        }
+        if(sec<10){
+          sec='0'+sec
+        }
+        return year+'-'+month+'-'+day +' '+hour+':'+min+':'+sec
       }
 
     }

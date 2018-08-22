@@ -30,6 +30,7 @@
             <span style="margin-left: 10px" v-else-if="item.which==='type' && scope.row[item.which]=='2'"> 新品首发</span>
             <span style="margin-left: 10px" v-else-if="item.which==='type' && scope.row[item.which]=='3'"> 整点抢</span>
             <span style="margin-left: 10px" v-else-if="item.which==='type' && scope.row[item.which]=='4'"> 试海外</span>
+            <span style="margin-left: 10px" v-else-if="item.which==='type' && scope.row[item.which]=='5'"> 付邮试</span>
             <span style="margin-left: 10px" v-else-if="item.which==='status'">{{scope.row[item.which] == '0' ? '下架' : '上架'}}</span>
             <span style="margin-left: 10px" v-else-if="item.which==='isSetTop' && scope.row[item.which]">
               <el-button plain size="mini" @click="ToSetUp(scope.$index,scope.row)">取消置顶</el-button>

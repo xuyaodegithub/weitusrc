@@ -184,7 +184,8 @@
             productName:row.productName,
             costPriceView:'',//成本价
             salePriceView:'',//销售价
-            image:''//销售价
+            image:'',//销售价
+            toUrl:this.$store.state.editor.axiosQian+'/demo/iscroll/id/'+ row.productId+'?isShare=0&type=9'
           }
           this.$store.commit('Coupon_With_Goods',obj)
           this.popoverAlert()

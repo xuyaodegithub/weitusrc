@@ -56,7 +56,7 @@ import indexchange from '@/components/otherPage/subassembly/indexchange.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router= new Router({
  // mode: 'history',//进去历史模式，可以记录位置
   routes: [
     {
@@ -124,3 +124,11 @@ export default new Router({
     }
   }
 })
+// router.beforeEach((to,from,next)=> {
+//   document.title=to.name
+//   next()
+// })
+// router.afterEach((to,from)=> {
+//
+// })
+export default router
