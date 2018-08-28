@@ -89,8 +89,8 @@ Vue.directive('focus',function(el){
   //el.focus()
 })
 //拖拽
-Vue.directive('drag',function(event){
-  var oDiv = event;
+Vue.directive('drag',function(event){//此为全局指令，需要局部指令时，在组建中接受directives: { focus: {// 指令的定义inserted: function (el) {el.focus()}}
+  var oDiv = event;//组件内部过滤器filters: {titleFilter: function(value){return value+ 'ppp'}
   oDiv.onmousedown = function(ev){
     if(ev.target.className=='popover-head'){
       var disX = ev.clientX -oDiv.offsetLeft;
