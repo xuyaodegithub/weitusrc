@@ -128,7 +128,7 @@ export default {
       this.activeActions(data)
     },
     Updata(index,row){
-      console.log(row)
+//      console.log(row)
       let data={
         obj:row,
         item:'vBianji'

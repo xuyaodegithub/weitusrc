@@ -145,14 +145,16 @@ header img.valign{
   /*width:1110px;*/
 }
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all .3s linear;
 }
 .slide-fade-leave-active {
-  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .4s linear;
 }
 .slide-fade-enter, .slide-fade-leave-to
   /* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
+  /*transform: translateX(10px);*/
+  /*opacity: 0;*/
+  /*transform:scale(0.4)*/
+  transform:rotate(180deg)
 }
 </style>

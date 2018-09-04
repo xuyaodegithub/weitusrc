@@ -197,7 +197,7 @@
         obj.productType=9
         obj.productId=row.productId
         obj.indexId=13
-        obj.url = 'https://ol-h5-preview.olquan.cn/demo/iscroll/id/' + row.productId
+        obj.url = this.$store.state.editor.axiosQian+'/demo/iscroll/id/' + row.productId
         obj.image=this.commodityResult.contents[this.ImgnumKeyResult].image
         obj.width=this.commodityResult.contents[this.ImgnumKeyResult].width
         obj.height=this.commodityResult.contents[this.ImgnumKeyResult].height

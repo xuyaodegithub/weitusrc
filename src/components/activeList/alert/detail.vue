@@ -177,7 +177,7 @@
       changeKey(key){
         this.keyindex=key
         this.keyNum=key
-        window.scrollTo(0,100)
+//        window.scrollTo(0,100)
       },
       detail(url){
        window.open(url)

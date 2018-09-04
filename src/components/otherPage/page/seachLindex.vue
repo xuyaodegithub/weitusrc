@@ -23,15 +23,18 @@
           <span style="margin-left: 10px" v-if="item.which==='image'">
             <img :src="scope.row[item.which]" alt="" style="width: 78px;height: 78px;display: inline-block;">
           </span>
-          <span style="margin-left: 10px" v-else-if="item.which==='type'">{{scope.row[item.which] === 4 ? '店主特权轮播图' : '试用中心轮播图' }}</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 3">无</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 2">升级店主</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 10">特卖</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 9">活动</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 13">试用中心</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 15">特卖详情</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 16">精品详情</span>
-          <span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 17">整点抢详情</span>
+          <span style="margin-left: 10px" v-else-if="item.which==='type'">{{scope.row[item.which] | changeType}}</span>
+
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='type' && scope.row[item.which] === 6 ">试用中心轮播图</span>-->
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='type' && scope.row[item.which] === 7 ">店主特权广告图</span>-->
+          <span style="margin-left: 10px" v-else-if="item.which==='linkType'">{{scope.row[item.which] | chnageStatus}}</span>
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 2">升级店主</span>-->
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 10">特卖</span>-->
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 9">活动</span>-->
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 13">试用中心</span>-->
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 15">特卖详情</span>-->
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 16">精品详情</span>-->
+          <!--<span style="margin-left: 10px" v-else-if="item.which==='linkType' && scope.row[item.which] === 17">整点抢详情</span>-->
           <span style="margin-left: 10px" v-else-if="item.which==='isRecommend'">{{scope.row[item.which] === 0 ? '否' : '是' }}</span>
           <span style="margin-left: 10px" v-else-if="item.which==='index'">{{scope.$index+1}}</span>
           <span style="margin-left: 10px" v-else>{{scope.row[item.which]}}</span>
@@ -88,6 +91,24 @@
       value2: ''
     }
   },
+    filters:{
+    changeType(val){
+      if(val===4) return '店主特权轮播图';
+      else if(val===6) return '试用中心轮播图';
+      else return '店主特权广告图'
+    },
+      chnageStatus(val){
+        if(val===2) return '升级店主';
+        else if(val===3) return '无';
+        else if(val===9) return '活动';
+        else if(val===10) return '特卖';
+        else if(val===13) return '试用中心';
+        else if(val===15) return '特卖详情';
+        else if(val===16) return '精品详情';
+//        else if(val===15) return '试用中心轮播图';
+        else return '整点抢详情'
+      }
+    },
   watch:{
 //    seachWhicheResult2(curVal,oldVal){
 //      if(curVal===1){

@@ -41,11 +41,11 @@
         :total="indexListLunResult.total">
       </el-pagination>
     </div>
-    <transition name="slide-fade">
+   <!-- <transition name="slide-fade">
       <div class="alertshow" v-if="popoverAlive.openOrClose" v-drag>
         <v-popover></v-popover>
       </div>
-    </transition>
+    </transition>-->
   </div>
 
 </template>
@@ -73,18 +73,19 @@
       },
       options: [
         {value: '', label: '全部'},
-        {value: '4', label: '店主特权轮播图'},
-        {value: '6', label: '试用中心轮播图'}
+        {value: 4, label: '店主特权轮播图'},
+        {value: 6, label: '试用中心轮播图'},
+        {value: 7, label: '店主特权广告图'},
         ],
       options2: [
         {value: '', label: '全部'},
-        {value: '3', label: '无'},
-        {value: '9', label: '活动'},
-        {value: '10', label: '特卖 '},
-        {value: '13', label: '试用中心'},
-        {value: '15', label: '特卖详情'},
-        {value: '16', label: '精品详情'},
-        {value: '17', label: '整点抢商品详情'}
+        {value: 3, label: '无'},
+        {value: 9, label: '活动'},
+        {value: 10, label: '特卖 '},
+        {value: 13, label: '试用中心'},
+        {value: 15, label: '特卖详情'},
+        {value: 16, label: '精品详情'},
+        {value: 17, label: '整点抢商品详情'}
         ],
       value: '',
       value2: ''
@@ -110,9 +111,12 @@
     mounted(){
       this.getListSome()
     },
+    activated(){
+      this.clearAllActions()
+    },
   methods: {
     ...mapActions([
-'popoverAlert','indexListLunActions','deleteindexLunActions','addOrUpdataActions'
+'popoverAlert','indexListLunActions','deleteindexLunActions','addOrUpdataActions','clearAllActions'
     ]),
     seachGoodsList(){
       this.item.type=this.value
@@ -145,12 +149,12 @@
       this.item.val=val.item
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+//      console.log(`每页 ${val} 条`);
       this.rows=val
       this.getListSome()
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+//      console.log(`当前页: ${val}`);
       this.currentPage5=val
       this.getListSome()
     },

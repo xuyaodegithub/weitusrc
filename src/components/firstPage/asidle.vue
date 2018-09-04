@@ -125,12 +125,12 @@ export default {
   	}
   },
   mounted(){
-    console.log(document.documentElement.clientWidth)
+  /*  console.log(document.documentElement.clientWidth)
     document.addEventListener('click',function(event){
       console.log(event.clientX+' , '+event.clientY);
       console.log(event.pageX+' , '+event.pageY);
       console.log("Screen coordinates "+event.screenX+' , '+event.screenY);
-    },false);
+    },false);*/
   },
    methods: {
      addTT(){

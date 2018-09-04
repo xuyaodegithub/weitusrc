@@ -30,7 +30,7 @@
             </li>
           </ul>
           <el-upload
-            action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
+            action="/apis/admin/buildblocks/uploadImage"
             name="img"
             :multiple=true
             :show-file-list=false
@@ -110,7 +110,7 @@
        <!-- <p><label>商品边距:</label>
           <el-input v-model="marginPruct" placeholder="请输入内容" size="mini" @blur="change3(marginPruct)"></el-input>
         </p>-->
-        <p style="display: flex"><label style="display: inline-block;width: 80px;text-align: right;" v-if="commodityResult.contents.length>0">分类banner图:</label>
+        <p style="display: flex"  v-if="commodityResult.contents.length>0"><label style="display: inline-block;margin-right: 15px;">分类banner图:</label>
           <!--<el-input v-model="marginPruct" placeholder="请输入内容" size="mini" @blur="change3(marginPruct)"></el-input>-->
           <img :src="commodityResult.contents[num].classBannerImg ?  commodityResult.contents[num].classBannerImg.image : ''" alt="" style="width: 68px;height: 68px;border: none;"  v-if="commodityResult.contents.length>0">
           <i class="el-icon-close cu" style="float: right;font-size: 14px;color:red;"
@@ -154,7 +154,6 @@
           tooltip-effect="light">
           <el-table-column
             prop="productName"
-            width="280"
             label="产品名称"
             show-overflow-tooltip>
           </el-table-column>
@@ -171,7 +170,6 @@
           <el-table-column
             prop="sellerName"
             label="供应商"
-            width="175"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" width="100">
@@ -290,6 +288,7 @@
       this.value = ''
       this.input = ''
       this.$store.commit('OtherImgUrl', '')
+      this.createOrUpdate=true
     },
     computed: {
       ...mapGetters([
@@ -543,6 +542,9 @@
         this.commodityResult.contents.splice(index, 1)
         this.input1 = ''
         this.createOrUpdate = true
+        this.num=0
+        this.$store.commit('GET_ADD_DATA_NUM', this.num)
+        this.$store.commit('GET_CLASS_DATA_LIST', this.commodityResult.contents[this.num].dataList)
       },
       changeTag() {
         console.log(this.num)

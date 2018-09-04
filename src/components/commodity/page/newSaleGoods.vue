@@ -111,7 +111,7 @@
           <el-button size="mini" plain @click="upLoad()" style="height: 30px;margin: 25px 0 0 10px;">上传图片</el-button>
         </div>
         <el-upload
-          action="http://ol-h5-admin.olquan.cn/admin/buildblocks/uploadImage"
+          action="/apis/admin/buildblocks/uploadImage"
           name="img"
           :multiple=true
           :show-file-list=false
