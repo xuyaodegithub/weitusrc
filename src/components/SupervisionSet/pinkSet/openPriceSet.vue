@@ -36,6 +36,7 @@
               <el-radio :label="1" style="width: auto;">余额</el-radio>
               <el-radio :label="2" style="width: auto;">积分</el-radio>
               <el-radio :label="3" style="width: auto;">小金库</el-radio>
+              <el-radio :label="4" style="width: auto;">金豆</el-radio>
             </el-radio-group>
           </p>
           <p><label>开通人:</label>
